@@ -52,3 +52,10 @@ dependency-graph.png
 *.aux
 *.out
 *.synctex.gz
+
+vue/node_modules
+vue/dist
+release/
+
+# Visual Studio Code
+.vscode

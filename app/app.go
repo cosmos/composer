@@ -83,10 +83,11 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	adminmodulemodule "github.com/cosmos/admin-module/x/adminmodule"
-	adminmodulemodulekeeper "github.com/cosmos/admin-module/x/adminmodule/keeper"
-	adminmodulemoduletypes "github.com/cosmos/admin-module/x/adminmodule/types"
+	adminmodule "github.com/cosmos/admin-module/x/admin"
+	adminmodulekeeper "github.com/cosmos/admin-module/x/admin/keeper"
+	adminmoduletypes "github.com/cosmos/admin-module/x/admin/types"
 
 	"github.com/tendermint/spm/cosmoscmd"
 )
@@ -138,7 +139,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		adminmodulemodule.AppModuleBasic{},
+		adminmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -207,7 +208,7 @@ type App struct {
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	AdminmoduleKeeper adminmodulemodulekeeper.Keeper
+	adminKeeper adminmodulekeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -242,7 +243,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		adminmodulemoduletypes.StoreKey,
+		adminmoduletypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -338,12 +339,12 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.AdminmoduleKeeper = *adminmodulemodulekeeper.NewKeeper(
+	app.adminKeeper = *adminmodulekeeper.NewKeeper(
 		appCodec,
-		keys[adminmodulemoduletypes.StoreKey],
-		keys[adminmodulemoduletypes.MemStoreKey],
+		keys[adminmoduletypes.StoreKey],
+		keys[adminmoduletypes.MemStoreKey],
 	)
-	adminmoduleModule := adminmodulemodule.NewAppModule(appCodec, app.AdminmoduleKeeper)
+	adminModule := adminmodule.NewAppModule(appCodec, app.adminKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -383,7 +384,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		adminmoduleModule,
+		adminModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -417,7 +418,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		adminmodulemoduletypes.ModuleName,
+		adminmoduletypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -605,7 +606,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(adminmodulemoduletypes.ModuleName)
+	paramsKeeper.Subspace(adminmoduletypes.ModuleName)
 
 	return paramsKeeper
 }

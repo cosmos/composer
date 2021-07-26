@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cosmos/admin-module/x/adminmodule/types"
+	"github.com/cosmos/admin-module/x/admin/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

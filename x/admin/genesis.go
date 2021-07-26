@@ -1,8 +1,8 @@
-package adminmodule
+package admin
 
 import (
-	"github.com/cosmos/admin-module/x/adminmodule/keeper"
-	"github.com/cosmos/admin-module/x/adminmodule/types"
+	"github.com/cosmos/admin-module/x/admin/keeper"
+	"github.com/cosmos/admin-module/x/admin/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

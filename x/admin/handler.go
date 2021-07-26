@@ -1,10 +1,10 @@
-package adminmodule
+package admin
 
 import (
 	"fmt"
 
-	"github.com/cosmos/admin-module/x/adminmodule/keeper"
-	"github.com/cosmos/admin-module/x/adminmodule/types"
+	"github.com/cosmos/admin-module/x/admin/keeper"
+	"github.com/cosmos/admin-module/x/admin/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

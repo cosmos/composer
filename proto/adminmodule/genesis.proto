@@ -1,11 +1,11 @@
 syntax = "proto3";
-package cosmos.adminmodule.adminmodule;
+package cosmos.admin.admin;
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "github.com/cosmos/admin-module/x/adminmodule/types";
+option go_package = "github.com/cosmos/admin-module/x/admin/types";
 
-// GenesisState defines the adminmodule module's genesis state.
+// GenesisState defines the admin module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
     // this line is used by starport scaffolding # ibc/genesis/proto

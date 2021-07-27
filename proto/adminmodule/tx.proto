@@ -1,13 +1,30 @@
 syntax = "proto3";
-package cosmos.admin.admin;
+package cosmos.adminmodule.adminmodule;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/cosmos/admin-module/x/admin/types";
+option go_package = "github.com/cosmos/admin-module/x/adminmodule/types";
 
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+  rpc DeleteAdmin(MsgDeleteAdmin) returns (MsgDeleteAdminResponse);
+  rpc AddAdmin(MsgAddAdmin) returns (MsgAddAdminResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgDeleteAdmin {
+  string creator = 1;
+  string admin = 2;
+}
+
+message MsgDeleteAdminResponse {
+}
+
+message MsgAddAdmin {
+  string creator = 1;
+  string admin = 2;
+}
+
+message MsgAddAdminResponse {
+}

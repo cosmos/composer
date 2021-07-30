@@ -1,13 +1,15 @@
 package cli
 
 import (
-	"github.com/spf13/cobra"
 	"strconv"
+
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/admin-module/x/adminmodule/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -18,14 +20,18 @@ func CmdAddAdmin() *cobra.Command {
 		Short: "Broadcast message AddAdmin",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			argsAdmin := string(args[0])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgAddAdmin(clientCtx.GetFromAddress().String(), string(argsAdmin))
+			new_admin, err := sdk.AccAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgAddAdmin(clientCtx.GetFromAddress(), new_admin)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

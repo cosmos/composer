@@ -3,10 +3,11 @@ package keeper
 import (
 	"context"
 
-	"github.com/cosmos/admin-module/x/adminmodule/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"fmt"
+
+	"github.com/cosmos/admin-module/x/adminmodule/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
@@ -16,12 +17,7 @@ func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*typ
 
 	storeCreator := store.Get(types.ToAdminKey(msg.Creator))
 	if storeCreator == nil {
-		return nil, fmt.Errorf("requester %s must be admin to delete admins", msg.Creator)
-	}
-
-	storeAdmin := store.Get(types.ToAdminKey(msg.Admin))
-	if storeAdmin == nil {
-		return nil, fmt.Errorf("couldn't find admin '%s'", msg.Admin)
+		return nil, fmt.Errorf("requester %s must be admin to add admins", msg.Creator)
 	}
 
 	store.Set(types.ToAdminKey(msg.Admin), []byte{})

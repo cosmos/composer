@@ -7,10 +7,10 @@ import (
 
 var _ sdk.Msg = &MsgDeleteAdmin{}
 
-func NewMsgDeleteAdmin(creator string, admin string) *MsgDeleteAdmin {
+func NewMsgDeleteAdmin(creator, admin sdk.AccAddress) *MsgDeleteAdmin {
 	return &MsgDeleteAdmin{
-		Creator: creator,
-		Admin:   admin,
+		Creator: creator.String(),
+		Admin:   admin.String(),
 	}
 }
 
@@ -39,6 +39,10 @@ func (msg *MsgDeleteAdmin) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	_, err = sdk.AccAddressFromBech32(msg.Admin)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid admin address (%s)", err)
 	}
 	return nil
 }

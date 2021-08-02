@@ -18,10 +18,3 @@ const (
 
 	AdminKey = "Admin-"
 )
-
-// this line is used by starport scaffolding # ibc/keys/port
-
-// ProposalKey gets a specific proposal from the store
-func ToAdminKey(admin string) []byte {
-	return append([]byte(AdminKey), []byte(admin)...)
-}

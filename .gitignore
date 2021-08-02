@@ -57,5 +57,8 @@ vue/node_modules
 vue/dist
 release/
 
-# Visual Studio Code
-.vscode
+# Local configs
+config_local.yml
+
+# local bin
+bin/

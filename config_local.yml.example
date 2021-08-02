@@ -1,0 +1,22 @@
+accounts:
+  - name: alice
+    coins: ["20000token", "200000000stake"]
+    address: cosmos17grwgm99ervyntfq2hva3s02760c5m6qjdzga6
+  - name: bob
+    coins: ["10000token", "100000000stake"]
+    address: cosmos13juzz4zxk9l7ajp7ns7vgg2n02fgmue7sz8mty
+validator:
+  name: alice
+  staked: "100000000stake"
+client:
+  vuex:
+    path: "vue/src/store"
+  openapi:
+    path: "docs/static/openapi.yml"
+faucet:
+  name: bob
+  coins: ["5token", "100000stake"]
+genesis:
+  app_state:
+    adminmodule:
+      admins: ["cosmos17grwgm99ervyntfq2hva3s02760c5m6qjdzga6"]

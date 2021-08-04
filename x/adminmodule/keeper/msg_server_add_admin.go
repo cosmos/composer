@@ -15,12 +15,13 @@ func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*typ
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.AdminKey))
 
-	storeCreator := store.Get(types.ToAdminKey(msg.Creator))
+	storeCreator := store.Get([]byte(msg.Creator))
+	fmt.Println("storeCreator", storeCreator)
 	if storeCreator == nil {
 		return nil, fmt.Errorf("requester %s must be admin to add admins", msg.Creator)
 	}
 
-	store.Set(types.ToAdminKey(msg.Admin), []byte{})
+	k.SetAdmin(ctx, msg.GetAdmin())
 
 	return &types.MsgAddAdminResponse{}, nil
 }

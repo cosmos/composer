@@ -1,10 +1,21 @@
 # admin
 **admin** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport/releases/tag/v0.17.0) `v0.17.0`.
 
+## Development, features
+- `make build`
+- `make local-clean`
+- `make local-init`
+- `make local-start`
+- `curl -X GET "http://localhost:1317/cosmos/adminmodule/adminmodule/admins" -H  "accept: application/json"`
+- `bin/admin-moduled keys list --home ~/.adminmodule` - list of local users
+- `bin/admin-moduled tx adminmodule add-admin cosmos13juzz4zxk9l7ajp7ns7vgg2n02fgmue7sz8mty --from cosmos17grwgm99ervyntfq2hva3s02760c5m6qjdzga6 --chain-id adminmoduleteshchain1 --home ~/.adminmodule`
+- `bin/admin-moduled tx adminmodule delete-admin cosmos13juzz4zxk9l7ajp7ns7vgg2n02fgmue7sz8mty --from cosmos17grwgm99ervyntfq2hva3s02760c5m6qjdzga6 --chain-id adminmoduleteshchain1 --home ~/.adminmodule`
+
 ## Get started
 
 ```
-starport chain serve
+cp config_local.yml.example config_local.yml
+starport chain serve --home ~/.adminmodule --config config_local.yml 
 ```
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.

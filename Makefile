@@ -6,6 +6,10 @@ CHAIN_HOME=~/.adminmodule
 build:
 	go build -o bin/admin-moduled cmd/admin-moduled/main.go
 
+.PHONY: test
+test:
+	go test ./x/adminmodule/keeper
+
 .PHONY: local-clean
 local-clean:
 	rm -rf $(CHAIN_HOME)

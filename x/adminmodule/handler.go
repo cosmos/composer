@@ -11,7 +11,7 @@ import (
 
 // NewHandler ...
 func NewHandler(k keeper.Keeper) sdk.Handler {
-	msgServer := k.NewMsgServerImpl()
+	msgServer := keeper.NewMsgServerImpl(k)
 
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())

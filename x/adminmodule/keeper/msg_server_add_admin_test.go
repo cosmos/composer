@@ -82,7 +82,7 @@ func TestAddAdmin(t *testing.T) {
 				require.NoError(t, err)
 			},
 			true,
-			[]string{"cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0", "cosmosTeStgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0"},
+			[]string{"cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0", "cosmosTeStgx3kxcykszdxrk2gvrrfzchlqzfc59kx4s8"},
 		},
 	}
 

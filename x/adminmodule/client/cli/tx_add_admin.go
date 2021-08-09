@@ -26,12 +26,12 @@ func CmdAddAdmin() *cobra.Command {
 				return err
 			}
 
-			new_admin, err := sdk.AccAddressFromBech32(args[0])
+			newAdmin, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgAddAdmin(clientCtx.GetFromAddress(), new_admin)
+			msg := types.NewMsgAddAdmin(clientCtx.GetFromAddress(), newAdmin)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

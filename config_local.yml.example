@@ -16,6 +16,8 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
+init:
+  home: "~/.admin-module
 genesis:
   app_state:
     adminmodule:

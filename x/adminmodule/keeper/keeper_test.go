@@ -21,6 +21,9 @@ func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	// fmt.Println("In keeper setup")
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+
+	// TODO Add routes, no handlers now
+	rtr := types.NewRouter()
 	// fmt.Println(storeKey)
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
@@ -33,7 +36,7 @@ func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		codec.NewProtoCodec(registry),
 		storeKey,
 		memStoreKey,
-		types.NewRouter(),
+		rtr,
 	)
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
 	return k, ctx

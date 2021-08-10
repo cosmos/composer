@@ -383,9 +383,9 @@ export const MsgSubmitProposalResponse = {
 
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteAdmin(request: MsgDeleteAdmin): Promise<MsgDeleteAdminResponse>
   AddAdmin(request: MsgAddAdmin): Promise<MsgAddAdminResponse>
+  /** this line is used by starport scaffolding # proto/tx/rpc */
   SubmitProposal(request: MsgSubmitProposal): Promise<MsgSubmitProposalResponse>
 }
 

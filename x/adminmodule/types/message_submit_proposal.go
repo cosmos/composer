@@ -23,12 +23,22 @@ func NewMsgSubmitProposal(content Content, proposer sdk.AccAddress) (*MsgSubmitP
 	return m, nil
 }
 
-func (m *MsgSubmitProposal) GetContent() Content {
-	content, ok := m.Content.GetCachedValue().(Content)
-	if !ok {
+//func (m *MsgSubmitProposal) GetContent() Content {
+//	content, ok := m.Content.GetCachedValue().(Content)
+//	if !ok {
+//		return nil
+//	}
+//	return content
+//}
+
+func (m *MsgSubmitProposal) GetContent() Content { // TODO m.Content.GetCachedValue() returns nil!
+	var message TextProposal
+	err := proto.Unmarshal(m.Content.Value, &message)
+	if err != nil {
 		return nil
 	}
-	return content
+
+	return &message
 }
 
 func (m *MsgSubmitProposal) SetContent(content Content) error {

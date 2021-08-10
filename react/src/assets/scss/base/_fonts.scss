@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'Montserrat Bold';
+  src: url('../fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato Regular';
+  src: url('../fonts/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Rubik Medium';
+  src: url('../fonts/Rubik-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato Bold';
+  src: url('../fonts/Lato-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans Regular';
+  src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans Bold';
+  src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
+}
+
+$font-lato-regular: 'Lato Regular';
+$font-medium: 'Rubik Medium';
+$font-bold: 'Montserrat Bold';
+$font-lato-bold: 'Lato Bold';
+$font-open-sans-regular: 'Open Sans Regular';
+$font-open-sans-bold: 'Open Sans Bold';

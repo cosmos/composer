@@ -1,0 +1,83 @@
+{
+    "name": "cosmos-web",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@cosmjs/launchpad": "^0.24.1",
+        "@cosmjs/proto-signing": "^0.25.5",
+        "@cosmjs/stargate": "^0.25.5",
+        "@cosmjs/tendermint-rpc": "^0.25.5",
+        "@headlessui/react": "^1.2.0",
+        "@keplr-wallet/common": "0.9.0-alpha.8",
+        "@keplr-wallet/cosmos": "0.9.0-alpha.8",
+        "@keplr-wallet/crypto": "0.9.0-alpha.8",
+        "@keplr-wallet/hooks": "0.9.0-alpha.8",
+        "@keplr-wallet/provider": "0.9.0-alpha.8",
+        "@keplr-wallet/stores": "0.9.0-alpha.8",
+        "@keplr-wallet/unit": "0.9.0-alpha.8",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^11.2.7",
+        "@testing-library/user-event": "^12.8.3",
+        "@types/jest": "^26.0.24",
+        "@types/node": "^12.20.16",
+        "@types/react": "^17.0.14",
+        "@types/react-dom": "^17.0.9",
+        "@types/react-redux": "^7.1.18",
+        "@types/react-router-dom": "^5.1.8",
+        "@types/react-tabs": "^2.3.3",
+        "@types/redux-actions": "^2.6.1",
+        "axios": "^0.21.1",
+        "cross-env": "^7.0.3",
+        "eslint-plugin-prettier": "^3.4.0",
+        "node-sass": "^6.0.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-hook-form": "^7.12.2",
+        "react-redux": "^7.2.4",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.3",
+        "react-select": "^4.3.1",
+        "react-showdown": "^2.3.0",
+        "react-spinners": "^0.11.0",
+        "react-tabs": "^3.2.2",
+        "redux": "^4.1.0",
+        "redux-actions": "^2.6.5",
+        "redux-thunk": "^2.3.0",
+        "typescript": "^4.3.5",
+        "web-vitals": "^1.1.2"
+    },
+    "scripts": {
+        "start": "cross-env FAST_REFRESH=false DISABLE_ESLINT_PLUGIN=true react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "format": "prettier --write ./**/*.{js,ts,tsx,css,md,json} --config ./.prettierrc --ignore-path ./.gitignore"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@keplr-wallet/types": "^0.9.0-alpha.8",
+        "@types/react-select": "^4.0.17",
+        "@types/redux": "^3.6.0",
+        "eslint": "^7.31.0",
+        "eslint-config-prettier": "^8.3.0",
+        "prettier": "^2.3.2",
+        "redux-devtools-extension": "^2.13.9"
+    }
+}

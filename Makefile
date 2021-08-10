@@ -1,5 +1,5 @@
 MONIKER=adminmoduletest1
-CHAIN_ID=adminmoduleteshchain1
+CHAIN_ID=adminmodule
 CHAIN_HOME=~/.adminmodule
 
 .PHONY: build

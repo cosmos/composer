@@ -14,6 +14,8 @@ var TestProposal = types.NewTextProposal("Test", "description")
 
 type invalidProposalRoute struct{ types.TextProposal }
 
+func (invalidProposalRoute) ProposalRoute() string { return "nonexistingroute" }
+
 func TestGetSetProposal(t *testing.T) {
 	_, ctx, keeper := setupMsgServer(t)
 

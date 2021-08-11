@@ -16,6 +16,10 @@ type invalidProposalRoute struct{ types.TextProposal }
 
 func TestGetSetProposal(t *testing.T) {
 	_, ctx, keeper := setupMsgServer(t)
+
+	// Init genesis ProposalID
+	keeper.SetProposalID(sdk.UnwrapSDKContext(ctx), 1)
+
 	tp := TestProposal
 	proposal, err := keeper.SubmitProposal(sdk.UnwrapSDKContext(ctx), tp)
 	require.NoError(t, err)
@@ -29,6 +33,9 @@ func TestGetSetProposal(t *testing.T) {
 
 func TestSubmitProposal(t *testing.T) {
 	_, ctx, keeper := setupMsgServer(t)
+
+	// Init genesis ProposalID
+	keeper.SetProposalID(sdk.UnwrapSDKContext(ctx), 1)
 
 	testCases := []struct {
 		content     types.Content

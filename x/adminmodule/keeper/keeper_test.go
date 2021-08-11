@@ -22,9 +22,10 @@ func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
-	// TODO Add routes, no handlers now
+	// TODO Add more routes
 	rtr := types.NewRouter()
-	// fmt.Println(storeKey)
+	rtr.AddRoute(types.RouterKey, types.ProposalHandler)
+
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
@@ -32,6 +33,9 @@ func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
+	//cdc := codec.NewProtoCodec(registry)
+
+	types.RegisterInterfaces(registry)
 	k := keeper.NewKeeper(
 		codec.NewProtoCodec(registry),
 		storeKey,

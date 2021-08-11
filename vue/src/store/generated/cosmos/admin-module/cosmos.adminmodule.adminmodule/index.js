@@ -1,6 +1,9 @@
 import { txClient, queryClient, MissingWalletError } from './module';
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex';
+import { TextProposal } from "./module/types/adminmodule/adminmodule";
+import { Proposal } from "./module/types/adminmodule/adminmodule";
+export { TextProposal, Proposal };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -35,7 +38,10 @@ function getStructure(template) {
 const getDefaultState = () => {
     return {
         Admins: {},
-        _Structure: {},
+        _Structure: {
+            TextProposal: getStructure(TextProposal.fromPartial({})),
+            Proposal: getStructure(Proposal.fromPartial({})),
+        },
         _Subscriptions: new Set(),
     };
 };
@@ -124,6 +130,23 @@ export default {
                 }
             }
         },
+        async sendMsgSubmitProposal({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSubmitProposal(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
         async sendMsgAddAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -153,6 +176,21 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteAdmin:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSubmitProposal({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSubmitProposal(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

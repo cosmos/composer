@@ -17,6 +17,7 @@ import { toPrettyDate } from "../../utills/toPrettyDate";
 import { chainInfo } from "../../config";
 import { ScrollToTopOnMount } from "../ScrollToTopOnMount";
 import { toPrettyCoin } from "../../utills/toPrettyCoin";
+import { toProposalStatus } from "../../utills/toProposalStatus";
 
 const ProposalDetail: React.FC = () => {
     const history = useHistory();
@@ -42,12 +43,6 @@ const ProposalDetail: React.FC = () => {
     if (!proposal && !isFetchingProposals && proposals) {
         history.push(routes.proposals);
     }
-    const toProposalStatus = (status: string | number): string | number => {
-        if (+status === 4) return "Rejected";
-        if (+status === 3) return "Passed";
-        if (+status === 2) return "Voting Period";
-        return status;
-    };
 
     return (
         <div className={"item-content"}>

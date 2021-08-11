@@ -25,12 +25,12 @@ func CmdDeleteAdmin() *cobra.Command {
 				return err
 			}
 
-			remove_admin, err := sdk.AccAddressFromBech32(args[0])
+			removeAdmin, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgDeleteAdmin(clientCtx.GetFromAddress(), remove_admin)
+			msg := types.NewMsgDeleteAdmin(clientCtx.GetFromAddress(), removeAdmin)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

@@ -8,6 +8,9 @@ import (
 
 // x/adminmodule module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrInvalidProposalContent  = sdkerrors.Register(ModuleName, 5, "invalid proposal content")
+	ErrInvalidProposalType     = sdkerrors.Register(ModuleName, 6, "invalid proposal type")
+	ErrNoProposalHandlerExists = sdkerrors.Register(ModuleName, 9, "no handler exists for proposal type")
+	ErrInvalidGenesis          = sdkerrors.Register(ModuleName, 8, "invalid genesis state")
 	// this line is used by starport scaffolding # ibc/errors
 )

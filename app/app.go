@@ -338,12 +338,21 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
+	// register the proposal types
+	adminRouter := adminmodulemoduletypes.NewRouter()
+	adminRouter.AddRoute(adminmodulemoduletypes.RouterKey, adminmodulemoduletypes.ProposalHandler)
+	//AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
+	//AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
+	//AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
+	//AddRoute(ibchost.RouterKey, ibcclient.NewClientUpdateProposalHandler(app.IBCKeeper.ClientKeeper)) // TODO
+
 	app.AdminmoduleKeeper = *adminmodulemodulekeeper.NewKeeper(
 		appCodec,
 		keys[adminmodulemoduletypes.StoreKey],
 		keys[adminmodulemoduletypes.MemStoreKey],
+		adminRouter,
 	)
-	adminmoduleModule := adminmodulemodule.NewAppModule(appCodec, app.AdminmoduleKeeper)
+	adminModule := adminmodulemodule.NewAppModule(appCodec, app.AdminmoduleKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -383,7 +392,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		adminmoduleModule,
+		adminModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that

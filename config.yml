@@ -14,7 +14,6 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
-genesis:
-  app_state:
-    adminmodule:
-      admins: ["cosmos103laf9z2fv69r0q30pf2swfr09nfdszy88sm87"]
+init:
+  home: "~/.admin-module"
+

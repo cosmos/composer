@@ -1,6 +1,9 @@
 import { txClient, queryClient, MissingWalletError } from './module';
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex';
+import { TextProposal } from "./module/types/adminmodule/adminmodule";
+import { Proposal } from "./module/types/adminmodule/adminmodule";
+export { TextProposal, Proposal };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -35,7 +38,10 @@ function getStructure(template) {
 const getDefaultState = () => {
     return {
         Admins: {},
-        _Structure: {},
+        _Structure: {
+            TextProposal: getStructure(TextProposal.fromPartial({})),
+            Proposal: getStructure(Proposal.fromPartial({})),
+        },
         _Subscriptions: new Set(),
     };
 };
@@ -125,6 +131,7 @@ export default {
             }
         },
         async sendMsgDeleteAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
+
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgDeleteAdmin(value);
@@ -156,7 +163,9 @@ export default {
                 }
             }
         },
+
         async MsgDeleteAdmin({ rootGetters }, { value }) {
+
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgDeleteAdmin(value);

@@ -1,6 +1,6 @@
 MONIKER=adminmoduletest1
 CHAIN_ID=adminmodule
-CHAIN_HOME=~/.adminmodule
+CHAIN_HOME=~/.admin-module
 
 .PHONY: build
 build:
@@ -8,7 +8,7 @@ build:
 
 .PHONY: test
 test:
-	go test ./x/adminmodule/keeper
+	go test ./...
 
 .PHONY: local-clean
 local-clean:

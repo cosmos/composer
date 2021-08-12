@@ -392,7 +392,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		adminModule,
+		adminmoduleModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that

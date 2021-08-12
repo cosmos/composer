@@ -131,12 +131,14 @@ export default {
             }
         },
         async sendMsgDeleteAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
-
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgDeleteAdmin(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
+                        gas: "200000" }, memo });message QueryAdminsResponse {
+  repeated string admins = 1;
+}
+
                 return result;
             }
             catch (e) {
@@ -163,9 +165,22 @@ export default {
                 }
             }
         },
-
+        async MsgSubmitProposal({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSubmitProposal(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
         async MsgDeleteAdmin({ rootGetters }, { value }) {
-
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgDeleteAdmin(value);
@@ -177,6 +192,21 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteAdmin:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgAddAdmin({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgAddAdmin(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgAddAdmin:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgAddAdmin:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

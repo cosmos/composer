@@ -1,0 +1,136 @@
+.sidebar {
+  //padding-left: 5px;
+  /*background: white;*/
+  z-index: 1;
+  background: $color-white;
+  font-family: 'Roboto', sans-serif;
+  min-width: 230px;
+  box-shadow: 0 0 20px rgba(20, 20, 20, 0.06);
+  min-height: 100vh;
+
+
+  .sidebar-list {
+    padding: 0;
+    list-style: none;
+
+    .sidebar-item {
+      //text-transform: uppercase;
+      //letter-spacing: 2px;
+      //font-size: 16px;
+      //box-shadow:0 0 20px #555;
+      //padding-left: 15px;
+      //text-align: center;
+      width: 100%;
+      //height: 50px;
+    }
+
+    a {
+      text-decoration: none;
+      outline: none;
+      display: block;
+      letter-spacing: 1px;
+      font-weight: 300;
+      color: $color-dark-gray;
+
+      transition: .05s linear;
+
+      padding: 17px 0 6px;
+      //text-align: center;
+      height: 50px;
+
+
+      &:before {
+        content: "";
+        margin-right: 14px;
+      }
+
+      &:hover {
+        color: black;
+      }
+    }
+  }
+
+  .sidebar-bottom {
+    //position: absolute;
+    //float: bottom;
+    //left: 0;
+    //bottom: 0; /* Левый нижний угол */
+
+    padding: 10px; /* Поля вокруг текста */
+    color: #fff; /* Цвет текста */
+    //height: 100%;
+    width: 100%;
+
+    .container {
+      font-family: Metropolis,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Helvetica Neue,sans-serif;
+
+      //background-color: #56CCF2;
+      position: fixed; /* Фиксированное положение */
+      left: 0;
+      bottom: 0; /* Левый нижний угол */
+      padding: 10px;
+      min-width: 230px;
+      display: flex;
+      justify-content: center;
+
+      button {
+        font-family:inherit;
+
+        width: 175px;
+        height: 35px;
+        border-radius: 10px;
+        //border:none;
+        cursor: pointer;
+        background-color: $color-white;
+        text-transform: uppercase;
+        color: $color-dark-gray;
+        font-weight: bold;
+
+        border: 1px solid $color-dark-gray;
+
+        transition: .05s linear;
+        &:hover{
+          box-shadow: 0 0 20px rgba(20, 20, 20, 0.08);
+          border-color: black;
+          color: black;
+
+        }
+      }
+
+      .account-data {
+        color: black;
+        padding-bottom: 10px;
+        font-weight: bold;
+
+        .account-name{
+          font-size: 18px;
+        }
+        .amount{
+        color: $color-dark-gray;
+        }
+      }
+
+      .btn-connect {
+
+      }
+
+      .btn-disconnect {
+        //border: 1px solid black;
+      }
+      .connect-error{
+        color: red;
+        text-align: center;
+      }
+    }
+
+  }
+
+
+}
+
+.router-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  //min-height: 800px;
+}

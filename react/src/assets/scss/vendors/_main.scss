@@ -1,0 +1,10 @@
+body, #root {
+  background-color: $color-gray-background;
+
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}

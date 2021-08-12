@@ -16,3 +16,4 @@ faucet:
   coins: ["5token", "100000stake"]
 init:
   home: "~/.admin-module"
+

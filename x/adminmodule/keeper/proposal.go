@@ -33,7 +33,7 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content) (types.Pr
 	}
 
 	k.SetProposal(ctx, proposal)
-	k.InsertActiveProposalQueue(ctx, proposalID, submitTime.Add(2*time.Hour)) // TODO hardcode
+	k.InsertActiveProposalQueue(ctx, proposalID, submitTime.Add(2*time.Second)) // TODO hardcode
 	k.SetProposalID(ctx, proposalID+1)
 
 	// TODO submit event?
@@ -147,6 +147,7 @@ func (k Keeper) MustMarshalProposal(proposal types.Proposal) []byte {
 func (k Keeper) MustUnmarshalProposal(bz []byte, proposal *types.Proposal) {
 	err := k.UnmarshalProposal(bz, proposal)
 	if err != nil {
+		fmt.Println("ERROR: ", err.Error())
 		panic(err)
 	}
 }

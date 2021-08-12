@@ -1,11 +1,6 @@
 package app
 
 import (
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/spf13/cast"
@@ -14,6 +9,10 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/cosmos/admin-module/docs"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -392,7 +391,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		adminmoduleModule,
+		adminModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -404,7 +403,7 @@ func New(
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
+	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName, adminmodulemoduletypes.ModuleName)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.

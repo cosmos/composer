@@ -24,6 +24,8 @@ const (
 	MemStoreKey = "mem_adminmodule"
 
 	AdminKey = "Admin-"
+
+	ArchiveKey = "Archive-"
 )
 
 var (

@@ -45,6 +45,7 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Admins: {},
+				ArchivedProposals: {},
 				
 				_Structure: {
 						TextProposal: getStructure(TextProposal.fromPartial({})),
@@ -81,6 +82,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Admins[JSON.stringify(params)] ?? {}
+		},
+				getArchivedProposals: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ArchivedProposals[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -133,7 +140,42 @@ export default {
 		},
 		
 		
-
+		
+		
+		 		
+		
+		
+		async QueryArchivedProposals({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+			try {
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryArchivedProposals()).data
+				
+					
+				commit('QUERY', { query: 'ArchivedProposals', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryArchivedProposals', payload: { options: { all }, params: {...key},query }})
+				return getters['getArchivedProposals']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new SpVuexError('QueryClient:QueryArchivedProposals', 'API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		async sendMsgSubmitProposal({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSubmitProposal(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgSubmitProposal:Send', 'Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgAddAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -143,15 +185,12 @@ export default {
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-
 					throw new SpVuexError('TxClient:MsgAddAdmin:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgAddAdmin:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-
-
 		async sendMsgDeleteAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -168,6 +207,20 @@ export default {
 			}
 		},
 		
+		async MsgSubmitProposal({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSubmitProposal(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgSubmitProposal:Create', 'Could not create message: ' + e.message)
+					
+				}
+			}
+		},
 		async MsgAddAdmin({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -185,13 +238,13 @@ export default {
 		async MsgDeleteAdmin({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSubmitProposal(value)
+				const msg = await txClient.msgDeleteAdmin(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgDeleteAdmin:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgSubmitProposal:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgDeleteAdmin:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}

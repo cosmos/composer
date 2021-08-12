@@ -147,7 +147,6 @@ func (k Keeper) MustMarshalProposal(proposal types.Proposal) []byte {
 func (k Keeper) MustUnmarshalProposal(bz []byte, proposal *types.Proposal) {
 	err := k.UnmarshalProposal(bz, proposal)
 	if err != nil {
-		fmt.Println("ERROR: ", err.Error())
 		panic(err)
 	}
 }

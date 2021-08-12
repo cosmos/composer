@@ -18,7 +18,6 @@ import (
 )
 
 func setupKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	// fmt.Println("In keeper setup")
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 

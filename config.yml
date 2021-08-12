@@ -20,3 +20,4 @@ genesis:
       admins: ["cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0", "cosmos103laf9z2fv69r0q30pf2swfr09nfdszy88sm87"]
 init:
   home: "~/.admin-module"
+

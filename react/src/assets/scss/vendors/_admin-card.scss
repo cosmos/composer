@@ -1,0 +1,31 @@
+.admin-card {
+  background-color: $color-white;
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(29, 29, 29, 0.1);
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+
+  &__delete-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: $color-red;
+    color: $color-white;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $color-light-red;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #b1a7a6;
+    }
+  }
+}

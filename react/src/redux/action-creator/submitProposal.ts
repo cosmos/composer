@@ -24,7 +24,7 @@ export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
                 proposer: address
             };
             const msgAny = {
-                typeUrl: "/cosmos.gov.v1beta1.MsgSubmitProposal",
+                typeUrl: "/cosmos.adminmodule.adminmodule.MsgSubmitProposal",
                 value: msg
             };
             const fee = {

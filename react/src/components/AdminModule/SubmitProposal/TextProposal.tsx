@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { submitProposal } from "../../../redux/action-creator/submitProposal";
-import { TextProposal as TextProposalProc } from "../../../cosmos/codec/cosmos/gov/v1beta1/gov";
+import { TextProposal as TextProposalProc } from "../../../cosmos/codec/cosmos/adminmodule/adminmodule/adminmodule";
 import { TBaseSPMsg } from "../../../types/submitProposal";
 
 const TextProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => {
@@ -10,7 +10,7 @@ const TextProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => 
         dispatch(
             submitProposal(
                 {
-                    typeUrl: "/cosmos.gov.v1beta1.TextProposal",
+                    typeUrl: "/cosmos.adminmodule.adminmodule.TextProposal",
                     value: TextProposalProc.encode({
                         title,
                         description

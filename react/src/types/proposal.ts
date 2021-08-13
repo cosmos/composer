@@ -1,4 +1,5 @@
 import { Deposit, Proposal as ProposalCosmJS } from "@cosmjs/launchpad/build/lcdapi/gov";
+import { Coin } from "@cosmjs/stargate";
 
 export interface Change {
     key: string;
@@ -12,7 +13,13 @@ export interface Proposal extends ProposalCosmJS {
         readonly value: {
             readonly title: string;
             readonly description: string;
+
+            //only ParameterChangeProposal
             readonly changes?: Change[];
+
+            //only CommunityPoolSpendProposal
+            readonly recipient?: string;
+            readonly amount?: Coin[];
         };
     };
 }

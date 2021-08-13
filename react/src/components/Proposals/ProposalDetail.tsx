@@ -4,20 +4,24 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import { useTypedSelector } from "../../redux/useTypedSelector";
 import { useDispatch } from "react-redux";
 import {
-    fetchProposalDetail,
-    fetchProposals,
-    proposalDetailReset
+    // fetchProposalDetail,
+    fetchProposals
+    // proposalDetailReset
 } from "../../redux/action-creator/proposal";
 import { routes } from "../../router";
 import Spinner from "../Loader/Spinner";
 import { Deposit, Tally } from "@cosmjs/launchpad/build/lcdapi/gov";
 import { CoinPretty, Dec } from "@keplr-wallet/unit";
-import { Change } from "../../types/proposal";
 import { toPrettyDate } from "../../utills/toPrettyDate";
 import { chainInfo } from "../../config";
 import { ScrollToTopOnMount } from "../ScrollToTopOnMount";
 import { toPrettyCoin } from "../../utills/toPrettyCoin";
 import { toProposalStatus } from "../../utills/toProposalStatus";
+import { ParamChange } from "../../cosmos/codec/cosmos/params/v1beta1/params";
+import {
+    isACommunityPoolSpendProposalContent,
+    isAParameterChangeProposalContent
+} from "../../types/proposal";
 
 const ProposalDetail: React.FC = () => {
     const history = useHistory();
@@ -25,7 +29,7 @@ const ProposalDetail: React.FC = () => {
         params: { id }
     } = useRouteMatch<{ id: string }>();
 
-    const { proposalDetail, proposals, isFetchingProposals, isFetchingItem, error } =
+    const { /*proposalDetail,*/ proposals, isFetchingProposals, isFetchingItem, error } =
         useTypedSelector((state) => state.proposal);
     const dispatch = useDispatch();
 
@@ -33,13 +37,13 @@ const ProposalDetail: React.FC = () => {
         if (!proposals) {
             dispatch(fetchProposals());
         }
-        dispatch(fetchProposalDetail(id));
-        return () => {
-            dispatch(proposalDetailReset());
-        };
+        // dispatch(fetchProposalDetail(id));
+        // return () => {
+        //     dispatch(proposalDetailReset());
+        // };
     }, [dispatch, id, proposals]);
 
-    const proposal = proposals?.find((p) => p.id === id);
+    const proposal = proposals?.find((p) => p.proposal_id === id);
     if (!proposal && !isFetchingProposals && proposals) {
         history.push(routes.proposals);
     }
@@ -56,27 +60,27 @@ const ProposalDetail: React.FC = () => {
                             <td>
                                 <span> Proposal ID</span>
                             </td>
-                            <td>{proposal.id}</td>
+                            <td>{proposal.proposal_id}</td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <span>Proposer</span>
-                            </td>
-                            <td>
-                                {isFetchingItem ? (
-                                    <Spinner />
-                                ) : (
-                                    proposalDetail?.proposer || "no data"
-                                )}
-                            </td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Proposer</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>*/}
+                        {/*        {isFetchingItem ? (*/}
+                        {/*            <Spinner />*/}
+                        {/*        ) : (*/}
+                        {/*            proposalDetail?.proposer || "no data"*/}
+                        {/*        )}*/}
+                        {/*    </td>*/}
+                        {/*</tr>*/}
 
                         <tr>
                             <td>
                                 <span>Title</span>
                             </td>
-                            <td>{proposal.content.value.title}</td>
+                            <td>{proposal.content.title}</td>
                         </tr>
 
                         <tr>
@@ -84,7 +88,7 @@ const ProposalDetail: React.FC = () => {
                                 <span>Description</span>
                             </td>
                             <td>
-                                <Markdown markdown={proposal.content.value.description} />
+                                <Markdown markdown={proposal.content.description} />
                             </td>
                         </tr>
 
@@ -92,67 +96,66 @@ const ProposalDetail: React.FC = () => {
                             <td>
                                 <span>Proposal Type</span>
                             </td>
-                            <td>{proposal.content.type}</td>
+                            <td>{proposal.content["@type"]}</td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <span>Proposal Status</span>
-                            </td>
-                            <td>{toProposalStatus(proposal.proposal_status || proposal.status)}</td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Proposal Status</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>{toProposalStatus(proposal.proposal_status || proposal.status)}</td>*/}
+                        {/*</tr>*/}
 
-                        {proposal.content.value.recipient && (
-                            <tr>
-                                <td>
-                                    <span>Recipient</span>
-                                </td>
-                                <td>{proposal.content.value.recipient}</td>
-                            </tr>
+                        {isACommunityPoolSpendProposalContent(proposal.content) && (
+                            <>
+                                <tr>
+                                    <td>
+                                        <span>Recipient</span>
+                                    </td>
+                                    <td>{proposal.content.recipient}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Amount</span>
+                                    </td>
+                                    <td>
+                                        {proposal.content.amount.map((am, i) => (
+                                            <li key={i}>
+                                                {toPrettyCoin(am.amount, am.denom).toString()}
+                                            </li>
+                                        ))}
+                                    </td>
+                                </tr>
+                            </>
                         )}
 
-                        {proposal.content.value.amount && (
-                            <tr>
-                                <td>
-                                    <span>Amount</span>
-                                </td>
-                                <td>
-                                    {proposal.content.value.amount.map((am, i) => (
-                                        <li key={i}>
-                                            {toPrettyCoin(am.amount, am.denom).toString()}
-                                        </li>
-                                    ))}
-                                </td>
-                            </tr>
-                        )}
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Deposit</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>*/}
+                        {/*        {isFetchingItem ? (*/}
+                        {/*            <Spinner />*/}
+                        {/*        ) : (*/}
+                        {/*            <Deposits deposits={proposalDetail?.deposits} />*/}
+                        {/*        )}*/}
+                        {/*    </td>*/}
+                        {/*</tr>*/}
 
-                        <tr>
-                            <td>
-                                <span>Deposit</span>
-                            </td>
-                            <td>
-                                {isFetchingItem ? (
-                                    <Spinner />
-                                ) : (
-                                    <Deposits deposits={proposalDetail?.deposits} />
-                                )}
-                            </td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Tally Result</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>{<TallyResultTable results={proposal.final_tally_result} />}</td>*/}
+                        {/*</tr>*/}
 
-                        <tr>
-                            <td>
-                                <span>Tally Result</span>
-                            </td>
-                            <td>{<TallyResultTable results={proposal.final_tally_result} />}</td>
-                        </tr>
-
-                        {proposal.content.value.changes && (
+                        {isAParameterChangeProposalContent(proposal.content) && (
                             <tr>
                                 <td>
                                     <span>Changes</span>
                                 </td>
                                 <td>
-                                    <ChangesTable changes={proposal.content.value.changes} />
+                                    <ChangesTable changes={proposal.content.changes} />
                                 </td>
                             </tr>
                         )}
@@ -164,26 +167,26 @@ const ProposalDetail: React.FC = () => {
                             <td>{toPrettyDate(proposal.submit_time)}</td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <span>Deposit End Time</span>
-                            </td>
-                            <td>{toPrettyDate(proposal.deposit_end_time)}</td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Deposit End Time</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>{toPrettyDate(proposal.deposit_end_time)}</td>*/}
+                        {/*</tr>*/}
 
-                        <tr>
-                            <td>
-                                <span>Voting Start Time</span>
-                            </td>
-                            <td>{toPrettyDate(proposal.voting_start_time)}</td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>Voting Start Time</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>{toPrettyDate(proposal.voting_start_time)}</td>*/}
+                        {/*</tr>*/}
 
-                        <tr>
-                            <td>
-                                <span>End Voting Time</span>
-                            </td>
-                            <td>{toPrettyDate(proposal.deposit_end_time)}</td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>*/}
+                        {/*        <span>End Voting Time</span>*/}
+                        {/*    </td>*/}
+                        {/*    <td>{toPrettyDate(proposal.deposit_end_time)}</td>*/}
+                        {/*</tr>*/}
                     </tbody>
                 </table>
             )}
@@ -214,7 +217,7 @@ const TallyResultTable: React.FC<{ results: Tally }> = ({ results }) => {
         </table>
     );
 };
-const ChangesTable: React.FC<{ changes: Change[] }> = ({ changes }) => {
+const ChangesTable: React.FC<{ changes: ParamChange[] }> = ({ changes }) => {
     return (
         <div className="change-table">
             <table>

@@ -34,7 +34,7 @@ const ProposalsPage: React.FC = () => {
                         </thead>
                         <tbody>
                             {proposals.map((p) => (
-                                <ProposalItem proposal={p} key={p.id} />
+                                <ProposalItem proposal={p} key={p.proposal_id} />
                             ))}
                         </tbody>
                     </table>

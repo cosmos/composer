@@ -11,7 +11,7 @@ export const fetchProposals = () => {
             );
             dispatch({
                 type: ProposalActionTypes.PROPOSAL_SUCCESS,
-                payload: archivedProposals.proposals
+                payload: archivedProposals.proposals.reverse()
             });
         } catch (e) {
             dispatch({ type: ProposalActionTypes.PROPOSAL_ERROR, payload: e.message || "error" });

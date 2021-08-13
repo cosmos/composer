@@ -3,24 +3,18 @@ import { Proposal } from "@cosmjs/launchpad/build/lcdapi/gov";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../router";
 import { toPrettyDate } from "../../utills/toPrettyDate";
+import { ArchivedProposal } from "../../types/proposal";
 
 interface ProposalItemProps {
-    proposal: Proposal;
+    proposal: ArchivedProposal;
 }
 
 const ProposalItem: React.FC<ProposalItemProps> = ({
-    proposal: {
-        id,
-        submit_time,
-        content: {
-            type,
-            value: { title }
-        }
-    }
+    proposal: { proposal_id, submit_time, content }
 }) => {
     const typeShort = (type: string): string => {
-        const chainIdAndType = type.split("/");
-        return chainIdAndType[1] || type;
+        const chainIdAndType = type.split(".");
+        return chainIdAndType[chainIdAndType.length - 1] || type;
     };
     const titleShort = (title: string): string => {
         return title.length > 70 ? `${title.substr(0, 70)}...` : title;
@@ -28,11 +22,13 @@ const ProposalItem: React.FC<ProposalItemProps> = ({
 
     return (
         <tr>
-            <td>{id}</td>
+            <td>{proposal_id}</td>
             <td>
-                <NavLink to={`${routes.proposals}/${id}`}>{titleShort(title)}</NavLink>
+                <NavLink to={`${routes.proposals}/${proposal_id}`}>
+                    {titleShort(content.title)}
+                </NavLink>
             </td>
-            <td>{typeShort(type)}</td>
+            <td>{typeShort(content["@type"])}</td>
             <td>{toPrettyDate(submit_time)}</td>
         </tr>
     );

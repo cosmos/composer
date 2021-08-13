@@ -9,8 +9,6 @@ import (
 )
 
 func TestAddAdmin(t *testing.T) {
-	// queryClient := suite.queryClient
-	// keeper, ctx := setupKeeper(t)
 	msgServer, ctx, keeper := setupMsgServer(t)
 
 	var (
@@ -36,9 +34,7 @@ func TestAddAdmin(t *testing.T) {
 
 				newAdmin := ""
 				newAdminMsg := &types.MsgAddAdmin{Creator: initialAdmin, Admin: newAdmin}
-
-				// Actual add admin msg function
-				_, err := msgServer.AddAdmin(ctx, newAdminMsg)
+				err := newAdminMsg.ValidateBasic()
 				require.Error(t, err)
 			},
 			false,
@@ -56,9 +52,7 @@ func TestAddAdmin(t *testing.T) {
 
 				newAdmin := "invalid admin"
 				newAdminMsg := &types.MsgAddAdmin{Creator: initialAdmin, Admin: newAdmin}
-
-				// Actual add admin msg function
-				_, err := msgServer.AddAdmin(ctx, newAdminMsg)
+				err := newAdminMsg.ValidateBasic()
 				require.Error(t, err)
 			},
 			false,
@@ -74,24 +68,24 @@ func TestAddAdmin(t *testing.T) {
 					t.Errorf("Error initializing admins: %s\n", initErr)
 				}
 
-				newAdmin := "cosmosTeStgx3kxcykszdxrk2gvrrfzchlqzfc59kx4s8"
+				newAdmin := "cosmos103laf9z2fv69r0q30pf2swfr09nfdszy88sm87"
 				newAdminMsg := &types.MsgAddAdmin{Creator: initialAdmin, Admin: newAdmin}
+				err := newAdminMsg.ValidateBasic()
+				require.NoError(t, err)
 
 				// Actual add admin msg function
-				_, err := msgServer.AddAdmin(ctx, newAdminMsg)
+				_, err = msgServer.AddAdmin(ctx, newAdminMsg)
 				require.NoError(t, err)
 			},
 			true,
-			[]string{"cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0", "cosmosTeStgx3kxcykszdxrk2gvrrfzchlqzfc59kx4s8"},
+			[]string{"cosmos103laf9z2fv69r0q30pf2swfr09nfdszy88sm87", "cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0"},
 		},
 	}
 
 	for _, testCase := range testCases {
-		t.Logf("Case %s", testCase.msg)
 		testCase.test()
 
 		admins, _ := keeper.Admins(ctx, req)
-		t.Log(testCase.expRes, admins.GetAdmins())
 		require.Equal(t, testCase.expRes, admins.GetAdmins())
 	}
 }

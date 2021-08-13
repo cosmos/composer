@@ -7,25 +7,22 @@ import { submitProposal } from "../../../redux/action-creator/submitProposal";
 import { useDispatch } from "react-redux";
 import { CommunityPoolSpendProposal as CPSProposalProc } from "@cosmjs/stargate/build/codec/cosmos/distribution/v1beta1/distribution";
 
-const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => {
+const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description }) => {
     const [amount, setAmount] = useState<Coin[]>([]);
     const [recipient, setRecipient] = useState("");
 
     const dispatch = useDispatch();
     const submitCPSProposal = () =>
         dispatch(
-            submitProposal(
-                {
-                    typeUrl: "/cosmos.distribution.v1beta1.CommunityPoolSpendProposal",
-                    value: CPSProposalProc.encode({
-                        title,
-                        description,
-                        amount,
-                        recipient
-                    }).finish()
-                },
-                deposit
-            )
+            submitProposal({
+                typeUrl: "/cosmos.distribution.v1beta1.CommunityPoolSpendProposal",
+                value: CPSProposalProc.encode({
+                    title,
+                    description,
+                    amount,
+                    recipient
+                }).finish()
+            })
         );
     return (
         <div className={"cps-proposal"}>

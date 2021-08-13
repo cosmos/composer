@@ -1,12 +1,12 @@
 import { Dispatch } from "redux";
 import { RootState } from "../reducers";
 import { chainInfo } from "../../config";
-import { Coin, coins, isBroadcastTxSuccess } from "@cosmjs/stargate";
+import { coins, isBroadcastTxSuccess } from "@cosmjs/stargate";
 import { getWalletAddress } from "../../cosmos/keplr";
 import { SubmitProposalAction, SubmitProposalTypes } from "../../types/submitProposal";
 import { EncodeObject } from "@cosmjs/proto-signing";
 
-export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
+export const submitProposal = (content: EncodeObject) => {
     return async (dispatch: Dispatch<SubmitProposalAction>, getState: () => RootState) => {
         try {
             dispatch({ type: SubmitProposalTypes.SUBMIT_PROPOSAL_CALL });
@@ -20,7 +20,6 @@ export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
             const address = await getWalletAddress(keplr);
             const msg = {
                 content,
-                initialDeposit: deposit,
                 proposer: address
             };
             const msgAny = {

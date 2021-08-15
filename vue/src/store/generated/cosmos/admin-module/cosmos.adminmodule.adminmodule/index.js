@@ -38,6 +38,7 @@ function getStructure(template) {
 const getDefaultState = () => {
     return {
         Admins: {},
+        ArchivedProposals: {},
         _Structure: {
             TextProposal: getStructure(TextProposal.fromPartial({})),
             Proposal: getStructure(Proposal.fromPartial({})),
@@ -70,6 +71,12 @@ export default {
                 params.query = null;
             }
             return state.Admins[JSON.stringify(params)] ?? {};
+        },
+        getArchivedProposals: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.ArchivedProposals[JSON.stringify(params)] ?? {};
         },
         getTypeStructure: (state) => (type) => {
             return state._Structure[type].fields;
@@ -113,6 +120,36 @@ export default {
                 throw new SpVuexError('QueryClient:QueryAdmins', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
+        async QueryArchivedProposals({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryArchivedProposals()).data;
+                commit('QUERY', { query: 'ArchivedProposals', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryArchivedProposals', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getArchivedProposals']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryArchivedProposals', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async sendMsgSubmitProposal({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSubmitProposal(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSubmitProposal:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
         async sendMsgAddAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -135,10 +172,7 @@ export default {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgDeleteAdmin(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });message QueryAdminsResponse {
-  repeated string admins = 1;
-}
-
+                        gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
@@ -147,21 +181,6 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteAdmin:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async MsgAddAdmin({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgAddAdmin(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgAddAdmin:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgAddAdmin:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -180,21 +199,6 @@ export default {
                 }
             }
         },
-        async MsgDeleteAdmin({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgDeleteAdmin(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgDeleteAdmin:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgDeleteAdmin:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
         async MsgAddAdmin({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -207,6 +211,21 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgAddAdmin:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgDeleteAdmin({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgDeleteAdmin(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgDeleteAdmin:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgDeleteAdmin:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

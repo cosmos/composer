@@ -36,7 +36,9 @@ func EndBlocker(ctx sdk.Context, keeper keeper.Keeper) {
 		}
 
 		keeper.SetProposal(ctx, proposal)
-		keeper.RemoveFromActiveProposalQueue(ctx, proposal.ProposalId, proposal.SubmitTime.Add(2*time.Hour)) // TODO hardcode
+		keeper.RemoveFromActiveProposalQueue(ctx, proposal.ProposalId, proposal.SubmitTime.Add(2*time.Second)) // TODO hardcode
+
+		keeper.AddToArchive(ctx, proposal)
 
 		logger.Info(
 			"proposal tallied",

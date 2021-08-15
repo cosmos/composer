@@ -150,5 +150,19 @@ export class Api extends HttpClient {
             format: "json",
             ...params,
         });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryArchivedProposals
+         * @summary Queries a list of archived proposals.
+         * @request GET:/cosmos/adminmodule/adminmodule/archivedproposals
+         */
+        this.queryArchivedProposals = (params = {}) => this.request({
+            path: `/cosmos/adminmodule/adminmodule/archivedproposals`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
     }
 }

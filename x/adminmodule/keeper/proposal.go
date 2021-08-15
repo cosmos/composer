@@ -5,31 +5,32 @@ import (
 	"github.com/cosmos/admin-module/x/adminmodule/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"time"
 )
 
 // SubmitProposal create new proposal given a content
-func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content) (types.Proposal, error) {
+func (k Keeper) SubmitProposal(ctx sdk.Context, content govtypes.Content) (govtypes.Proposal, error) {
 	if !k.rtr.HasRoute(content.ProposalRoute()) {
-		return types.Proposal{}, sdkerrors.Wrap(types.ErrNoProposalHandlerExists, content.ProposalRoute())
+		return govtypes.Proposal{}, sdkerrors.Wrap(types.ErrNoProposalHandlerExists, content.ProposalRoute())
 	}
 
 	cacheCtx, _ := ctx.CacheContext()
 	handler := k.rtr.GetRoute(content.ProposalRoute())
 	if err := handler(cacheCtx, content); err != nil {
-		return types.Proposal{}, sdkerrors.Wrap(types.ErrInvalidProposalContent, err.Error())
+		return govtypes.Proposal{}, sdkerrors.Wrap(types.ErrInvalidProposalContent, err.Error())
 	}
 
 	proposalID, err := k.GetProposalID(ctx)
 	if err != nil {
-		return types.Proposal{}, err
+		return govtypes.Proposal{}, err
 	}
 
 	submitTime := ctx.BlockHeader().Time
 
-	proposal, err := types.NewProposal(content, proposalID, submitTime)
+	proposal, err := govtypes.NewProposal(content, proposalID, submitTime, time.Now().Add(2*time.Hour))
 	if err != nil {
-		return types.Proposal{}, err
+		return govtypes.Proposal{}, err
 	}
 
 	k.SetProposal(ctx, proposal)
@@ -60,25 +61,25 @@ func (k Keeper) SetProposalID(ctx sdk.Context, proposalID uint64) {
 }
 
 // SetProposal set a proposal to store
-func (k Keeper) SetProposal(ctx sdk.Context, proposal types.Proposal) {
+func (k Keeper) SetProposal(ctx sdk.Context, proposal govtypes.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 
-	bz := k.MustMarshalProposal(proposal)
+	bz := k.govKeeper.MustMarshalProposal(proposal)
 
 	store.Set(types.ProposalKey(proposal.ProposalId), bz)
 }
 
 // GetProposal get proposal from store by ProposalID
-func (k Keeper) GetProposal(ctx sdk.Context, proposalID uint64) (types.Proposal, bool) {
+func (k Keeper) GetProposal(ctx sdk.Context, proposalID uint64) (govtypes.Proposal, bool) {
 	store := ctx.KVStore(k.storeKey)
 
 	bz := store.Get(types.ProposalKey(proposalID))
 	if bz == nil {
-		return types.Proposal{}, false
+		return govtypes.Proposal{}, false
 	}
 
-	var proposal types.Proposal
-	k.MustUnmarshalProposal(bz, &proposal)
+	var proposal govtypes.Proposal
+	k.govKeeper.MustUnmarshalProposal(bz, &proposal)
 
 	return proposal, true
 }
@@ -97,7 +98,7 @@ func (k Keeper) RemoveFromActiveProposalQueue(ctx sdk.Context, proposalID uint64
 
 // IterateActiveProposalsQueue iterates over the proposals in the active proposal queue
 // and performs a callback function
-func (k Keeper) IterateActiveProposalsQueue(ctx sdk.Context, endTime time.Time, cb func(proposal types.Proposal) (stop bool)) {
+func (k Keeper) IterateActiveProposalsQueue(ctx sdk.Context, endTime time.Time, cb func(proposal govtypes.Proposal) (stop bool)) {
 	iterator := k.ActiveProposalQueueIterator(ctx, endTime)
 
 	defer iterator.Close()
@@ -118,35 +119,4 @@ func (k Keeper) IterateActiveProposalsQueue(ctx sdk.Context, endTime time.Time, 
 func (k Keeper) ActiveProposalQueueIterator(ctx sdk.Context, endTime time.Time) sdk.Iterator {
 	store := ctx.KVStore(k.storeKey)
 	return store.Iterator(types.ActiveProposalQueuePrefix, sdk.PrefixEndBytes(types.ActiveProposalByTimeKey(endTime)))
-}
-
-func (k Keeper) MarshalProposal(proposal types.Proposal) ([]byte, error) {
-	bz, err := k.cdc.MarshalBinaryBare(&proposal)
-	if err != nil {
-		return nil, err
-	}
-	return bz, nil
-}
-
-func (k Keeper) UnmarshalProposal(bz []byte, proposal *types.Proposal) error {
-	err := k.cdc.UnmarshalBinaryBare(bz, proposal)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (k Keeper) MustMarshalProposal(proposal types.Proposal) []byte {
-	bz, err := k.MarshalProposal(proposal)
-	if err != nil {
-		panic(err)
-	}
-	return bz
-}
-
-func (k Keeper) MustUnmarshalProposal(bz []byte, proposal *types.Proposal) {
-	err := k.UnmarshalProposal(bz, proposal)
-	if err != nil {
-		panic(err)
-	}
 }

@@ -8,15 +8,18 @@ import (
 	"github.com/cosmos/admin-module/x/adminmodule/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
 )
 
 type (
 	Keeper struct {
-		cdc      codec.Marshaler
-		storeKey sdk.StoreKey
-		memKey   sdk.StoreKey
-		rtr      types.Router
+		cdc       codec.Marshaler
+		storeKey  sdk.StoreKey
+		memKey    sdk.StoreKey
+		rtr       govtypes.Router
+		govKeeper govkeeper.Keeper
 		// this line is used by starport scaffolding # ibc/keeper/attribute
 	}
 )
@@ -25,20 +28,22 @@ func NewKeeper(
 	cdc codec.Marshaler,
 	storeKey,
 	memKey sdk.StoreKey,
-	rtr types.Router,
+	rtr govtypes.Router,
+	govKeeper govkeeper.Keeper,
 	// this line is used by starport scaffolding # ibc/keeper/parameter
 ) *Keeper {
 	return &Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
-		memKey:   memKey,
-		rtr:      rtr,
+		cdc:       cdc,
+		storeKey:  storeKey,
+		memKey:    memKey,
+		rtr:       rtr,
+		govKeeper: govKeeper,
 		// this line is used by starport scaffolding # ibc/keeper/return
 	}
 }
 
 // Router returns the adminmodule Keeper's Router
-func (k Keeper) Router() types.Router {
+func (k Keeper) Router() govtypes.Router {
 	return k.rtr
 }
 

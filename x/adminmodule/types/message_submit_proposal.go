@@ -28,24 +28,14 @@ func NewMsgSubmitProposal(content govtypes.Content, proposer sdk.AccAddress) (*M
 	return m, nil
 }
 
-//func (m *MsgSubmitProposal) GetContent() govtypes.Content {
-//	content, ok := m.Content.GetCachedValue().(Content)
+//func (m *MsgSubmitProposal) GetContent() govtypes.Content { // TODO m.Content.GetCachedValue() returns nil!
+//	content, ok := m.Content.GetCachedValue().(govtypes.Content)
 //	if !ok {
 //		return nil
 //	}
 //	return content
 //}
 
-//func (m *MsgSubmitProposal) GetContent() govtypes.Content { // TODO m.Content.GetCachedValue() returns nil!
-//	var message TextProposal
-//	err := proto.Unmarshal(m.Content.Value, &message)
-//	if err != nil {
-//		return nil
-//	}
-//
-//	return &message
-//}
-//
 func (m *MsgSubmitProposal) GetContent() govtypes.Content {
 	var err error
 	switch m.Content.TypeUrl {
@@ -150,10 +140,10 @@ func (m *MsgSubmitProposal) ValidateBasic() error {
 
 	content := m.GetContent()
 	if content == nil {
-		return sdkerrors.Wrap(ErrInvalidProposalContent, "missing content")
+		return sdkerrors.Wrap(govtypes.ErrInvalidProposalContent, "missing content")
 	}
 	if !govtypes.IsValidProposalType(content.ProposalType()) {
-		return sdkerrors.Wrap(ErrInvalidProposalType, content.ProposalType())
+		return sdkerrors.Wrap(govtypes.ErrInvalidProposalType, content.ProposalType())
 	}
 	if err := content.ValidateBasic(); err != nil {
 		return err

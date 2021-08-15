@@ -18,7 +18,7 @@ func (k Keeper) GetArchivedProposals(ctx sdk.Context) []*govtypes.Proposal {
 	for ; iterator.Valid(); iterator.Next() {
 		var proposal govtypes.Proposal
 
-		k.govKeeper.MustUnmarshalProposal(iterator.Value(), &proposal)
+		k.MustUnmarshalProposal(iterator.Value(), &proposal)
 		proposals = append(proposals, &proposal)
 	}
 
@@ -28,7 +28,7 @@ func (k Keeper) GetArchivedProposals(ctx sdk.Context) []*govtypes.Proposal {
 func (k Keeper) AddToArchive(ctx sdk.Context, proposal govtypes.Proposal) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.ArchiveKey))
 
-	bz := k.govKeeper.MustMarshalProposal(proposal)
+	bz := k.MustMarshalProposal(proposal)
 
 	store.Set(types.ProposalKey(proposal.ProposalId), bz)
 }

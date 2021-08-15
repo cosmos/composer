@@ -12,13 +12,13 @@ import (
 // SubmitProposal create new proposal given a content
 func (k Keeper) SubmitProposal(ctx sdk.Context, content govtypes.Content) (govtypes.Proposal, error) {
 	if !k.rtr.HasRoute(content.ProposalRoute()) {
-		return govtypes.Proposal{}, sdkerrors.Wrap(types.ErrNoProposalHandlerExists, content.ProposalRoute())
+		return govtypes.Proposal{}, sdkerrors.Wrap(govtypes.ErrNoProposalHandlerExists, content.ProposalRoute())
 	}
 
 	cacheCtx, _ := ctx.CacheContext()
 	handler := k.rtr.GetRoute(content.ProposalRoute())
 	if err := handler(cacheCtx, content); err != nil {
-		return govtypes.Proposal{}, sdkerrors.Wrap(types.ErrInvalidProposalContent, err.Error())
+		return govtypes.Proposal{}, sdkerrors.Wrap(govtypes.ErrInvalidProposalContent, err.Error())
 	}
 
 	proposalID, err := k.GetProposalID(ctx)
@@ -64,7 +64,7 @@ func (k Keeper) SetProposalID(ctx sdk.Context, proposalID uint64) {
 func (k Keeper) SetProposal(ctx sdk.Context, proposal govtypes.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 
-	bz := k.govKeeper.MustMarshalProposal(proposal)
+	bz := k.MustMarshalProposal(proposal)
 
 	store.Set(types.ProposalKey(proposal.ProposalId), bz)
 }
@@ -79,7 +79,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, proposalID uint64) (govtypes.Propos
 	}
 
 	var proposal govtypes.Proposal
-	k.govKeeper.MustUnmarshalProposal(bz, &proposal)
+	k.MustUnmarshalProposal(bz, &proposal)
 
 	return proposal, true
 }
@@ -119,4 +119,35 @@ func (k Keeper) IterateActiveProposalsQueue(ctx sdk.Context, endTime time.Time, 
 func (k Keeper) ActiveProposalQueueIterator(ctx sdk.Context, endTime time.Time) sdk.Iterator {
 	store := ctx.KVStore(k.storeKey)
 	return store.Iterator(types.ActiveProposalQueuePrefix, sdk.PrefixEndBytes(types.ActiveProposalByTimeKey(endTime)))
+}
+
+func (k Keeper) MarshalProposal(proposal govtypes.Proposal) ([]byte, error) {
+	bz, err := k.cdc.MarshalBinaryBare(&proposal)
+	if err != nil {
+		return nil, err
+	}
+	return bz, nil
+}
+
+func (k Keeper) UnmarshalProposal(bz []byte, proposal *govtypes.Proposal) error {
+	err := k.cdc.UnmarshalBinaryBare(bz, proposal)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k Keeper) MustMarshalProposal(proposal govtypes.Proposal) []byte {
+	bz, err := k.MarshalProposal(proposal)
+	if err != nil {
+		panic(err)
+	}
+	return bz
+}
+
+func (k Keeper) MustUnmarshalProposal(bz []byte, proposal *govtypes.Proposal) {
+	err := k.UnmarshalProposal(bz, proposal)
+	if err != nil {
+		panic(err)
+	}
 }

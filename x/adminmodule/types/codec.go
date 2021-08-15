@@ -5,15 +5,16 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	// this line is used by starport scaffolding # 2
 	cdc.RegisterConcrete(&MsgDeleteAdmin{}, "adminmodule/DeleteAdmin", nil)
 
 	cdc.RegisterConcrete(&MsgAddAdmin{}, "adminmodule/AddAdmin", nil)
 
 	cdc.RegisterConcrete(&MsgSubmitProposal{}, "adminmodule/SubmitProposal", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -23,17 +24,16 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSubmitProposal{},
 	)
 
+	registry.RegisterInterface(
+		"cosmos.gov.v1beta1.Content",
+		(*govtypes.Content)(nil),
+		&govtypes.TextProposal{},
+	)
+
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 	// this line is used by starport scaffolding # 3
 }
 
 var (
-	//amino     = codec.NewLegacyAmino()
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
-	//ModuleCdc = codec.NewAminoCodec(amino)
 )
-
-//func init() {
-//	RegisterCodec(amino)
-//	cryptocodec.RegisterCrypto(amino)
-//}

@@ -350,7 +350,7 @@ func New(
 
 	// register the proposal types
 	adminRouter := govtypes.NewRouter()
-	adminRouter.AddRoute(adminmodulemoduletypes.RouterKey, govtypes.ProposalHandler).
+	adminRouter.AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
@@ -361,7 +361,6 @@ func New(
 		keys[adminmodulemoduletypes.StoreKey],
 		keys[adminmodulemoduletypes.MemStoreKey],
 		adminRouter,
-		app.GovKeeper,
 	)
 	adminModule := adminmodulemodule.NewAppModule(appCodec, app.AdminmoduleKeeper)
 

@@ -9,7 +9,7 @@ const TextProposal: React.FC<TBaseSPMsg> = ({ title, description }) => {
     const submitTextProposal = () => {
         dispatch(
             submitProposal({
-                typeUrl: "/cosmos.adminmodule.adminmodule.TextProposal",
+                typeUrl: "/cosmos.gov.v1beta1.TextProposal",
                 value: TextProposalProc.encode({
                     title,
                     description

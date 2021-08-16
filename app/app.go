@@ -15,6 +15,10 @@ import (
 	"path/filepath"
 
 	"github.com/cosmos/admin-module/docs"
+	adminmodulemodule "github.com/cosmos/admin-module/x/adminmodule"
+	adminmodulecli "github.com/cosmos/admin-module/x/adminmodule/client/cli"
+	adminmodulemodulekeeper "github.com/cosmos/admin-module/x/adminmodule/keeper"
+	adminmodulemoduletypes "github.com/cosmos/admin-module/x/adminmodule/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
@@ -43,6 +47,7 @@ import (
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
 	distr "github.com/cosmos/cosmos-sdk/x/distribution"
 	distrclient "github.com/cosmos/cosmos-sdk/x/distribution/client"
+	distrrest "github.com/cosmos/cosmos-sdk/x/distribution/client/rest"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/evidence"
@@ -67,6 +72,7 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
+	paramsrest "github.com/cosmos/cosmos-sdk/x/params/client/rest"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	paramproposal "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
@@ -78,16 +84,14 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/cosmos/cosmos-sdk/x/upgrade"
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
+	upgraderest "github.com/cosmos/cosmos-sdk/x/upgrade/client/rest"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
-	adminmodulemodule "github.com/cosmos/admin-module/x/adminmodule"
-	adminmodulemodulekeeper "github.com/cosmos/admin-module/x/adminmodule/keeper"
-	adminmodulemoduletypes "github.com/cosmos/admin-module/x/adminmodule/types"
 
 	"github.com/tendermint/spm/cosmoscmd"
+	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
@@ -96,21 +100,6 @@ const (
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
-
-func getGovProposalHandlers() []govclient.ProposalHandler {
-	var govProposalHandlers []govclient.ProposalHandler
-	// this line is used by starport scaffolding # stargate/app/govProposalHandlers
-
-	govProposalHandlers = append(govProposalHandlers,
-		paramsclient.ProposalHandler,
-		distrclient.ProposalHandler,
-		upgradeclient.ProposalHandler,
-		upgradeclient.CancelProposalHandler,
-		// this line is used by starport scaffolding # stargate/app/govProposalHandler
-	)
-
-	return govProposalHandlers
-}
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -127,7 +116,12 @@ var (
 		staking.AppModuleBasic{},
 		mint.AppModuleBasic{},
 		distr.AppModuleBasic{},
-		gov.NewAppModuleBasic(getGovProposalHandlers()...),
+		gov.NewAppModuleBasic(
+			paramsclient.ProposalHandler,
+			distrclient.ProposalHandler,
+			upgradeclient.ProposalHandler,
+			upgradeclient.CancelProposalHandler,
+		),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
@@ -137,7 +131,24 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		adminmodulemodule.AppModuleBasic{},
+		adminmodulemodule.NewAppModuleBasic(
+			govclient.NewProposalHandler(
+				adminmodulecli.NewSubmitParamChangeProposalTxCmd,
+				paramsrest.ProposalRESTHandler, // TODO rest handler in admin module
+			),
+			govclient.NewProposalHandler(
+				adminmodulecli.NewSubmitPoolSpendProposalTxCmd,
+				distrrest.ProposalRESTHandler, // TODO rest handler in admin module
+			),
+			govclient.NewProposalHandler(
+				adminmodulecli.NewCmdSubmitUpgradeProposal,
+				upgraderest.ProposalRESTHandler, // TODO rest handler in admin module
+			),
+			govclient.NewProposalHandler(
+				adminmodulecli.NewCmdSubmitCancelUpgradeProposal,
+				upgraderest.ProposalCancelRESTHandler, // TODO rest handler in admin module
+			),
+		),
 	)
 
 	// module account permissions
@@ -338,12 +349,12 @@ func New(
 	)
 
 	// register the proposal types
-	adminRouter := adminmodulemoduletypes.NewRouter()
-	adminRouter.AddRoute(adminmodulemoduletypes.RouterKey, adminmodulemoduletypes.ProposalHandler)
-	//AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
-	//AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
-	//AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-	//AddRoute(ibchost.RouterKey, ibcclient.NewClientUpdateProposalHandler(app.IBCKeeper.ClientKeeper)) // TODO
+	adminRouter := govtypes.NewRouter()
+	adminRouter.AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
+		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
+		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
+		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
+		AddRoute(ibchost.RouterKey, ibcclient.NewClientUpdateProposalHandler(app.IBCKeeper.ClientKeeper))
 
 	app.AdminmoduleKeeper = *adminmodulemodulekeeper.NewKeeper(
 		appCodec,
@@ -403,7 +414,7 @@ func New(
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName, adminmodulemoduletypes.ModuleName)
+	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, adminmodulemoduletypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -417,6 +428,7 @@ func New(
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
 		slashingtypes.ModuleName,
+		adminmodulemoduletypes.ModuleName,
 		govtypes.ModuleName,
 		minttypes.ModuleName,
 		crisistypes.ModuleName,
@@ -425,7 +437,6 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		adminmodulemoduletypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)

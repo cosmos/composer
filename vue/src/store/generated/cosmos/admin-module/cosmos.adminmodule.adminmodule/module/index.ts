@@ -13,7 +13,7 @@ const types = [
   ["/cosmos.adminmodule.adminmodule.MsgSubmitProposal", MsgSubmitProposal],
   ["/cosmos.adminmodule.adminmodule.MsgAddAdmin", MsgAddAdmin],
   ["/cosmos.adminmodule.adminmodule.MsgDeleteAdmin", MsgDeleteAdmin],
-  
+
 ];
 export const MissingWalletError = new Error("wallet is required");
 
@@ -44,7 +44,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
     msgSubmitProposal: (data: MsgSubmitProposal): EncodeObject => ({ typeUrl: "/cosmos.adminmodule.adminmodule.MsgSubmitProposal", value: data }),
     msgAddAdmin: (data: MsgAddAdmin): EncodeObject => ({ typeUrl: "/cosmos.adminmodule.adminmodule.MsgAddAdmin", value: data }),
     msgDeleteAdmin: (data: MsgDeleteAdmin): EncodeObject => ({ typeUrl: "/cosmos.adminmodule.adminmodule.MsgDeleteAdmin", value: data }),
-    
+
   };
 };
 

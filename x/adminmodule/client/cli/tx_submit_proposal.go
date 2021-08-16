@@ -12,6 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -76,7 +77,7 @@ $ %s tx adminmodule submit-proposal --title="Test Proposal" --description="My aw
 				return fmt.Errorf("failed to parse proposal: %w", err)
 			}
 
-			content := types.ContentFromProposalType(proposal.Title, proposal.Description, proposal.Type)
+			content := govtypes.ContentFromProposalType(proposal.Title, proposal.Description, proposal.Type)
 
 			msg, err := types.NewMsgSubmitProposal(content, clientCtx.GetFromAddress())
 			if err != nil {

@@ -1,10 +1,19 @@
 MONIKER=adminmoduletest1
 CHAIN_ID=adminmodule
 CHAIN_HOME=~/.admin-module
+STARPORT_VERSION=0.17.1
+
+.PHONY: .get-starport
+.get-starport:
+	[ -f bin/starport ] || $$(curl -LO https://github.com/tendermint/starport/releases/download/v0.17.1/starport_$(STARPORT_VERSION)_linux_amd64.tar.gz && tar -xzf starport_$(STARPORT_VERSION)_linux_amd64.tar.gz starport && mv starport bin/ && chmod +x bin/starport && rm starport_$(STARPORT_VERSION)_linux_amd64.tar.gz)
 
 .PHONY: build
 build:
 	go build -o bin/admin-moduled cmd/admin-moduled/main.go
+
+.PHONY: generate
+generate: .get-starport
+	bin/starport generate proto-go && bin/starport generate openapi
 
 .PHONY: test
 test:

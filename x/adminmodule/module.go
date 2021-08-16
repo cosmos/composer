@@ -21,6 +21,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	// this line is used by starport scaffolding # ibc/module/import
 	"context"
+	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
 )
 
 var (
@@ -35,10 +36,13 @@ var (
 
 // AppModuleBasic implements the AppModuleBasic interface for the capability module.
 type AppModuleBasic struct {
+	proposalHandlers []govclient.ProposalHandler // proposal handlers which live in governance cli and rest
 }
 
-func NewAppModuleBasic() AppModuleBasic {
-	return AppModuleBasic{}
+func NewAppModuleBasic(proposalHandlers ...govclient.ProposalHandler) AppModuleBasic {
+	return AppModuleBasic{
+		proposalHandlers: proposalHandlers,
+	}
 }
 
 // Name returns the capability module's name.
@@ -84,7 +88,11 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 
 // GetTxCmd returns the capability module's root tx command.
 func (a AppModuleBasic) GetTxCmd() *cobra.Command {
-	return cli.GetTxCmd()
+	proposalCLIHandlers := make([]*cobra.Command, 0, len(a.proposalHandlers))
+	for _, proposalHandler := range a.proposalHandlers {
+		proposalCLIHandlers = append(proposalCLIHandlers, proposalHandler.CLIHandler())
+	}
+	return cli.GetTxCmd(proposalCLIHandlers)
 }
 
 // GetQueryCmd returns the capability module's root query command.

@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"github.com/cosmos/admin-module/x/adminmodule/types"
+	gcutils "github.com/cosmos/cosmos-sdk/x/gov/client/utils"
 )
 
 func parseSubmitProposalFlags(fs *pflag.FlagSet) (*proposal, error) {
@@ -19,7 +19,7 @@ func parseSubmitProposalFlags(fs *pflag.FlagSet) (*proposal, error) {
 
 		proposal.Title, _ = fs.GetString(FlagTitle)
 		proposal.Description, _ = fs.GetString(FlagDescription)
-		proposal.Type = types.NormalizeProposalType(proposalType)
+		proposal.Type = gcutils.NormalizeProposalType(proposalType)
 		return proposal, nil
 	}
 

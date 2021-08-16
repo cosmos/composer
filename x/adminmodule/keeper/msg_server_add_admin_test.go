@@ -36,9 +36,7 @@ func TestAddAdmin(t *testing.T) {
 
 				newAdmin := ""
 				newAdminMsg := &types.MsgAddAdmin{Creator: initialAdmin, Admin: newAdmin}
-
-				// Actual add admin msg function
-				_, err := msgServer.AddAdmin(ctx, newAdminMsg)
+				err := newAdminMsg.ValidateBasic()
 				require.Error(t, err)
 			},
 			false,
@@ -56,9 +54,7 @@ func TestAddAdmin(t *testing.T) {
 
 				newAdmin := "invalid admin"
 				newAdminMsg := &types.MsgAddAdmin{Creator: initialAdmin, Admin: newAdmin}
-
-				// Actual add admin msg function
-				_, err := msgServer.AddAdmin(ctx, newAdminMsg)
+				err := newAdminMsg.ValidateBasic()
 				require.Error(t, err)
 			},
 			false,

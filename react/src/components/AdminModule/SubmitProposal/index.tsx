@@ -4,9 +4,6 @@ import TextProposal from "./TextProposal";
 import ParameterChangeProposal from "./ParameterChangeProposal/ParameterChangeProposal";
 import CommunityPoolSpendProposal from "./CommunityPoolSpendProposal";
 import { useTypedSelector } from "../../../redux/useTypedSelector";
-import { Coin } from "@cosmjs/stargate";
-import CoinsForm from "./Coins/CoinsForm";
-import CoinItem from "./Coins/CoinItem";
 import { TBaseSPMsg } from "../../../types/submitProposal";
 import Spinner from "../../Loader/Spinner";
 import { useDispatch } from "react-redux";
@@ -17,9 +14,8 @@ const SubmitProposal: React.FC = () => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [deposit, setDeposit] = useState<Coin[]>([]);
 
-    const params: TBaseSPMsg = { title, description, deposit };
+    const params: TBaseSPMsg = { title, description };
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -63,29 +59,6 @@ const SubmitProposal: React.FC = () => {
                         id={"description"}
                         className="input-elem"
                     />
-                </div>
-
-                <div>
-                    <div>
-                        <label htmlFor={"deposit"}>Deposit</label>
-                    </div>
-                    <div id="deposit">
-                        <CoinsForm addCoin={(d) => setDeposit([...deposit, d])} />
-                        <div className={"coin-items"}>
-                            {deposit.map((d, i) => (
-                                <CoinItem
-                                    key={i}
-                                    deposit={d}
-                                    deleteDeposit={() =>
-                                        setDeposit([
-                                            ...deposit.slice(0, i),
-                                            ...deposit.slice(i + 1)
-                                        ])
-                                    }
-                                />
-                            ))}
-                        </div>
-                    </div>
                 </div>
                 <div>
                     <div>

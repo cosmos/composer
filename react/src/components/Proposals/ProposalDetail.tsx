@@ -16,6 +16,8 @@ import { Change } from "../../types/proposal";
 import { toPrettyDate } from "../../utills/toPrettyDate";
 import { chainInfo } from "../../config";
 import { ScrollToTopOnMount } from "../ScrollToTopOnMount";
+import { toPrettyCoin } from "../../utills/toPrettyCoin";
+import { toProposalStatus } from "../../utills/toProposalStatus";
 
 const ProposalDetail: React.FC = () => {
     const history = useHistory();
@@ -41,12 +43,6 @@ const ProposalDetail: React.FC = () => {
     if (!proposal && !isFetchingProposals && proposals) {
         history.push(routes.proposals);
     }
-    const toProposalStatus = (status: string | number): string | number => {
-        if (+status === 4) return "Rejected";
-        if (+status === 3) return "Passed";
-        if (+status === 2) return "Voting Period";
-        return status;
-    };
 
     return (
         <div className={"item-content"}>
@@ -105,6 +101,30 @@ const ProposalDetail: React.FC = () => {
                             </td>
                             <td>{toProposalStatus(proposal.proposal_status || proposal.status)}</td>
                         </tr>
+
+                        {proposal.content.value.recipient && (
+                            <tr>
+                                <td>
+                                    <span>Recipient</span>
+                                </td>
+                                <td>{proposal.content.value.recipient}</td>
+                            </tr>
+                        )}
+
+                        {proposal.content.value.amount && (
+                            <tr>
+                                <td>
+                                    <span>Amount</span>
+                                </td>
+                                <td>
+                                    {proposal.content.value.amount.map((am, i) => (
+                                        <li key={i}>
+                                            {toPrettyCoin(am.amount, am.denom).toString()}
+                                        </li>
+                                    ))}
+                                </td>
+                            </tr>
+                        )}
 
                         <tr>
                             <td>

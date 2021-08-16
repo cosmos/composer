@@ -4,8 +4,11 @@ import { chainInfo } from "../../config";
 import { getKeplr } from "../../cosmos";
 import { defaultRegistryTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
-import { MsgSubmitProposal } from "../../cosmos/codec/cosmos/gov/v1beta1/tx";
-import { MsgAddAdmin, MsgDeleteAdmin } from "../../cosmos/codec/cosmos/adminmodule/tx";
+import {
+    MsgAddAdmin,
+    MsgDeleteAdmin,
+    MsgSubmitProposal
+} from "../../cosmos/codec/cosmos/adminmodule/adminmodule/tx";
 
 export const connectWallet = () => {
     return async (dispatch: Dispatch<WalletAction>) => {
@@ -21,7 +24,10 @@ export const connectWallet = () => {
 
             const registry = new Registry();
 
-            registry.register("/cosmos.gov.v1beta1.MsgSubmitProposal", MsgSubmitProposal);
+            registry.register(
+                "/cosmos.adminmodule.adminmodule.MsgSubmitProposal",
+                MsgSubmitProposal
+            );
             registry.register("/cosmos.adminmodule.adminmodule.MsgAddAdmin", MsgAddAdmin);
             registry.register("/cosmos.adminmodule.adminmodule.MsgDeleteAdmin", MsgDeleteAdmin);
 

@@ -12,6 +12,7 @@ interface AContent {
     "@type": string;
     title: string;
     description: string;
+    changes?: { key: string; subspace: string; value: string }[];
 }
 
 export interface ATextProposalContent extends AContent {
@@ -28,17 +29,17 @@ export interface ACommunityPoolSpendProposalContent extends AContent {
 }
 
 export function isATextProposalContent(proposal: AContent): proposal is ATextProposalContent {
-    return proposal["@type"] === "/cosmos.adminmodule.adminmodule.TextProposal";
+    return proposal["@type"] === "/cosmos.gov.v1beta1.TextProposal";
 }
 export function isAParameterChangeProposalContent(
     proposal: AContent
 ): proposal is AParameterChangeProposalContent {
-    return proposal["@type"] === "/cosmos.adminmodule.adminmodule.ParameterChangeProposal";
+    return proposal["@type"] === "/cosmos.params.v1beta1.ParameterChangeProposal";
 }
 export function isACommunityPoolSpendProposalContent(
     proposal: AContent
 ): proposal is ACommunityPoolSpendProposalContent {
-    return proposal["@type"] === "/cosmos.adminmodule.adminmodule.CommunityPoolSpendProposal";
+    return proposal["@type"] === "/cosmos.distribution.v1beta1.CommunityPoolSpendProposal";
 }
 
 // export interface Proposal extends ProposalCosmJS {

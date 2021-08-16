@@ -29,7 +29,7 @@ func NewCmdSubmitUpgradeProposal() *cobra.Command {
 		Use:   "software-upgrade [name] (--upgrade-height [height] | --upgrade-time [time]) (--upgrade-info [info]) [flags]",
 		Args:  cobra.ExactArgs(1),
 		Short: "Submit a software upgrade proposal",
-		Long: "Submit a software upgrade along with an initial deposit.\n" +
+		Long: "Submit a software upgrade.\n" +
 			"Please specify a unique name and height OR time for the upgrade to take effect.\n" +
 			"You may include info to reference a binary download link, in a format compatible with: https://github.com/cosmos/cosmos-sdk/tree/master/cosmovisor",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -73,7 +73,7 @@ func NewCmdSubmitCancelUpgradeProposal() *cobra.Command {
 		Use:   "cancel-software-upgrade [flags]",
 		Args:  cobra.ExactArgs(0),
 		Short: "Cancel the current software upgrade proposal",
-		Long:  "Cancel a software upgrade along with an initial deposit.",
+		Long:  "Cancel a software upgrade.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

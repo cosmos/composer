@@ -24,11 +24,11 @@ func NewSubmitPoolSpendProposalTxCmd() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		Short: "Submit a community pool spend proposal",
 		Long: strings.TrimSpace(
-			fmt.Sprintf(`Submit a community pool spend proposal along with an initial deposit.
+			fmt.Sprintf(`Submit a community pool spend proposal.
 The proposal details must be supplied via a JSON file.
 
 Example:
-$ %s tx gov submit-proposal community-pool-spend <path/to/proposal.json> --from=<key_or_address>
+$ %s tx adminmodule submit-proposal community-pool-spend <path/to/proposal.json> --from=<key_or_address>
 
 Where proposal.json contains:
 

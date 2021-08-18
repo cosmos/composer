@@ -1,16 +1,16 @@
 /* eslint-disable */
-import { Timestamp } from '../google/protobuf/timestamp';
-import * as Long from 'long';
-import { util, configure, Writer, Reader } from 'protobufjs/minimal';
-import { Any } from '../google/protobuf/any';
-export const protobufPackage = 'cosmos.adminmodule.adminmodule';
-const baseTextProposal = { title: '', description: '' };
+import { Timestamp } from "../google/protobuf/timestamp";
+import * as Long from "long";
+import { util, configure, Writer, Reader } from "protobufjs/minimal";
+import { Any } from "../google/protobuf/any";
+export const protobufPackage = "cosmos.adminmodule.adminmodule";
+const baseTextProposal = { title: "", description: "" };
 export const TextProposal = {
     encode(message, writer = Writer.create()) {
-        if (message.title !== '') {
+        if (message.title !== "") {
             writer.uint32(10).string(message.title);
         }
-        if (message.description !== '') {
+        if (message.description !== "") {
             writer.uint32(18).string(message.description);
         }
         return writer;
@@ -39,15 +39,13 @@ export const TextProposal = {
         const message = { ...baseTextProposal };
         if (object.title !== undefined && object.title !== null) {
             message.title = String(object.title);
-        }
-        else {
-            message.title = '';
+        } else {
+            message.title = "";
         }
         if (object.description !== undefined && object.description !== null) {
             message.description = String(object.description);
-        }
-        else {
-            message.description = '';
+        } else {
+            message.description = "";
         }
         return message;
     },
@@ -61,15 +59,13 @@ export const TextProposal = {
         const message = { ...baseTextProposal };
         if (object.title !== undefined && object.title !== null) {
             message.title = object.title;
-        }
-        else {
-            message.title = '';
+        } else {
+            message.title = "";
         }
         if (object.description !== undefined && object.description !== null) {
             message.description = object.description;
-        }
-        else {
-            message.description = '';
+        } else {
+            message.description = "";
         }
         return message;
     }
@@ -115,20 +111,17 @@ export const Proposal = {
         const message = { ...baseProposal };
         if (object.proposalId !== undefined && object.proposalId !== null) {
             message.proposalId = Number(object.proposalId);
-        }
-        else {
+        } else {
             message.proposalId = 0;
         }
         if (object.content !== undefined && object.content !== null) {
             message.content = Any.fromJSON(object.content);
-        }
-        else {
+        } else {
             message.content = undefined;
         }
         if (object.submitTime !== undefined && object.submitTime !== null) {
             message.submitTime = fromJsonTimestamp(object.submitTime);
-        }
-        else {
+        } else {
             message.submitTime = undefined;
         }
         return message;
@@ -136,43 +129,39 @@ export const Proposal = {
     toJSON(message) {
         const obj = {};
         message.proposalId !== undefined && (obj.proposalId = message.proposalId);
-        message.content !== undefined && (obj.content = message.content ? Any.toJSON(message.content) : undefined);
-        message.submitTime !== undefined && (obj.submitTime = message.submitTime !== undefined ? message.submitTime.toISOString() : null);
+        message.content !== undefined &&
+            (obj.content = message.content ? Any.toJSON(message.content) : undefined);
+        message.submitTime !== undefined &&
+            (obj.submitTime =
+                message.submitTime !== undefined ? message.submitTime.toISOString() : null);
         return obj;
     },
     fromPartial(object) {
         const message = { ...baseProposal };
         if (object.proposalId !== undefined && object.proposalId !== null) {
             message.proposalId = object.proposalId;
-        }
-        else {
+        } else {
             message.proposalId = 0;
         }
         if (object.content !== undefined && object.content !== null) {
             message.content = Any.fromPartial(object.content);
-        }
-        else {
+        } else {
             message.content = undefined;
         }
         if (object.submitTime !== undefined && object.submitTime !== null) {
             message.submitTime = object.submitTime;
-        }
-        else {
+        } else {
             message.submitTime = undefined;
         }
         return message;
     }
 };
 var globalThis = (() => {
-    if (typeof globalThis !== 'undefined')
-        return globalThis;
-    if (typeof self !== 'undefined')
-        return self;
-    if (typeof window !== 'undefined')
-        return window;
-    if (typeof global !== 'undefined')
-        return global;
-    throw 'Unable to locate global object';
+    if (typeof globalThis !== "undefined") return globalThis;
+    if (typeof self !== "undefined") return self;
+    if (typeof window !== "undefined") return window;
+    if (typeof global !== "undefined") return global;
+    throw "Unable to locate global object";
 })();
 function toTimestamp(date) {
     const seconds = date.getTime() / 1000;
@@ -187,17 +176,15 @@ function fromTimestamp(t) {
 function fromJsonTimestamp(o) {
     if (o instanceof Date) {
         return o;
-    }
-    else if (typeof o === 'string') {
+    } else if (typeof o === "string") {
         return new Date(o);
-    }
-    else {
+    } else {
         return fromTimestamp(Timestamp.fromJSON(o));
     }
 }
 function longToNumber(long) {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {
-        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
     }
     return long.toNumber();
 }

@@ -1,4 +1,4 @@
-import { Writer, Reader } from 'protobufjs/minimal';
+import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "google.protobuf";
 /**
  * The protocol compiler can output a FileDescriptorSet containing the .proto
@@ -202,7 +202,9 @@ export declare enum FieldDescriptorProto_Label {
     UNRECOGNIZED = -1
 }
 export declare function fieldDescriptorProto_LabelFromJSON(object: any): FieldDescriptorProto_Label;
-export declare function fieldDescriptorProto_LabelToJSON(object: FieldDescriptorProto_Label): string;
+export declare function fieldDescriptorProto_LabelToJSON(
+    object: FieldDescriptorProto_Label
+): string;
 /** Describes a oneof. */
 export interface OneofDescriptorProto {
     name: string;
@@ -620,8 +622,12 @@ export declare enum MethodOptions_IdempotencyLevel {
     IDEMPOTENT = 2,
     UNRECOGNIZED = -1
 }
-export declare function methodOptions_IdempotencyLevelFromJSON(object: any): MethodOptions_IdempotencyLevel;
-export declare function methodOptions_IdempotencyLevelToJSON(object: MethodOptions_IdempotencyLevel): string;
+export declare function methodOptions_IdempotencyLevelFromJSON(
+    object: any
+): MethodOptions_IdempotencyLevel;
+export declare function methodOptions_IdempotencyLevelToJSON(
+    object: MethodOptions_IdempotencyLevel
+): string;
 /**
  * A message representing a option the parser does not recognize. This only
  * appears in options protos created by the compiler::Parser class.
@@ -852,7 +858,9 @@ export declare const DescriptorProto_ExtensionRange: {
     decode(input: Reader | Uint8Array, length?: number): DescriptorProto_ExtensionRange;
     fromJSON(object: any): DescriptorProto_ExtensionRange;
     toJSON(message: DescriptorProto_ExtensionRange): unknown;
-    fromPartial(object: DeepPartial<DescriptorProto_ExtensionRange>): DescriptorProto_ExtensionRange;
+    fromPartial(
+        object: DeepPartial<DescriptorProto_ExtensionRange>
+    ): DescriptorProto_ExtensionRange;
 };
 export declare const DescriptorProto_ReservedRange: {
     encode(message: DescriptorProto_ReservedRange, writer?: Writer): Writer;
@@ -894,7 +902,9 @@ export declare const EnumDescriptorProto_EnumReservedRange: {
     decode(input: Reader | Uint8Array, length?: number): EnumDescriptorProto_EnumReservedRange;
     fromJSON(object: any): EnumDescriptorProto_EnumReservedRange;
     toJSON(message: EnumDescriptorProto_EnumReservedRange): unknown;
-    fromPartial(object: DeepPartial<EnumDescriptorProto_EnumReservedRange>): EnumDescriptorProto_EnumReservedRange;
+    fromPartial(
+        object: DeepPartial<EnumDescriptorProto_EnumReservedRange>
+    ): EnumDescriptorProto_EnumReservedRange;
 };
 export declare const EnumValueDescriptorProto: {
     encode(message: EnumValueDescriptorProto, writer?: Writer): Writer;
@@ -1016,7 +1026,15 @@ export declare const GeneratedCodeInfo_Annotation: {
     fromPartial(object: DeepPartial<GeneratedCodeInfo_Annotation>): GeneratedCodeInfo_Annotation;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
-export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
-    [K in keyof T]?: DeepPartial<T[K]>;
-} : Partial<T>;
+export declare type DeepPartial<T> = T extends Builtin
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? {
+          [K in keyof T]?: DeepPartial<T[K]>;
+      }
+    : Partial<T>;
 export {};

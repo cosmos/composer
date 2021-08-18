@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Reader, Writer } from 'protobufjs/minimal';
-import { Proposal } from '../adminmodule/adminmodule';
-export const protobufPackage = 'cosmos.adminmodule.adminmodule';
+import { Reader, Writer } from "protobufjs/minimal";
+import { Proposal } from "../adminmodule/adminmodule";
+export const protobufPackage = "cosmos.adminmodule.adminmodule";
 const baseQueryAdminsRequest = {};
 export const QueryAdminsRequest = {
     encode(_, writer = Writer.create()) {
@@ -34,7 +34,7 @@ export const QueryAdminsRequest = {
         return message;
     }
 };
-const baseQueryAdminsResponse = { admins: '' };
+const baseQueryAdminsResponse = { admins: "" };
 export const QueryAdminsResponse = {
     encode(message, writer = Writer.create()) {
         for (const v of message.admins) {
@@ -74,8 +74,7 @@ export const QueryAdminsResponse = {
         const obj = {};
         if (message.admins) {
             obj.admins = message.admins.map((e) => e);
-        }
-        else {
+        } else {
             obj.admins = [];
         }
         return obj;
@@ -163,8 +162,7 @@ export const QueryArchivedProposalsResponse = {
         const obj = {};
         if (message.proposals) {
             obj.proposals = message.proposals.map((e) => (e ? Proposal.toJSON(e) : undefined));
-        }
-        else {
+        } else {
             obj.proposals = [];
         }
         return obj;
@@ -186,12 +184,16 @@ export class QueryClientImpl {
     }
     Admins(request) {
         const data = QueryAdminsRequest.encode(request).finish();
-        const promise = this.rpc.request('cosmos.adminmodule.adminmodule.Query', 'Admins', data);
+        const promise = this.rpc.request("cosmos.adminmodule.adminmodule.Query", "Admins", data);
         return promise.then((data) => QueryAdminsResponse.decode(new Reader(data)));
     }
     ArchivedProposals(request) {
         const data = QueryArchivedProposalsRequest.encode(request).finish();
-        const promise = this.rpc.request('cosmos.adminmodule.adminmodule.Query', 'ArchivedProposals', data);
+        const promise = this.rpc.request(
+            "cosmos.adminmodule.adminmodule.Query",
+            "ArchivedProposals",
+            data
+        );
         return promise.then((data) => QueryArchivedProposalsResponse.decode(new Reader(data)));
     }
 }

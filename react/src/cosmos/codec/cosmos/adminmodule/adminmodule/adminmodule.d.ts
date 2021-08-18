@@ -1,5 +1,5 @@
-import { Writer, Reader } from 'protobufjs/minimal';
-import { Any } from '../google/protobuf/any';
+import { Writer, Reader } from "protobufjs/minimal";
+import { Any } from "../google/protobuf/any";
 export declare const protobufPackage = "cosmos.adminmodule.adminmodule";
 /**
  * TextProposal defines a standard text proposal whose changes need to be
@@ -30,7 +30,15 @@ export declare const Proposal: {
     fromPartial(object: DeepPartial<Proposal>): Proposal;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
-export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
-    [K in keyof T]?: DeepPartial<T[K]>;
-} : Partial<T>;
+export declare type DeepPartial<T> = T extends Builtin
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? {
+          [K in keyof T]?: DeepPartial<T[K]>;
+      }
+    : Partial<T>;
 export {};

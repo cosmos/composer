@@ -1,9 +1,9 @@
 const routes = {
-    home: "/home",
-    reviewState: "/reviewState",
-    proposals: "/proposals",
-    proposalItem: "/proposals/:id",
-    adminModule: "/adminModule"
+    home: "/admin-module/",
+    reviewState: "/admin-module/reviewState",
+    proposals: "/admin-module/proposals",
+    proposalItem: "/admin-module/proposals/:id",
+    adminModule: "/admin-module/adminModule"
 };
 
 export { routes };

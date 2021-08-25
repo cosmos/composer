@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import RouteWrapper from "./components/SideBar/RouteWrapper";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
@@ -9,8 +9,7 @@ import AdminModule from "./components/AdminModule/AdminModule";
 import NotFoundPage from "./components/NotFound";
 import "./assets/scss/main.scss";
 import ProposalDetail from "./components/Proposals/ProposalDetail";
-import AdminList from "./components/AdminModule/AdminList/AdminList";
-import SubmitProposal from "./components/AdminModule/SubmitProposal";
+import SettingsPage from "./components/Settings";
 
 const App: React.FC = () => {
     return (
@@ -19,6 +18,12 @@ const App: React.FC = () => {
                 <Route exact path={routes.home}>
                     <RouteWrapper>
                         <Home />
+                    </RouteWrapper>
+                </Route>
+
+                <Route exact path={routes.settings}>
+                    <RouteWrapper>
+                        <SettingsPage />
                     </RouteWrapper>
                 </Route>
 

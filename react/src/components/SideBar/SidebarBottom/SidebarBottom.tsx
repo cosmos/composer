@@ -7,14 +7,21 @@ import Spinner from "../../Loader/Spinner";
 const SidebarBottom = () => {
     const { isConnected, connectAccount, disconnectAccount } = useAccountConnection();
     const { keplr, error } = useTypedSelector((state) => state.wallet);
+    const { settings } = useTypedSelector((state) => state);
 
     const [coin, setCoin] = useState<string | null>(null);
     const [name, setName] = useState<string | null>(null);
     useEffect(() => {
         async function setData() {
             if (isConnected && keplr) {
-                setName(await getAccountName(keplr));
-                setCoin(await getBalance(keplr, await getWalletAddress(keplr)));
+                setName(await getAccountName(keplr, settings.chainId));
+                setCoin(
+                    await getBalance(
+                        keplr,
+                        await getWalletAddress(keplr, settings.chainId),
+                        settings.lcdClient
+                    )
+                );
             }
         }
 

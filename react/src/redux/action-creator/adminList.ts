@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { lcdClient, getKeplr } from "../../cosmos";
+// import { lcdClient, getKeplr } from "../../cosmos";
 import { Bech32 } from "@cosmjs/encoding";
 import { getWalletAddress } from "../../cosmos/keplr";
 import {
@@ -13,6 +13,7 @@ import { chainInfo } from "../../config";
 import { coins } from "@cosmjs/launchpad";
 import { Registry } from "@cosmjs/proto-signing";
 import { Keplr } from "@keplr-wallet/types";
+import { RootState } from "../reducers";
 
 export const sendErrorNotification = (
     errMessage: string,
@@ -30,14 +31,14 @@ export const sendErrorNotification = (
 };
 
 export const fetchAdminList = () => {
-    return async (dispatch: Dispatch<AdminActions>): Promise<void> => {
+    return async (dispatch: Dispatch<AdminActions>, getState: () => RootState): Promise<void> => {
+        const { settings } = getState();
         try {
             dispatch({ type: AdminListActionTypes.SET_LOADING, payload: { loading: true } });
 
-            const adminsResp: { admins: string[] } = await lcdClient.get(
+            const adminsResp: { admins: string[] } = await settings.lcdClient.get(
                 "/cosmos/adminmodule/adminmodule/admins"
             );
-            console.log("fetched admins", adminsResp.admins);
 
             dispatch({
                 type: AdminListActionTypes.SET_LIST,
@@ -57,9 +58,10 @@ export const deleteAdminAction = (
     stargateClient: SigningStargateClient,
     kepler: Keplr
 ) => {
-    return async (dispatch: Dispatch<AdminActions>): Promise<void> => {
+    return async (dispatch: Dispatch<AdminActions>, getState: () => RootState): Promise<void> => {
+        const { settings } = getState();
         try {
-            const sender = await getWalletAddress(kepler);
+            const sender = await getWalletAddress(kepler, settings.chainId);
 
             const msgDeleteAdminRequest = {
                 admin: adminAddress,
@@ -75,12 +77,11 @@ export const deleteAdminAction = (
                 gas: "2000000"
             };
 
-            console.log("sending", msgDeleteAdminRequest);
             dispatch({ type: AdminListActionTypes.SET_LOADING, payload: { loading: true } });
             const broadcastRes = await stargateClient.signAndBroadcast(sender, [msgAny], fee);
 
             if (isBroadcastTxSuccess(broadcastRes)) {
-                const adminsResp: { admins: string[] } = await lcdClient.get(
+                const adminsResp: { admins: string[] } = await settings.lcdClient.get(
                     "/cosmos/adminmodule/adminmodule/admins"
                 );
                 dispatch({
@@ -105,14 +106,14 @@ export const saveAdminAction = (
     stargateClient: SigningStargateClient,
     kepler: Keplr
 ) => {
-    return async (dispatch: Dispatch<AdminActions>): Promise<void> => {
+    return async (dispatch: Dispatch<AdminActions>, getState: () => RootState): Promise<void> => {
+        const { settings } = getState();
         try {
-            console.log("in saving action", adminAddress);
             // Address validation
             const resp = Bech32.decode(adminAddress);
-            console.log("decoding", resp);
+
             if (kepler) {
-                const sender = await getWalletAddress(kepler);
+                const sender = await getWalletAddress(kepler, settings.chainId);
 
                 const msgAddAdminRequest = {
                     admin: adminAddress,
@@ -132,10 +133,8 @@ export const saveAdminAction = (
                 dispatch({ type: AdminListActionTypes.SET_LOADING, payload: { loading: true } });
                 const broadcastRes = await stargateClient.signAndBroadcast(sender, [msgAny], fee);
 
-                console.log("broadcast res", broadcastRes);
-
                 if (isBroadcastTxSuccess(broadcastRes)) {
-                    const adminsResp: { admins: string[] } = await lcdClient.get(
+                    const adminsResp: { admins: string[] } = await settings.lcdClient.get(
                         "/cosmos/adminmodule/adminmodule/admins"
                     );
                     dispatch({

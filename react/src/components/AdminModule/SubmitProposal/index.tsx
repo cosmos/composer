@@ -8,6 +8,7 @@ import { TBaseSPMsg } from "../../../types/submitProposal";
 import Spinner from "../../Loader/Spinner";
 import { useDispatch } from "react-redux";
 import { submitProposalReset } from "../../../redux/action-creator/submitProposal";
+import { initSettings } from "../../../utills/initSettings";
 
 const SubmitProposal: React.FC = () => {
     const { broadcastResponse, error, fetching } = useTypedSelector((s) => s.submitProposal);
@@ -19,6 +20,8 @@ const SubmitProposal: React.FC = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
+        initSettings(dispatch);
+
         return () => {
             dispatch(submitProposalReset());
         };

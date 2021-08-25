@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import { WalletAction, WalletActionTypes } from "../../types/wallet";
-import { chainInfo } from "../../config";
 import { getKeplr } from "../../cosmos";
 import { defaultRegistryTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
@@ -9,18 +8,30 @@ import {
     MsgDeleteAdmin,
     MsgSubmitProposal
 } from "../../cosmos/codec/cosmos/adminmodule/adminmodule/tx";
+import { RootState } from "../reducers";
+import { ChainInfo } from "@keplr-wallet/types";
+import { chainInfo } from "../../config";
 
-export const connectWallet = () => {
+export const connectWallet = (rpc: string, rest: string, chainId: string, chainName: string) => {
     return async (dispatch: Dispatch<WalletAction>) => {
         try {
             dispatch({ type: WalletActionTypes.WALLET_CONNECT });
+
+            const updatedChainInfo: ChainInfo = {
+                ...chainInfo,
+                rpc,
+                rest,
+                chainId,
+                chainName
+            };
 
             const keplr = await getKeplr();
             if (!keplr) {
                 throw new Error("Keplr extension not found");
             }
-            await keplr.experimentalSuggestChain(chainInfo);
-            await keplr.enable(chainInfo.chainId);
+
+            await keplr.experimentalSuggestChain(updatedChainInfo);
+            await keplr.enable(updatedChainInfo.chainId);
 
             const registry = new Registry();
 
@@ -35,10 +46,10 @@ export const connectWallet = () => {
                 registry.register(v[0], v[1]);
             });
 
-            const offlineSigner = keplr.getOfflineSigner(chainInfo.chainId);
+            const offlineSigner = keplr.getOfflineSigner(updatedChainInfo.chainId);
 
             const stargateClient = await SigningStargateClient.connectWithSigner(
-                chainInfo.rpc,
+                updatedChainInfo.rpc,
                 offlineSigner,
                 {
                     registry: registry

@@ -50,5 +50,9 @@
         &:hover {
             background-color: $color-lightblue !important;
         }
+
+        &:disabled {
+            background-color: rgb(170, 165, 165) !important;
+        }
     }
 }

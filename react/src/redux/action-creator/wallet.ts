@@ -8,7 +8,6 @@ import {
     MsgDeleteAdmin,
     MsgSubmitProposal
 } from "../../cosmos/codec/cosmos/adminmodule/adminmodule/tx";
-import { RootState } from "../reducers";
 import { ChainInfo } from "@keplr-wallet/types";
 import { chainInfo } from "../../config";
 

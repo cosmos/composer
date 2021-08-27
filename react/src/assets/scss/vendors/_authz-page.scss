@@ -1,0 +1,54 @@
+.authz-page {
+    width: 100%;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__header {
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    &__subheader {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    &__input {
+        outline: none;
+        height: 31px;
+        width: 350px;
+        border-radius: 5px;
+        border-color: $color-border-grey;
+        padding: 0px 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__btn {
+        @extend .admin-card__delete-btn;
+
+        background-color: $color-dark-blue !important;
+        height: 31px;
+        width: 80px;
+
+        &:hover {
+            background-color: $color-lightblue !important;
+        }
+    }
+}

@@ -4,6 +4,7 @@ const routes = {
     proposals: "/admin-module/proposals",
     proposalItem: "/admin-module/proposals/:id",
     adminModule: "/admin-module/adminModule",
+    authz: "/admin-module/authz",
     settings: "/admin-module/settings"
 };
 

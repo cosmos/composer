@@ -31,6 +31,11 @@ const SideBar: React.FC = () => {
                     </NavLink>
                 </li>
                 <li className="sidebar-item">
+                    <NavLink to={routes.authz} activeStyle={active}>
+                        Authz
+                    </NavLink>
+                </li>
+                <li className="sidebar-item">
                     <NavLink to={routes.settings} activeStyle={active}>
                         Settings
                     </NavLink>

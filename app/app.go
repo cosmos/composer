@@ -134,19 +134,19 @@ var (
 		adminmodulemodule.NewAppModuleBasic(
 			govclient.NewProposalHandler(
 				adminmodulecli.NewSubmitParamChangeProposalTxCmd,
-				paramsrest.ProposalRESTHandler, // TODO rest handler in admin module
+				paramsrest.ProposalRESTHandler,
 			),
 			govclient.NewProposalHandler(
 				adminmodulecli.NewSubmitPoolSpendProposalTxCmd,
-				distrrest.ProposalRESTHandler, // TODO rest handler in admin module
+				distrrest.ProposalRESTHandler,
 			),
 			govclient.NewProposalHandler(
 				adminmodulecli.NewCmdSubmitUpgradeProposal,
-				upgraderest.ProposalRESTHandler, // TODO rest handler in admin module
+				upgraderest.ProposalRESTHandler,
 			),
 			govclient.NewProposalHandler(
 				adminmodulecli.NewCmdSubmitCancelUpgradeProposal,
-				upgraderest.ProposalCancelRESTHandler, // TODO rest handler in admin module
+				upgraderest.ProposalCancelRESTHandler,
 			),
 		),
 	)

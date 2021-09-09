@@ -4,12 +4,15 @@ import { useTypedSelector } from "../../redux/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { fetchProposals } from "../../redux/action-creator/proposal";
 import Spinner from "../Loader/Spinner";
+import { initSettings } from "../../utills/initSettings";
 
 const ProposalsPage: React.FC = () => {
     const { isFetchingProposals, proposals, error } = useTypedSelector((state) => state.proposal);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        initSettings(dispatch);
+
         dispatch(fetchProposals());
     }, [dispatch]);
 

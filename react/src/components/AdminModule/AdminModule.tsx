@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import TextProposal from "./SubmitProposal/TextProposal";
 import ParameterChangeProposal from "./SubmitProposal/ParameterChangeProposal/ParameterChangeProposal";
 import CommunityPoolSpendProposal from "./SubmitProposal/CommunityPoolSpendProposal";
 import AdminList from "./AdminList/AdminList";
 import SubmitProposal from "./SubmitProposal";
+import { useDispatch } from "react-redux";
+import { initSettings } from "../../utills/initSettings";
 
 const AdminModule = () => {
     return (

@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchParamsList } from "../../redux/action-creator/reviewChanges";
+import { updateSettings } from "../../redux/action-creator/settings";
+import { connectWallet, disconnectWallet } from "../../redux/action-creator/wallet";
 import { useTypedSelector } from "../../redux/useTypedSelector";
+import { initSettings } from "../../utills/initSettings";
+import { getLocalSettings } from "../../utills/localStorage";
 import Spinner from "../Loader/Spinner";
 import ModuleSection from "./ModuleSection";
 
@@ -11,7 +15,10 @@ const ReviewState = () => {
         (state) => state.reviewChanges.modules
     );
     const { error, loading } = useTypedSelector((state) => state.reviewChanges);
+
     useEffect(() => {
+        initSettings(dispatch);
+
         dispatch(fetchParamsList());
     }, []);
     return (
@@ -45,11 +52,11 @@ const ReviewState = () => {
                                 <li>
                                     Min Deposit:{" "}
                                     <ul>
-                                        {gov?.deposit_params?.min_deposit?.map((d) => (
-                                            <>
+                                        {gov?.deposit_params?.min_deposit?.map((d, i) => (
+                                            <div key={"gov-param" + i}>
                                                 <li>Amount: {d.amount}</li>
                                                 <li>Denom: {d.denom}</li>
-                                            </>
+                                            </div>
                                         ))}
                                     </ul>{" "}
                                 </li>

@@ -1,16 +1,11 @@
 import { Dispatch } from "redux";
-import { lcdClient, getKeplr } from "../../cosmos";
-import { Bech32 } from "@cosmjs/encoding";
-import { getWalletAddress } from "../../cosmos/keplr";
 import {
     ReviewChangesActions,
     ReviewChangesActionTypes,
     ClearErrorAction,
     ErrorAction
 } from "../../types/reviewChanges";
-import { SigningStargateClient } from "@cosmjs/stargate";
-import { chainInfo } from "../../config";
-import { coins } from "@cosmjs/launchpad";
+import { RootState } from "../reducers";
 // import { Registry } from "@cosmjs/proto-signing";
 
 export const sendErrorNotification = (
@@ -29,26 +24,27 @@ export const sendErrorNotification = (
 };
 
 export const fetchParamsList = () => {
-    return async (dispatch: Dispatch<ReviewChangesActions>): Promise<void> => {
+    return async (
+        dispatch: Dispatch<ReviewChangesActions>,
+        getState: () => RootState
+    ): Promise<void> => {
+        const { settings } = getState();
         try {
             dispatch({ type: ReviewChangesActionTypes.SET_LOADING, payload: { loading: true } });
 
-            const bank = await lcdClient.get("/cosmos/bank/v1beta1/params");
-            console.log("bank", bank);
+            const bank = await settings.lcdClient.get("/cosmos/bank/v1beta1/params");
 
-            const distribution = await lcdClient.get("/cosmos/distribution/v1beta1/params");
-            console.log("distrib", distribution);
+            const distribution = await settings.lcdClient.get(
+                "/cosmos/distribution/v1beta1/params"
+            );
 
-            const govVoting = await lcdClient.get("/cosmos/gov/v1beta1/params/voting");
-            const govDeposit = await lcdClient.get("/cosmos/gov/v1beta1/params/deposit");
-            const govTally = await lcdClient.get("/cosmos/gov/v1beta1/params/tallying");
-            console.log("gov", govVoting, govDeposit, govTally);
+            const govVoting = await settings.lcdClient.get("/cosmos/gov/v1beta1/params/voting");
+            const govDeposit = await settings.lcdClient.get("/cosmos/gov/v1beta1/params/deposit");
+            const govTally = await settings.lcdClient.get("/cosmos/gov/v1beta1/params/tallying");
 
-            const slashing = await lcdClient.get("/cosmos/slashing/v1beta1/params");
-            console.log("slashing", slashing);
+            const slashing = await settings.lcdClient.get("/cosmos/slashing/v1beta1/params");
 
-            const staking = await lcdClient.get("/cosmos/staking/v1beta1/params");
-            console.log("staking", staking);
+            const staking = await settings.lcdClient.get("/cosmos/staking/v1beta1/params");
 
             dispatch({
                 type: ReviewChangesActionTypes.SET_PARAMS,

@@ -16,7 +16,6 @@ const AdminDetail = ({ accountAddress, orderNum }: AdminDetailProps) => {
     function deleteAdmin(address: string) {
         const res = window.confirm(`Delete "${address}"?`);
         if (res && stargateClient && keplr) {
-            console.log("delete", address);
             dispatch(deleteAdminAction(address, stargateClient, keplr));
         }
     }

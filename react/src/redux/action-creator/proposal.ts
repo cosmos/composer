@@ -1,14 +1,15 @@
 import { Dispatch } from "redux";
 import { ProposalAction, ProposalActionTypes, ArchivedProposal } from "../../types/proposal";
-import { lcdClient } from "../../cosmos";
+import { RootState } from "../reducers";
+// import { lcdClient } from "../../cosmos";
 
 export const fetchProposals = () => {
-    return async (dispatch: Dispatch<ProposalAction>) => {
+    return async (dispatch: Dispatch<ProposalAction>, getState: () => RootState) => {
+        const { settings } = getState();
         try {
             dispatch({ type: ProposalActionTypes.PROPOSAL_CALL });
-            const archivedProposals: { proposals: ArchivedProposal[] } = await lcdClient.get(
-                "/cosmos/adminmodule/adminmodule/archivedproposals"
-            );
+            const archivedProposals: { proposals: ArchivedProposal[] } =
+                await settings.lcdClient.get("/cosmos/adminmodule/adminmodule/archivedproposals");
             dispatch({
                 type: ProposalActionTypes.PROPOSAL_SUCCESS,
                 payload: archivedProposals.proposals.reverse()

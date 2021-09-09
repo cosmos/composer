@@ -11,13 +11,14 @@ export const submitProposal = (content: EncodeObject) => {
         try {
             dispatch({ type: SubmitProposalTypes.SUBMIT_PROPOSAL_CALL });
             const {
+                settings,
                 wallet: { stargateClient, isConnected, keplr }
             } = getState();
 
             if (!isConnected || !stargateClient || !keplr) {
                 return dispatch(setSubmitProposalError("Wallet is not connected"));
             }
-            const address = await getWalletAddress(keplr);
+            const address = await getWalletAddress(keplr, settings.chainId);
             const msg = {
                 content,
                 proposer: address
@@ -32,7 +33,6 @@ export const submitProposal = (content: EncodeObject) => {
             };
 
             const broadcastRes = await stargateClient.signAndBroadcast(address, [msgAny], fee);
-
             if (isBroadcastTxSuccess(broadcastRes)) {
                 dispatch({
                     type: SubmitProposalTypes.SUBMIT_PROPOSAL_SUCCESS,

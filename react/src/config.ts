@@ -3,8 +3,8 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 
 //testnet
 const chainInfo: ChainInfo = {
-    rpc: `http://${window.location.hostname}:26657`,
-    rest: `http://${window.location.hostname}:1317`,
+    rpc: "http://localhost:26657",
+    rest: "http://localhost:1317",
     chainId: "adminmodule",
     chainName: "TESTNET",
     stakeCurrency: {

@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Writer, Reader } from 'protobufjs/minimal';
-export const protobufPackage = 'cosmos.adminmodule.adminmodule';
-const baseGenesisState = { admins: '' };
+import { Writer, Reader } from "protobufjs/minimal";
+export const protobufPackage = "cosmos.adminmodule.adminmodule";
+const baseGenesisState = { admins: "" };
 export const GenesisState = {
     encode(message, writer = Writer.create()) {
         for (const v of message.admins) {
@@ -41,8 +41,7 @@ export const GenesisState = {
         const obj = {};
         if (message.admins) {
             obj.admins = message.admins.map((e) => e);
-        }
-        else {
+        } else {
             obj.admins = [];
         }
         return obj;

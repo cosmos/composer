@@ -1,4 +1,4 @@
-import { Writer, Reader } from 'protobufjs/minimal';
+import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "google.protobuf";
 /**
  * A Duration represents a signed, fixed-length span of time represented
@@ -85,7 +85,15 @@ export declare const Duration: {
     fromPartial(object: DeepPartial<Duration>): Duration;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
-export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
-    [K in keyof T]?: DeepPartial<T[K]>;
-} : Partial<T>;
+export declare type DeepPartial<T> = T extends Builtin
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? {
+          [K in keyof T]?: DeepPartial<T[K]>;
+      }
+    : Partial<T>;
 export {};

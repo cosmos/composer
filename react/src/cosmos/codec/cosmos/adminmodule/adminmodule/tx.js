@@ -1,15 +1,15 @@
 /* eslint-disable */
-import { Reader, util, configure, Writer } from 'protobufjs/minimal';
-import * as Long from 'long';
-import { Any } from '../google/protobuf/any';
-export const protobufPackage = 'cosmos.adminmodule.adminmodule';
-const baseMsgDeleteAdmin = { creator: '', admin: '' };
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
+import { Any } from "../google/protobuf/any";
+export const protobufPackage = "cosmos.adminmodule.adminmodule";
+const baseMsgDeleteAdmin = { creator: "", admin: "" };
 export const MsgDeleteAdmin = {
     encode(message, writer = Writer.create()) {
-        if (message.creator !== '') {
+        if (message.creator !== "") {
             writer.uint32(10).string(message.creator);
         }
-        if (message.admin !== '') {
+        if (message.admin !== "") {
             writer.uint32(18).string(message.admin);
         }
         return writer;
@@ -38,15 +38,13 @@ export const MsgDeleteAdmin = {
         const message = { ...baseMsgDeleteAdmin };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
-        }
-        else {
-            message.creator = '';
+        } else {
+            message.creator = "";
         }
         if (object.admin !== undefined && object.admin !== null) {
             message.admin = String(object.admin);
-        }
-        else {
-            message.admin = '';
+        } else {
+            message.admin = "";
         }
         return message;
     },
@@ -60,15 +58,13 @@ export const MsgDeleteAdmin = {
         const message = { ...baseMsgDeleteAdmin };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
-        }
-        else {
-            message.creator = '';
+        } else {
+            message.creator = "";
         }
         if (object.admin !== undefined && object.admin !== null) {
             message.admin = object.admin;
-        }
-        else {
-            message.admin = '';
+        } else {
+            message.admin = "";
         }
         return message;
     }
@@ -105,13 +101,13 @@ export const MsgDeleteAdminResponse = {
         return message;
     }
 };
-const baseMsgAddAdmin = { creator: '', admin: '' };
+const baseMsgAddAdmin = { creator: "", admin: "" };
 export const MsgAddAdmin = {
     encode(message, writer = Writer.create()) {
-        if (message.creator !== '') {
+        if (message.creator !== "") {
             writer.uint32(10).string(message.creator);
         }
-        if (message.admin !== '') {
+        if (message.admin !== "") {
             writer.uint32(18).string(message.admin);
         }
         return writer;
@@ -140,15 +136,13 @@ export const MsgAddAdmin = {
         const message = { ...baseMsgAddAdmin };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
-        }
-        else {
-            message.creator = '';
+        } else {
+            message.creator = "";
         }
         if (object.admin !== undefined && object.admin !== null) {
             message.admin = String(object.admin);
-        }
-        else {
-            message.admin = '';
+        } else {
+            message.admin = "";
         }
         return message;
     },
@@ -162,15 +156,13 @@ export const MsgAddAdmin = {
         const message = { ...baseMsgAddAdmin };
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
-        }
-        else {
-            message.creator = '';
+        } else {
+            message.creator = "";
         }
         if (object.admin !== undefined && object.admin !== null) {
             message.admin = object.admin;
-        }
-        else {
-            message.admin = '';
+        } else {
+            message.admin = "";
         }
         return message;
     }
@@ -207,13 +199,13 @@ export const MsgAddAdminResponse = {
         return message;
     }
 };
-const baseMsgSubmitProposal = { proposer: '' };
+const baseMsgSubmitProposal = { proposer: "" };
 export const MsgSubmitProposal = {
     encode(message, writer = Writer.create()) {
         if (message.content !== undefined) {
             Any.encode(message.content, writer.uint32(10).fork()).ldelim();
         }
-        if (message.proposer !== '') {
+        if (message.proposer !== "") {
             writer.uint32(18).string(message.proposer);
         }
         return writer;
@@ -242,21 +234,20 @@ export const MsgSubmitProposal = {
         const message = { ...baseMsgSubmitProposal };
         if (object.content !== undefined && object.content !== null) {
             message.content = Any.fromJSON(object.content);
-        }
-        else {
+        } else {
             message.content = undefined;
         }
         if (object.proposer !== undefined && object.proposer !== null) {
             message.proposer = String(object.proposer);
-        }
-        else {
-            message.proposer = '';
+        } else {
+            message.proposer = "";
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
-        message.content !== undefined && (obj.content = message.content ? Any.toJSON(message.content) : undefined);
+        message.content !== undefined &&
+            (obj.content = message.content ? Any.toJSON(message.content) : undefined);
         message.proposer !== undefined && (obj.proposer = message.proposer);
         return obj;
     },
@@ -264,15 +255,13 @@ export const MsgSubmitProposal = {
         const message = { ...baseMsgSubmitProposal };
         if (object.content !== undefined && object.content !== null) {
             message.content = Any.fromPartial(object.content);
-        }
-        else {
+        } else {
             message.content = undefined;
         }
         if (object.proposer !== undefined && object.proposer !== null) {
             message.proposer = object.proposer;
-        }
-        else {
-            message.proposer = '';
+        } else {
+            message.proposer = "";
         }
         return message;
     }
@@ -306,8 +295,7 @@ export const MsgSubmitProposalResponse = {
         const message = { ...baseMsgSubmitProposalResponse };
         if (object.proposalId !== undefined && object.proposalId !== null) {
             message.proposalId = Number(object.proposalId);
-        }
-        else {
+        } else {
             message.proposalId = 0;
         }
         return message;
@@ -321,8 +309,7 @@ export const MsgSubmitProposalResponse = {
         const message = { ...baseMsgSubmitProposalResponse };
         if (object.proposalId !== undefined && object.proposalId !== null) {
             message.proposalId = object.proposalId;
-        }
-        else {
+        } else {
             message.proposalId = 0;
         }
         return message;
@@ -334,34 +321,34 @@ export class MsgClientImpl {
     }
     DeleteAdmin(request) {
         const data = MsgDeleteAdmin.encode(request).finish();
-        const promise = this.rpc.request('cosmos.adminmodule.adminmodule.Msg', 'DeleteAdmin', data);
+        const promise = this.rpc.request("cosmos.adminmodule.adminmodule.Msg", "DeleteAdmin", data);
         return promise.then((data) => MsgDeleteAdminResponse.decode(new Reader(data)));
     }
     AddAdmin(request) {
         const data = MsgAddAdmin.encode(request).finish();
-        const promise = this.rpc.request('cosmos.adminmodule.adminmodule.Msg', 'AddAdmin', data);
+        const promise = this.rpc.request("cosmos.adminmodule.adminmodule.Msg", "AddAdmin", data);
         return promise.then((data) => MsgAddAdminResponse.decode(new Reader(data)));
     }
     SubmitProposal(request) {
         const data = MsgSubmitProposal.encode(request).finish();
-        const promise = this.rpc.request('cosmos.adminmodule.adminmodule.Msg', 'SubmitProposal', data);
+        const promise = this.rpc.request(
+            "cosmos.adminmodule.adminmodule.Msg",
+            "SubmitProposal",
+            data
+        );
         return promise.then((data) => MsgSubmitProposalResponse.decode(new Reader(data)));
     }
 }
 var globalThis = (() => {
-    if (typeof globalThis !== 'undefined')
-        return globalThis;
-    if (typeof self !== 'undefined')
-        return self;
-    if (typeof window !== 'undefined')
-        return window;
-    if (typeof global !== 'undefined')
-        return global;
-    throw 'Unable to locate global object';
+    if (typeof globalThis !== "undefined") return globalThis;
+    if (typeof self !== "undefined") return self;
+    if (typeof window !== "undefined") return window;
+    if (typeof global !== "undefined") return global;
+    throw "Unable to locate global object";
 })();
 function longToNumber(long) {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {
-        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
     }
     return long.toNumber();
 }

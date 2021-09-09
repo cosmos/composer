@@ -1,19 +1,17 @@
-import { Reader, Writer } from 'protobufjs/minimal';
-import { Any } from '../google/protobuf/any';
+import { Reader, Writer } from "protobufjs/minimal";
+import { Any } from "../google/protobuf/any";
 export declare const protobufPackage = "cosmos.adminmodule.adminmodule";
 /** this line is used by starport scaffolding # proto/tx/message */
 export interface MsgDeleteAdmin {
     creator: string;
     admin: string;
 }
-export interface MsgDeleteAdminResponse {
-}
+export interface MsgDeleteAdminResponse {}
 export interface MsgAddAdmin {
     creator: string;
     admin: string;
 }
-export interface MsgAddAdminResponse {
-}
+export interface MsgAddAdminResponse {}
 /**
  * MsgSubmitProposal defines an sdk.Msg type that supports submitting arbitrary
  * proposal Content.
@@ -86,7 +84,15 @@ interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
-export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
-    [K in keyof T]?: DeepPartial<T[K]>;
-} : Partial<T>;
+export declare type DeepPartial<T> = T extends Builtin
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? {
+          [K in keyof T]?: DeepPartial<T[K]>;
+      }
+    : Partial<T>;
 export {};

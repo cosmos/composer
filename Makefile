@@ -1,11 +1,11 @@
 MONIKER=adminmoduletest1
 CHAIN_ID=adminmodule
 CHAIN_HOME=~/.admin-module
-STARPORT_VERSION=0.17.1
+STARPORT_VERSION=0.17.3
 
 .PHONY: .get-starport
 .get-starport:
-	[ -f bin/starport ] || $$(curl -LO https://github.com/tendermint/starport/releases/download/v0.17.1/starport_$(STARPORT_VERSION)_linux_amd64.tar.gz && tar -xzf starport_$(STARPORT_VERSION)_linux_amd64.tar.gz starport && mv starport bin/ && chmod +x bin/starport && rm starport_$(STARPORT_VERSION)_linux_amd64.tar.gz)
+	[ -f bin/starport ] || $$(curl -LO https://github.com/tendermint/starport/releases/download/v$(STARPORT_VERSION)/starport_$(STARPORT_VERSION)_linux_amd64.tar.gz && tar -xzf starport_$(STARPORT_VERSION)_linux_amd64.tar.gz starport && mv starport bin/ && chmod +x bin/starport && rm starport_$(STARPORT_VERSION)_linux_amd64.tar.gz)
 
 .PHONY: build
 build:
@@ -23,11 +23,14 @@ test:
 local-clean:
 	rm -rf $(CHAIN_HOME)
 
+.PHONY: local-keys
+local-keys:
+	(sleep 1; echo "earn noble employ useful space craft staff blast exact pluck siren physical biology short suit oval open legend humble pill series devote wealth hungry") | bin/admin-moduled keys add alice --recover --home $(CHAIN_HOME)
+	(sleep 1; echo "lawn pigeon use festival elder trust wish rose law family about web fiber jealous daughter vote history grant quarter fetch soft poem aware truly") | bin/admin-moduled keys add bob --recover --home $(CHAIN_HOME)
+
 .PHONY: local-init
-local-init:
+local-init: local-keys
 	bin/admin-moduled init $(MONIKER) --chain-id $(CHAIN_ID) --home $(CHAIN_HOME)
-	bin/admin-moduled keys add alice --home $(CHAIN_HOME)
-	bin/admin-moduled keys add bob --home $(CHAIN_HOME)
 	bin/admin-moduled add-genesis-account alice 10000000000000000000000001stake --home $(CHAIN_HOME)
 	bin/admin-moduled gentx alice 1000000000stake --chain-id $(CHAIN_ID) --home $(CHAIN_HOME)
 	bin/admin-moduled collect-gentxs --home $(CHAIN_HOME)

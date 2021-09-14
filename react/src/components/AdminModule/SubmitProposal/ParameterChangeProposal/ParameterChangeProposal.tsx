@@ -9,19 +9,22 @@ import { TBaseSPMsg } from "../../../../types/submitProposal";
 import { useDispatch } from "react-redux";
 import { submitProposal } from "../../../../redux/action-creator/submitProposal";
 
-const ParameterChangeProposal: React.FC<TBaseSPMsg> = ({ title, description }) => {
+const ParameterChangeProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => {
     const [changes, setChanges] = useState<ParamChange[]>([]);
     const dispatch = useDispatch();
     const submitParameterChangeProposal = () =>
         dispatch(
-            submitProposal({
-                typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-                value: ParameterChangeProposalProc.encode({
-                    title,
-                    description,
-                    changes
-                }).finish()
-            })
+            submitProposal(
+                {
+                    typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
+                    value: ParameterChangeProposalProc.encode({
+                        title,
+                        description,
+                        changes
+                    }).finish()
+                },
+                deposit
+            )
         );
     return (
         <div className={"param-change-proposal"}>

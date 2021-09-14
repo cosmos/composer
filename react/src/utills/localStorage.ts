@@ -1,5 +1,5 @@
 import { chainInfo } from "../config";
-import { SettingsState } from "../types/settings";
+import { ModuleNames, SettingsState } from "../types/settings";
 
 export enum SettingsLS {
     localSettings = "local-settings"
@@ -14,7 +14,8 @@ export const getLocalSettings = (): LocalSettings => {
             rest: chainInfo.rest,
             rpc: chainInfo.rpc,
             chainId: chainInfo.chainId,
-            chainName: chainInfo.chainName
+            chainName: chainInfo.chainName,
+            moduleName: ModuleNames.gov
         };
 
         window?.localStorage.setItem(SettingsLS.localSettings, JSON.stringify(newSettings));
@@ -25,6 +26,14 @@ export const getLocalSettings = (): LocalSettings => {
     return JSON.parse(unparsedSettings);
 };
 
-export const setLocalSettings = (settings: LocalSettings): void => {
-    window?.localStorage.setItem(SettingsLS.localSettings, JSON.stringify(settings));
+export const setLocalSettings = (settings: Omit<LocalSettings, "moduleName">): void => {
+    const oldSettings = getLocalSettings();
+    const newSettings = { ...oldSettings, ...settings };
+    window?.localStorage.setItem(SettingsLS.localSettings, JSON.stringify(newSettings));
+};
+
+export const setLocalModule = (moduleName: ModuleNames): void => {
+    const settings = getLocalSettings();
+    settings.moduleName = moduleName;
+    setLocalSettings(settings);
 };

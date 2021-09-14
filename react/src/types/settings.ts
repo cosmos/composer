@@ -10,9 +10,26 @@ import {
     SupplyExtension
 } from "@cosmjs/launchpad";
 
+export enum ModuleNames {
+    gov = "gov",
+    admin = "admin"
+}
+
+export enum ProposalUrls {
+    admin = "/cosmos.adminmodule.adminmodule.MsgSubmitProposal",
+    gov = "/cosmos.gov.v1beta1.MsgSubmitProposal"
+}
+
 export interface FetchAction {
     type: SettingsActionTypes.SET_SETTINGS;
-    payload: SettingsState;
+    payload: Omit<SettingsState, "moduleName">;
+}
+
+export interface ModuleNameAction {
+    type: SettingsActionTypes.SET_MODULE;
+    payload: {
+        moduleName: ModuleNames;
+    };
 }
 
 // export interface SetLoadingAction {
@@ -29,10 +46,11 @@ export interface FetchAction {
 //     type: SettingsActionTypes.CLEAR_ERROR;
 // }
 
-export type SettingsActions = FetchAction;
+export type SettingsActions = FetchAction | ModuleNameAction;
 
 export enum SettingsActionTypes {
-    SET_SETTINGS = "SET_SETTINGS"
+    SET_SETTINGS = "SET_SETTINGS",
+    SET_MODULE = "SET_MODULE"
     // SET_LOADING = "SET_LOADING",
     // ERROR = "ERROR",
     // CLEAR_ERROR = "CLEAR_ERROR"
@@ -52,4 +70,5 @@ export interface SettingsState {
         SlashingExtension &
         StakingExtension &
         SupplyExtension;
+    moduleName: ModuleNames;
 }

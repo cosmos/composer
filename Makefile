@@ -1,6 +1,6 @@
 MONIKER=adminmoduletest1
 CHAIN_ID=adminmodule
-CHAIN_HOME=~/.admin-module
+CHAIN_HOME=$(HOME)/.admin-module
 STARPORT_VERSION=0.17.3
 
 .PHONY: .get-starport

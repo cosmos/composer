@@ -1,5 +1,5 @@
-import { Reader, Writer } from "protobufjs/minimal";
-import { Proposal } from "../adminmodule/adminmodule";
+import { Reader, Writer } from 'protobufjs/minimal';
+import { Proposal } from '../cosmos/gov/v1beta1/gov';
 export declare const protobufPackage = "cosmos.adminmodule.adminmodule";
 /** this line is used by starport scaffolding # 3 */
 export interface QueryAdminsRequest {}

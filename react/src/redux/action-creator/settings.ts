@@ -10,7 +10,8 @@ import {
     setupSupplyExtension
 } from "@cosmjs/launchpad";
 import { Dispatch } from "redux";
-import { SettingsActions, SettingsActionTypes } from "../../types/settings";
+import { ModuleNames, SettingsActions, SettingsActionTypes } from "../../types/settings";
+import { setLocalModule } from "../../utills/localStorage";
 
 export interface IUpdateSettings {
     rpc: string;
@@ -46,7 +47,23 @@ export const updateSettings = ({ rpc, rest, chainId, chainName }: IUpdateSetting
             });
         } catch (error) {
             console.log("[Update Settings error]", error);
-            // sendErrorNotification("Error fetching admins: " + error.message, dispatch);
+        }
+    };
+};
+
+export const setModule = (moduleName: ModuleNames) => {
+    return async (dispatch: Dispatch<SettingsActions>): Promise<void> => {
+        try {
+            setLocalModule(moduleName);
+
+            dispatch({
+                type: SettingsActionTypes.SET_MODULE,
+                payload: {
+                    moduleName
+                }
+            });
+        } catch (error) {
+            console.log("[Update Settings error]", error);
         }
     };
 };

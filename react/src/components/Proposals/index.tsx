@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { fetchProposals } from "../../redux/action-creator/proposal";
 import Spinner from "../Loader/Spinner";
 import { initSettings } from "../../utills/initSettings";
+import ModuleSwitch from "../ModuleSwitch/ModuleSwitch";
 
 const ProposalsPage: React.FC = () => {
     const { isFetchingProposals, proposals, error } = useTypedSelector((state) => state.proposal);
@@ -18,10 +19,14 @@ const ProposalsPage: React.FC = () => {
 
     return (
         <div className="proposals">
-            <h4 className="title">
-                Proposals
-                {isFetchingProposals && <Spinner />}
-            </h4>
+            <div className="header">
+                <h4 className="title">
+                    Proposals
+                    {isFetchingProposals && <Spinner />}
+                </h4>
+
+                <ModuleSwitch />
+            </div>
 
             <div className="container">
                 {error ? error : null}

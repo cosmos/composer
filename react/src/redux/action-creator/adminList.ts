@@ -14,6 +14,7 @@ import { coins } from "@cosmjs/launchpad";
 import { Registry } from "@cosmjs/proto-signing";
 import { Keplr } from "@keplr-wallet/types";
 import { RootState } from "../reducers";
+import { adminModuleConnected, getModulesList } from '../../utills/helper';
 
 export const sendErrorNotification = (
     errMessage: string,

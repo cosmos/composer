@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { Coin } from "@cosmjs/stargate";
+import CoinsForm from "./Coins/CoinsForm";
+import CoinItem from "./Coins/CoinItem";
 import TextProposal from "./TextProposal";
 import ParameterChangeProposal from "./ParameterChangeProposal/ParameterChangeProposal";
 import CommunityPoolSpendProposal from "./CommunityPoolSpendProposal";
@@ -9,14 +12,19 @@ import Spinner from "../../Loader/Spinner";
 import { useDispatch } from "react-redux";
 import { submitProposalReset } from "../../../redux/action-creator/submitProposal";
 import { initSettings } from "../../../utills/initSettings";
+import ModuleSwitch from "../../ModuleSwitch/ModuleSwitch";
+import { ModuleNames } from "../../../types/settings";
+import SoftwareUpgradeProposal from "./SoftwareUpgradeProposal";
 
 const SubmitProposal: React.FC = () => {
     const { broadcastResponse, error, fetching } = useTypedSelector((s) => s.submitProposal);
+    const { moduleName } = useTypedSelector((s) => s.settings);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [deposit, setDeposit] = useState<Coin[]>([]);
 
-    const params: TBaseSPMsg = { title, description };
+    const params: TBaseSPMsg = { title, description, deposit };
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -28,10 +36,14 @@ const SubmitProposal: React.FC = () => {
     }, []);
     return (
         <div className="submit-proposal">
-            <h4 className="title">
-                Submit Proposal
-                {fetching && <Spinner />}
-            </h4>
+            <div className="header">
+                <h4 className="title">
+                    Submit Proposal
+                    {fetching && <Spinner />}
+                </h4>
+
+                <ModuleSwitch />
+            </div>
 
             {error && <div className={"error-label"}>Error: {error}</div>}
             {broadcastResponse && <h1 className={"success-label"}>Success</h1>}
@@ -63,6 +75,32 @@ const SubmitProposal: React.FC = () => {
                         className="input-elem"
                     />
                 </div>
+
+                {moduleName === ModuleNames.gov ? (
+                    <div>
+                        <div>
+                            <label htmlFor={"deposit"}>Deposit</label>
+                        </div>
+                        <div id="deposit">
+                            <CoinsForm addCoin={(d) => setDeposit([...deposit, d])} />
+                            <div className={"coin-items"}>
+                                {deposit.map((d, i) => (
+                                    <CoinItem
+                                        key={i}
+                                        deposit={d}
+                                        deleteDeposit={() =>
+                                            setDeposit([
+                                                ...deposit.slice(0, i),
+                                                ...deposit.slice(i + 1)
+                                            ])
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
+
                 <div>
                     <div>
                         <label htmlFor={"proposal-tabs"}>Type Proposal</label>
@@ -73,6 +111,7 @@ const SubmitProposal: React.FC = () => {
                             <Tab>TextProposal</Tab>
                             <Tab>ParameterChangeProposal</Tab>
                             <Tab>CommunityPoolSpendProposal</Tab>
+                            <Tab>SoftwareUpgradeProposal</Tab>
                         </TabList>
 
                         <TabPanel forceRender>
@@ -90,6 +129,12 @@ const SubmitProposal: React.FC = () => {
                         <TabPanel forceRender>
                             <div className={"tab-panel-content"}>
                                 <CommunityPoolSpendProposal {...params} />
+                            </div>
+                        </TabPanel>
+
+                        <TabPanel forceRender>
+                            <div className={"tab-panel-content"}>
+                                <SoftwareUpgradeProposal {...params} />
                             </div>
                         </TabPanel>
                     </Tabs>

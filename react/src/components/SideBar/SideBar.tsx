@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
+import { useAdminConnection } from "../../hooks/useAdminConnection";
 import { routes } from "../../router";
 import SidebarBottom from "./SidebarBottom/SidebarBottom";
 
@@ -12,12 +13,13 @@ const active = {
 };
 
 const SideBar: React.FC = () => {
+    const admConnected = useAdminConnection();
     return (
         <div className="sidebar">
             <ul className="sidebar-list">
                 <li className="sidebar-item">
                     <NavLink to={routes.reviewState} activeStyle={active}>
-                        ReviewState
+                        Review state
                     </NavLink>
                 </li>
                 <li className="sidebar-item">
@@ -26,10 +28,23 @@ const SideBar: React.FC = () => {
                     </NavLink>
                 </li>
                 <li className="sidebar-item">
+                    <NavLink to={routes.submitProposal} activeStyle={active}>
+                        Submit proposal
+                    </NavLink>
+                </li>
+                {admConnected && (
+                    <li className="sidebar-item">
+                        <NavLink to={routes.adminList} activeStyle={active}>
+                            Admin list
+                        </NavLink>
+                    </li>
+                )}
+
+                {/* <li className="sidebar-item">
                     <NavLink to={routes.adminModule} activeStyle={active}>
                         Admin Module
                     </NavLink>
-                </li>
+                </li> */}
                 <li className="sidebar-item">
                     <NavLink to={routes.settings} activeStyle={active}>
                         Settings

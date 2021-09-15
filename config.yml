@@ -1,8 +1,10 @@
 accounts:
   - name: alice
     coins: ["20000token", "200000000stake"]
+    address: cosmos1kdzkazludrnmnzchcxgs6znsjph5ugx4rhljrh
   - name: bob
     coins: ["10000token", "100000000stake"]
+    address: cosmos1v0gfr46lp09e6m8m8qay04athst749sdf0jjpk
 validator:
   name: alice
   staked: "100000000stake"
@@ -14,9 +16,10 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
-genesis:
-  app_state:
-    adminmodule:
-      admins: ["cosmos1zwlgx3kxcykszdxrk2gvrrfzchlqzfc59kx3p0", "cosmos103laf9z2fv69r0q30pf2swfr09nfdszy88sm87"]
 init:
   home: "~/.admin-module"
+genesis:
+  chain_id: "adminmodule"
+  app_state:
+    adminmodule:
+      admins: ["cosmos1kdzkazludrnmnzchcxgs6znsjph5ugx4rhljrh"]

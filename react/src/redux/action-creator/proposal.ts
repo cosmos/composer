@@ -1,11 +1,16 @@
 import { Dispatch } from "redux";
+import { MsgSubmitProposal } from "../../cosmos/codec/cosmos/gov/v1beta1/tx";
 import { ProposalAction, ProposalActionTypes, ArchivedProposal } from "../../types/proposal";
+import { getProposalsHistory } from "../../utills/helper";
 import { RootState } from "../reducers";
 // import { lcdClient } from "../../cosmos";
 
 export const fetchProposals = () => {
     return async (dispatch: Dispatch<ProposalAction>, getState: () => RootState) => {
         const { settings } = getState();
+        const txs = await getProposalsHistory(settings.rpc);
+        console.log("txs", txs);
+
         try {
             dispatch({ type: ProposalActionTypes.PROPOSAL_CALL });
             const archivedProposals: { proposals: ArchivedProposal[] } =

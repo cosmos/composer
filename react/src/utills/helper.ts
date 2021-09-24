@@ -9,3 +9,10 @@ export const adminModuleConnected = async (rpcEndpoint: string): Promise<boolean
     const moduleList = await getModulesList(rpcEndpoint);
     return moduleList.includes("adminmodule");
 };
+
+export const getProposalsHistory = async (rpcEndpoint: string): Promise<any[]> => {
+    const txs = await axios.get(
+        `${rpcEndpoint}/tx_search?query="message.action='submit_proposal'"`
+    );
+    return txs.data.result.txs;
+};

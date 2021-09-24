@@ -30,8 +30,10 @@ export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
                     settings.moduleName === ModuleNames.admin
                         ? ProposalUrls.admin
                         : ProposalUrls.gov,
-                value: msg
+                value:
+                    settings.moduleName === ModuleNames.gov ? msg : { content, proposer: address }
             };
+            console.log("sending to", msgAny);
             const fee = {
                 amount: coins(0, chainInfo.stakeCurrency.coinMinimalDenom),
                 gas: "2000000"

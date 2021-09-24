@@ -10,6 +10,7 @@ import NotFoundPage from "./components/NotFound";
 import "./assets/scss/main.scss";
 import ProposalDetail from "./components/Proposals/ProposalDetail";
 import SettingsPage from "./components/Settings";
+import AuthzPage from "./components/Authz";
 
 const App: React.FC = () => {
     return (
@@ -24,6 +25,12 @@ const App: React.FC = () => {
                 <Route exact path={routes.settings}>
                     <RouteWrapper>
                         <SettingsPage />
+                    </RouteWrapper>
+                </Route>
+
+                <Route exact path={routes.authz}>
+                    <RouteWrapper>
+                        <AuthzPage />
                     </RouteWrapper>
                 </Route>
 

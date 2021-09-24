@@ -8,9 +8,9 @@ import {
     MsgDeleteAdmin,
     MsgSubmitProposal
 } from "../../cosmos/codec/cosmos/adminmodule/adminmodule/tx";
-import { RootState } from "../reducers";
 import { ChainInfo } from "@keplr-wallet/types";
 import { chainInfo } from "../../config";
+import { MsgGrant, MsgRevoke } from "../../cosmos/codec/cosmos/authz/tx";
 
 export const connectWallet = (rpc: string, rest: string, chainId: string, chainName: string) => {
     return async (dispatch: Dispatch<WalletAction>) => {
@@ -41,6 +41,9 @@ export const connectWallet = (rpc: string, rest: string, chainId: string, chainN
             );
             registry.register("/cosmos.adminmodule.adminmodule.MsgAddAdmin", MsgAddAdmin);
             registry.register("/cosmos.adminmodule.adminmodule.MsgDeleteAdmin", MsgDeleteAdmin);
+
+            registry.register("/cosmos.authz.v1beta1.MsgGrant", MsgGrant);
+            registry.register("/cosmos.authz.v1beta1.MsgRevoke", MsgRevoke);
 
             defaultRegistryTypes.forEach((v) => {
                 registry.register(v[0], v[1]);

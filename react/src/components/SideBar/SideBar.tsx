@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
+import { useAuthzConnected } from "../../hooks/useAuthzEnabled";
 import { routes } from "../../router";
 import SidebarBottom from "./SidebarBottom/SidebarBottom";
 
@@ -12,6 +13,8 @@ const active = {
 };
 
 const SideBar: React.FC = () => {
+    const authzConnected = useAuthzConnected();
+
     return (
         <div className="sidebar">
             <ul className="sidebar-list">
@@ -30,11 +33,14 @@ const SideBar: React.FC = () => {
                         Admin Module
                     </NavLink>
                 </li>
-                <li className="sidebar-item">
-                    <NavLink to={routes.authz} activeStyle={active}>
-                        Authz
-                    </NavLink>
-                </li>
+                {authzConnected && (
+                    <li className="sidebar-item">
+                        <NavLink to={routes.authz} activeStyle={active}>
+                            Authz
+                        </NavLink>
+                    </li>
+                )}
+
                 <li className="sidebar-item">
                     <NavLink to={routes.settings} activeStyle={active}>
                         Settings

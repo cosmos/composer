@@ -5,6 +5,7 @@ import { walletReducer } from "./wallet";
 import { reviewChangesReducer } from "./reviewChanges";
 import { submitProposalReducer } from "./submitProposal";
 import { settingsReducer } from "./settings";
+import { authzReducer } from "./authz";
 
 export const rootReducer = combineReducers({
     proposal: proposalReducer,
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
     admin: adminListReducer,
     reviewChanges: reviewChangesReducer,
     submitProposal: submitProposalReducer,
+    authz: authzReducer,
     settings: settingsReducer
 });
 

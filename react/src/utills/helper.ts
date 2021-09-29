@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { decodeTxRaw, Registry } from "@cosmjs/proto-signing";
 import { ProposalUrls } from "../types/settings";
 import { TextProposal } from "../cosmos/codec/cosmos/gov/v1beta1/gov";
@@ -78,3 +79,12 @@ function bytesFromBase64(b64: string): Uint8Array {
     }
     return arr;
 }
+
+
+export const isAuthzEnabled = async (rpc: string): Promise<boolean> => {
+    const { data } = await axios.get(`${rpc}/genesis`);
+    if (!data.result.genesis.app_state.authz) return false;
+
+    return true;
+};
+

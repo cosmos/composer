@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { useAdminConnection } from "../../hooks/useAdminConnection";
+import { useAuthzConnected } from "../../hooks/useAuthzEnabled";
 import { routes } from "../../router";
 import SidebarBottom from "./SidebarBottom/SidebarBottom";
 
@@ -14,6 +15,8 @@ const active = {
 
 const SideBar: React.FC = () => {
     const admConnected = useAdminConnection();
+    const authzConnected = useAuthzConnected();
+  
     return (
         <div className="sidebar">
             <ul className="sidebar-list">
@@ -44,7 +47,19 @@ const SideBar: React.FC = () => {
                     <NavLink to={routes.adminModule} activeStyle={active}>
                         Admin Module
                     </NavLink>
+
                 </li> */}
+
+                </li>
+                {authzConnected && (
+                    <li className="sidebar-item">
+                        <NavLink to={routes.authz} activeStyle={active}>
+                            Authz
+                        </NavLink>
+                    </li>
+                )}
+
+
                 <li className="sidebar-item">
                     <NavLink to={routes.settings} activeStyle={active}>
                         Settings

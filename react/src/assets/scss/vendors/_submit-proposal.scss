@@ -8,6 +8,12 @@
     //border-bottom: 2px solid $color-light-gray;
   }
 
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
   .success-label {
     color: #3cef00;
     margin-bottom: 15px;
@@ -39,7 +45,7 @@
       height: 150px;
     }
 
-    #amount {
+    #deposit, #amount {
       margin-top: 5px;
       border: 2px solid $color-border-grey;
       border-radius: 12px;
@@ -196,6 +202,19 @@
       padding: 0 5px;
       margin-left: 3px;
 
+    }
+  }
+
+  .plan-form {
+    &__label {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+    }
+
+    &__input {
+      @extend .input-elem;
     }
   }
 

@@ -66,3 +66,5 @@ bin/
 
 # vue
 vue/
+
+~/.admin-module

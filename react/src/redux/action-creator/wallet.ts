@@ -8,6 +8,10 @@ import {
     MsgDeleteAdmin,
     MsgSubmitProposal
 } from "../../cosmos/codec/cosmos/adminmodule/adminmodule/tx";
+
+import { MsgSubmitProposal as MsgSubmitProposalGov } from "../../cosmos/codec/cosmos/gov/v1beta1/tx";
+
+
 import { ChainInfo } from "@keplr-wallet/types";
 import { chainInfo } from "../../config";
 import { MsgGrant, MsgRevoke } from "../../cosmos/codec/cosmos/authz/tx";
@@ -39,6 +43,7 @@ export const connectWallet = (rpc: string, rest: string, chainId: string, chainN
                 "/cosmos.adminmodule.adminmodule.MsgSubmitProposal",
                 MsgSubmitProposal
             );
+            registry.register("/cosmos.gov.v1beta1.MsgSubmitProposal", MsgSubmitProposalGov);
             registry.register("/cosmos.adminmodule.adminmodule.MsgAddAdmin", MsgAddAdmin);
             registry.register("/cosmos.adminmodule.adminmodule.MsgDeleteAdmin", MsgDeleteAdmin);
 

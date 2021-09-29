@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
-import { Proposal } from "../adminmodule/adminmodule";
-export const protobufPackage = "cosmos.adminmodule.adminmodule";
+import { Reader, Writer } from 'protobufjs/minimal';
+import { Proposal } from '../cosmos/gov/v1beta1/gov';
+export const protobufPackage = 'cosmos.adminmodule.adminmodule';
 const baseQueryAdminsRequest = {};
 export const QueryAdminsRequest = {
     encode(_, writer = Writer.create()) {

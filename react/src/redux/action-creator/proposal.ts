@@ -1,19 +1,45 @@
 import { Dispatch } from "redux";
 import { ProposalAction, ProposalActionTypes, ArchivedProposal } from "../../types/proposal";
+import { ModuleNames } from "../../types/settings";
+import { getProposalsHistory } from "../../utills/helper";
 import { RootState } from "../reducers";
 // import { lcdClient } from "../../cosmos";
 
 export const fetchProposals = () => {
     return async (dispatch: Dispatch<ProposalAction>, getState: () => RootState) => {
-        const { settings } = getState();
+        const { settings, wallet } = getState();
         try {
-            dispatch({ type: ProposalActionTypes.PROPOSAL_CALL });
-            const archivedProposals: { proposals: ArchivedProposal[] } =
-                await settings.lcdClient.get("/cosmos/adminmodule/adminmodule/archivedproposals");
-            dispatch({
-                type: ProposalActionTypes.PROPOSAL_SUCCESS,
-                payload: archivedProposals.proposals.reverse()
-            });
+            if (settings.moduleName === ModuleNames.gov) {
+                if (!wallet.stargateClient) return;
+                dispatch({ type: ProposalActionTypes.PROPOSAL_CALL });
+
+                const proposals = await getProposalsHistory(
+                    settings.rpc,
+                    wallet.stargateClient?.registry
+                );
+                console.log("proposals", proposals);
+
+                const mappedProposals: ArchivedProposal[] = proposals.map((p, i) => ({
+                    proposal_id: (i + 1).toString(),
+                    content: { "@type": p.content.typeUrl, ...p.content.value },
+                    submit_time: "0"
+                }));
+                console.log("dispatching", mappedProposals);
+                dispatch({
+                    type: ProposalActionTypes.PROPOSAL_SUCCESS,
+                    payload: mappedProposals.reverse()
+                });
+            } else {
+                dispatch({ type: ProposalActionTypes.PROPOSAL_CALL });
+                const archivedProposals: { proposals: ArchivedProposal[] } =
+                    await settings.lcdClient.get(
+                        "/cosmos/adminmodule/adminmodule/archivedproposals"
+                    );
+                dispatch({
+                    type: ProposalActionTypes.PROPOSAL_SUCCESS,
+                    payload: archivedProposals.proposals.reverse()
+                });
+            }
         } catch (e) {
             dispatch({ type: ProposalActionTypes.PROPOSAL_ERROR, payload: e.message || "error" });
         }

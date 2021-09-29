@@ -5,23 +5,37 @@ import { useDispatch } from "react-redux";
 import { fetchProposals } from "../../redux/action-creator/proposal";
 import Spinner from "../Loader/Spinner";
 import { initSettings } from "../../utills/initSettings";
+import ModuleSwitch from "../ModuleSwitch/ModuleSwitch";
 
 const ProposalsPage: React.FC = () => {
     const { isFetchingProposals, proposals, error } = useTypedSelector((state) => state.proposal);
+    const { stargateClient } = useTypedSelector((state) => state.wallet);
+    const { settings } = useTypedSelector((state) => state);
     const dispatch = useDispatch();
 
     useEffect(() => {
         initSettings(dispatch);
-
-        dispatch(fetchProposals());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (!stargateClient) {
+            // console.log("no client");
+            return;
+        }
+        // console.log("got client");
+        dispatch(fetchProposals());
+    }, [stargateClient, settings.moduleName]);
 
     return (
         <div className="proposals">
-            <h4 className="title">
-                Proposals
-                {isFetchingProposals && <Spinner />}
-            </h4>
+            <div className="header">
+                <h4 className="title">
+                    Proposals
+                    {isFetchingProposals && <Spinner />}
+                </h4>
+
+                <ModuleSwitch />
+            </div>
 
             <div className="container">
                 {error ? error : null}

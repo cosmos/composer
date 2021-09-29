@@ -10,7 +10,10 @@ import NotFoundPage from "./components/NotFound";
 import "./assets/scss/main.scss";
 import ProposalDetail from "./components/Proposals/ProposalDetail";
 import SettingsPage from "./components/Settings";
+import AdminList from "./components/AdminModule/AdminList/AdminList";
+import SubmitProposal from "./components/AdminModule/SubmitProposal";
 import AuthzPage from "./components/Authz";
+
 
 const App: React.FC = () => {
     return (
@@ -49,9 +52,19 @@ const App: React.FC = () => {
                         <ProposalDetail />
                     </RouteWrapper>
                 </Route>
-                <Route exact path={routes.adminModule}>
+                {/* <Route exact path={routes.adminModule}>
                     <RouteWrapper>
                         <AdminModule />
+                    </RouteWrapper>
+                </Route> */}
+                <Route exact path={routes.adminList}>
+                    <RouteWrapper>
+                        <AdminList />
+                    </RouteWrapper>
+                </Route>
+                <Route exact path={routes.submitProposal}>
+                    <RouteWrapper>
+                        <SubmitProposal />
                     </RouteWrapper>
                 </Route>
                 <Route>

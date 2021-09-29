@@ -15,6 +15,13 @@ interface AContent {
     changes?: { key: string; subspace: string; value: string }[];
 }
 
+export enum ProposalTypes {
+    upgrade = "/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal",
+    text = "/cosmos.gov.v1beta1.TextProposal",
+    poolSpend = "/cosmos.distribution.v1beta1.CommunityPoolSpendProposal",
+    paramChange = "/cosmos.params.v1beta1.ParameterChangeProposal"
+}
+
 export interface ATextProposalContent extends AContent {
     "@type": "/cosmos.adminmodule.adminmodule.TextProposal";
 }

@@ -4,14 +4,18 @@ import { NavLink } from "react-router-dom";
 import { routes } from "../../router";
 import { toPrettyDate } from "../../utills/toPrettyDate";
 import { ArchivedProposal } from "../../types/proposal";
+import { useTypedSelector } from "../../redux/useTypedSelector";
+import { ModuleNames } from "../../types/settings";
 
 interface ProposalItemProps {
     proposal: ArchivedProposal;
 }
 
 const ProposalItem: React.FC<ProposalItemProps> = ({
-    proposal: { proposal_id, submit_time, content }
+    proposal: { proposal_id, submit_time, content, height }
 }) => {
+    const settings = useTypedSelector((state) => state.settings);
+
     const typeShort = (type: string): string => {
         const chainIdAndType = type.split(".");
         return chainIdAndType[chainIdAndType.length - 1] || type;
@@ -29,7 +33,9 @@ const ProposalItem: React.FC<ProposalItemProps> = ({
                 </NavLink>
             </td>
             <td>{typeShort(content["@type"])}</td>
-            <td>{toPrettyDate(submit_time)}</td>
+            <td>
+                {settings.moduleName === ModuleNames.admin ? toPrettyDate(submit_time) : height}
+            </td>
         </tr>
     );
 };

@@ -22,6 +22,7 @@ import {
     isACommunityPoolSpendProposalContent,
     isAParameterChangeProposalContent
 } from "../../types/proposal";
+import { ModuleNames } from "../../types/settings";
 
 const ProposalDetail: React.FC = () => {
     const history = useHistory();
@@ -29,8 +30,10 @@ const ProposalDetail: React.FC = () => {
         params: { id }
     } = useRouteMatch<{ id: string }>();
 
-    const { /*proposalDetail,*/ proposals, isFetchingProposals, isFetchingItem, error } =
-        useTypedSelector((state) => state.proposal);
+    const { proposals, isFetchingProposals, isFetchingItem, error } = useTypedSelector(
+        (state) => state.proposal
+    );
+    const settings = useTypedSelector((state) => state.settings);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -162,9 +165,17 @@ const ProposalDetail: React.FC = () => {
 
                         <tr>
                             <td>
-                                <span>Submit Time</span>
+                                <span>
+                                    {settings.moduleName === ModuleNames.admin
+                                        ? "Submit Time"
+                                        : "Height"}
+                                </span>
                             </td>
-                            <td>{toPrettyDate(proposal.submit_time)}</td>
+                            <td>
+                                {settings.moduleName === ModuleNames.admin
+                                    ? toPrettyDate(proposal.submit_time)
+                                    : proposal.height}
+                            </td>
                         </tr>
 
                         {/*<tr>*/}

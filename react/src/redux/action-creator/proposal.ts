@@ -22,7 +22,8 @@ export const fetchProposals = () => {
                 const mappedProposals: ArchivedProposal[] = proposals.map((p, i) => ({
                     proposal_id: (i + 1).toString(),
                     content: { "@type": p.content.typeUrl, ...p.content.value },
-                    submit_time: "0"
+                    submit_time: "0",
+                    height: p.height
                 }));
                 console.log("dispatching", mappedProposals);
                 dispatch({

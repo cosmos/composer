@@ -16,7 +16,7 @@ const active = {
 const SideBar: React.FC = () => {
     const admConnected = useAdminConnection();
     const authzConnected = useAuthzConnected();
-  
+
     return (
         <div className="sidebar">
             <ul className="sidebar-list">
@@ -50,7 +50,6 @@ const SideBar: React.FC = () => {
 
                 </li> */}
 
-                </li>
                 {authzConnected && (
                     <li className="sidebar-item">
                         <NavLink to={routes.authz} activeStyle={active}>
@@ -58,7 +57,6 @@ const SideBar: React.FC = () => {
                         </NavLink>
                     </li>
                 )}
-
 
                 <li className="sidebar-item">
                     <NavLink to={routes.settings} activeStyle={active}>

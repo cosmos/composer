@@ -25,7 +25,6 @@ export const fetchProposals = () => {
                     submit_time: "0",
                     height: p.height
                 }));
-                console.log("dispatching", mappedProposals);
                 dispatch({
                     type: ProposalActionTypes.PROPOSAL_SUCCESS,
                     payload: mappedProposals.reverse()

@@ -34,7 +34,6 @@ export const getProposalsHistory = async (
     if (txs.data.result.txs.length === 0) {
         txs = await axios.get(`${rpcEndpoint}/tx_search?query="message.action='submit_proposal'"`);
     }
-    console.log("txs", txs.data.result.txs);
     const parsedTxs: any[] = [];
     txs.data.result.txs.forEach((tx: any, i: number) => {
         parsedTxs.push(parseTx(tx.tx, registry));
@@ -51,7 +50,6 @@ export const parseTx = (tx: any, registry: Registry) => {
     for (const message of decoded.body.messages) {
         if (message.typeUrl === ProposalUrls.gov || ProposalUrls.admin) {
             const decodedMsg = registry.decode(message);
-
             switch (decodedMsg.content.typeUrl) {
                 case ProposalTypes.text:
                     decodedMsg.content.value = TextProposal.decode(decodedMsg.content.value);
@@ -72,6 +70,8 @@ export const parseTx = (tx: any, registry: Registry) => {
                     );
                     break;
                 default:
+                    decodedMsg.content.value.title = "ERROR: Failed to decode";
+                    decodedMsg.content.value.description = "ERROR: Failed to decode";
                     break;
             }
             parsedData = decodedMsg;

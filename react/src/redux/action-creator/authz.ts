@@ -2,8 +2,10 @@ import { Dispatch } from "redux";
 import { RootState } from "../reducers";
 import { chainInfo } from "../../config";
 import { coins, isBroadcastTxSuccess } from "@cosmjs/stargate";
+import { toUtf8 } from "@cosmjs/encoding";
 import { getWalletAddress } from "../../cosmos/keplr";
 import { AuthzAction, AuthzTypes } from "../../types/authz";
+import { MsgGrant } from "../../cosmos/codec/cosmos/authz/tx";
 
 export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) => {
     return async (dispatch: Dispatch<AuthzAction>, getState: () => RootState) => {
@@ -18,16 +20,24 @@ export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) 
                 return dispatch(setAuthzError("Wallet is not connected"));
             }
             const address = await getWalletAddress(keplr, settings.chainId);
+            const dateNow = new Date();
+
             const msg = {
                 granter,
                 grantee,
                 grant: {
                     authorization: {
-                        "@type": "/cosmos.authz.v1beta1.GenericAuthorization",
-                        msg: msgTypeUrl
-                    }
+                        typeUrl: "/cosmos.authz.v1beta1.GenericAuthorization",
+                        value: msgTypeUrl
+                    },
+                    expiration: new Date(
+                        dateNow.getFullYear() + 1,
+                        dateNow.getMonth(),
+                        dateNow.getDate()
+                    )
                 }
             };
+            // const encodedMsg = MsgGrant.encode(msg).finish();
             const msgAny = {
                 typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
                 value: msg
@@ -36,17 +46,20 @@ export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) 
                 amount: coins(0, chainInfo.stakeCurrency.coinMinimalDenom),
                 gas: "2000000"
             };
-
+            console.log("sending", [msgAny]);
             const broadcastRes = await stargateClient.signAndBroadcast(address, [msgAny], fee);
+            console.log(broadcastRes.data);
             if (isBroadcastTxSuccess(broadcastRes)) {
                 dispatch({
                     type: AuthzTypes.AUTH_SUCCESS,
                     payload: broadcastRes
                 });
             } else {
+                console.log("error:::", broadcastRes.rawLog);
                 dispatch(setAuthzError(broadcastRes.rawLog || "error"));
             }
         } catch (e) {
+            console.log("error:::", e);
             dispatch(setAuthzError(e.message || "error"));
         }
     };

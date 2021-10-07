@@ -15,12 +15,17 @@ export enum SdkVersions {
 
 export const getModulesList = async (rpcEndpoint: string): Promise<string[]> => {
     const resp = await axios.get(`${rpcEndpoint}/genesis`);
-    return Object.keys(resp.data.result.genesis.app_state);
+    return Object.keys(resp.data.result.genesis?.app_state);
 };
 
 export const adminModuleConnected = async (rpcEndpoint: string): Promise<boolean> => {
-    const moduleList = await getModulesList(rpcEndpoint);
-    return moduleList.includes("adminmodule");
+    try {
+        const moduleList = await getModulesList(rpcEndpoint);
+        return moduleList.includes("adminmodule");
+    } catch (error) {
+        console.error("Error fetching genesis");
+        return false;
+    }
 };
 
 export const getProposalsHistory = async (
@@ -91,10 +96,13 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 export const isAuthzEnabled = async (rpc: string): Promise<boolean> => {
-    const { data } = await axios.get(`${rpc}/genesis`);
-    if (!data.result.genesis.app_state.authz) return false;
-
-    return true;
+    try {
+        const moduleList = await getModulesList(rpc);
+        return moduleList.includes("authz");
+    } catch (error) {
+        console.error("Error fetching genesis");
+        return false;
+    }
 };
 
 export const getVersion = async (rpc: string): Promise<SdkVersions> => {

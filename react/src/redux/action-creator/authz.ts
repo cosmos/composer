@@ -28,7 +28,7 @@ export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) 
                 grant: {
                     authorization: {
                         typeUrl: "/cosmos.authz.v1beta1.GenericAuthorization",
-                        value: msgTypeUrl
+                        value: toUtf8(msgTypeUrl)
                     },
                     expiration: new Date(
                         dateNow.getFullYear() + 1,

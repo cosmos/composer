@@ -9,12 +9,20 @@ Web interface features:
 
 
 It has several pages, depending on the modules, that blockchain has connected:
+
 1. Settings - here you can set rest, rpc endpoints, chain id and chain name.
+![selection(2)](https://user-images.githubusercontent.com/37986442/136917740-a30fe533-09ff-4985-a142-2bc848618a3b.png)
 2. Review state - page where modules params are displayed.
-3. Proposals - page where history of sent proposals are displayed.
-4. Submit proposal - page for the submission of proposals to the gov and admin module.
-5. Admin list - list of admins in the admin module, shows only if admin module is connected.
+![selection(3)](https://user-images.githubusercontent.com/37986442/136917964-c6ea3ad4-6a98-43d4-ae6e-dfd59b29430e.png)
+3. Proposals - page where history of sent proposals are displayed, use the module switch to select module to fetch proposals history.
+![selection(9)](https://user-images.githubusercontent.com/37986442/136929467-61eb4ed8-b278-40ba-bbbb-7a66c7704b1e.png)
+4. Submit proposal - page for the submission of proposals to the gov and admin module, use the switch to select module for submission.
+![selection(7)](https://user-images.githubusercontent.com/37986442/136922335-6ba052a3-4b37-413b-9da5-451d69f167c9.png)
+5. Admin list - list of admins in the admin module, displayed only if admin module is connected.
+![selection(6)](https://user-images.githubusercontent.com/37986442/136920566-74603e55-056c-4ed2-8e70-f69033730c30.png)
 6. Authz - interface for granting and revoking authz permissions, displayed only if authz is connected.
+![selection(5)](https://user-images.githubusercontent.com/37986442/136918389-ec53112e-b203-4130-ae9d-93851dd6e1e6.png)
+
 
 
 ## How to use admin module

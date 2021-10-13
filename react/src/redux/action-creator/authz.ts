@@ -5,7 +5,9 @@ import { coins, isBroadcastTxSuccess } from "@cosmjs/stargate";
 import { toUtf8 } from "@cosmjs/encoding";
 import { getWalletAddress } from "../../cosmos/keplr";
 import { AuthzAction, AuthzTypes } from "../../types/authz";
-import { MsgGrant } from "../../cosmos/codec/cosmos/authz/tx";
+import { MsgGrant, MsgRevoke } from "../../cosmos/codec/cosmos/authz/tx";
+import { GenericAuthorization } from "../../cosmos/codec/cosmos/authz/authz";
+import axios from "axios";
 
 export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) => {
     return async (dispatch: Dispatch<AuthzAction>, getState: () => RootState) => {
@@ -22,13 +24,17 @@ export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) 
             const address = await getWalletAddress(keplr, settings.chainId);
             const dateNow = new Date();
 
-            const msg = {
+            const msg: MsgGrant = {
                 granter,
                 grantee,
                 grant: {
                     authorization: {
                         typeUrl: "/cosmos.authz.v1beta1.GenericAuthorization",
-                        value: toUtf8(msgTypeUrl)
+                        value: GenericAuthorization.encode(
+                            GenericAuthorization.fromPartial({
+                                msg: msgTypeUrl
+                            })
+                        ).finish()
                     },
                     expiration: new Date(
                         dateNow.getFullYear() + 1,
@@ -46,9 +52,7 @@ export const grantAuth = (granter: string, grantee: string, msgTypeUrl: string) 
                 amount: coins(0, chainInfo.stakeCurrency.coinMinimalDenom),
                 gas: "2000000"
             };
-            console.log("sending", [msgAny]);
             const broadcastRes = await stargateClient.signAndBroadcast(address, [msgAny], fee);
-            console.log(broadcastRes.data);
             if (isBroadcastTxSuccess(broadcastRes)) {
                 dispatch({
                     type: AuthzTypes.AUTH_SUCCESS,
@@ -78,10 +82,10 @@ export const revokeAuth = (granter: string, grantee: string, msgTypeUrl: string)
                 return dispatch(setAuthzError("Wallet is not connected"));
             }
             const address = await getWalletAddress(keplr, settings.chainId);
-            const msg = {
+            const msg: MsgRevoke = {
                 granter,
                 grantee,
-                msg_type_url: msgTypeUrl
+                msgTypeUrl
             };
             const msgAny = {
                 typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
@@ -102,6 +106,36 @@ export const revokeAuth = (granter: string, grantee: string, msgTypeUrl: string)
                 dispatch(setAuthzError(broadcastRes.rawLog || "error"));
             }
         } catch (e) {
+            dispatch(setAuthzError(e.message || "error"));
+        }
+    };
+};
+
+export const fetchGrants = (granter: string, grantee: string) => {
+    return async (dispatch: Dispatch<AuthzAction>, getState: () => RootState) => {
+        try {
+            // dispatch({ type: AuthzTypes.AUTH_CALL });
+            const {
+                settings,
+                wallet: { stargateClient, isConnected, keplr }
+            } = getState();
+
+            if (!isConnected || !stargateClient || !keplr) {
+                return dispatch(setAuthzError("Wallet is not connected"));
+            }
+            const {
+                data: { grants }
+            } = await axios.get(
+                `${settings.rest}/cosmos/authz/v1beta1/grants?granter=${granter}&grantee=${grantee}`
+            );
+
+            console.log("got", grants);
+            dispatch({
+                type: AuthzTypes.SET_GRANTS,
+                payload: grants
+            });
+        } catch (e) {
+            console.log("error:::", e);
             dispatch(setAuthzError(e.message || "error"));
         }
     };

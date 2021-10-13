@@ -5,6 +5,24 @@
     flex-direction: column;
     gap: 20px;
 
+    &__col {
+        display: flex;
+        flex-direction: column;
+        gap: 40px
+    }
+
+    &__col-wrap {
+        display: flex;
+        flex-direction: row;
+        gap: 40px
+    }
+
+    &__grant {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 4px 8px;
+    }
+
     &__header {
         font-size: 40px;
         font-weight: bold;

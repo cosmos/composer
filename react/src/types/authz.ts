@@ -6,13 +6,23 @@ export interface AuthzState {
     broadcastResponse: BroadcastTxSuccess | null;
     error: string | null;
     fetching: boolean;
+    grants: AuthzGrant[];
+}
+
+export interface AuthzGrant {
+    authorization: {
+        "@type": string;
+        msg: string;
+    };
+    expiration: string;
 }
 
 export enum AuthzTypes {
     AUTH_CALL = "AUTH_CALL",
     AUTH_SUCCESS = "AUTH_SUCCESS",
     AUTH_ERROR = "AUTH_ERROR",
-    AUTH_RESET = "AUTH_RESET"
+    AUTH_RESET = "AUTH_RESET",
+    SET_GRANTS = "SET_GRANTS"
 }
 
 interface AuthzCallAction {
@@ -30,8 +40,14 @@ interface AuthzResetAction {
     type: AuthzTypes.AUTH_RESET;
 }
 
+interface AuthzSetGrantsAction {
+    type: AuthzTypes.SET_GRANTS;
+    payload: AuthzGrant[];
+}
+
 export type AuthzAction =
     | AuthzCallAction
     | AuthzSuccessAction
     | AuthzErrorAction
-    | AuthzResetAction;
+    | AuthzResetAction
+    | AuthzSetGrantsAction;

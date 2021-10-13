@@ -1,23 +1,26 @@
 {
   "files": {
-    "main.css": "/admin-module/static/css/main.96c10b64.chunk.css",
-    "main.js": "/admin-module/static/js/main.5fbe5b79.chunk.js",
-    "main.js.map": "/admin-module/static/js/main.5fbe5b79.chunk.js.map",
-    "runtime-main.js": "/admin-module/static/js/runtime-main.1d7262a5.js",
-    "runtime-main.js.map": "/admin-module/static/js/runtime-main.1d7262a5.js.map",
-    "static/js/2.64519742.chunk.js": "/admin-module/static/js/2.64519742.chunk.js",
-    "static/js/2.64519742.chunk.js.map": "/admin-module/static/js/2.64519742.chunk.js.map",
-    "static/js/3.5414294e.chunk.js": "/admin-module/static/js/3.5414294e.chunk.js",
-    "static/js/3.5414294e.chunk.js.map": "/admin-module/static/js/3.5414294e.chunk.js.map",
+    "main.css": "/admin-module/static/css/main.5273d6f3.chunk.css",
+    "main.js": "/admin-module/static/js/main.50d1be23.chunk.js",
+    "main.js.map": "/admin-module/static/js/main.50d1be23.chunk.js.map",
+    "runtime-main.js": "/admin-module/static/js/runtime-main.de772d3e.js",
+    "runtime-main.js.map": "/admin-module/static/js/runtime-main.de772d3e.js.map",
+    "static/css/2.d47d8948.chunk.css": "/admin-module/static/css/2.d47d8948.chunk.css",
+    "static/js/2.a105b31f.chunk.js": "/admin-module/static/js/2.a105b31f.chunk.js",
+    "static/js/2.a105b31f.chunk.js.map": "/admin-module/static/js/2.a105b31f.chunk.js.map",
+    "static/js/3.d3b04950.chunk.js": "/admin-module/static/js/3.d3b04950.chunk.js",
+    "static/js/3.d3b04950.chunk.js.map": "/admin-module/static/js/3.d3b04950.chunk.js.map",
     "index.html": "/admin-module/index.html",
-    "static/css/main.96c10b64.chunk.css.map": "/admin-module/static/css/main.96c10b64.chunk.css.map",
-    "static/js/2.64519742.chunk.js.LICENSE.txt": "/admin-module/static/js/2.64519742.chunk.js.LICENSE.txt",
+    "static/css/2.d47d8948.chunk.css.map": "/admin-module/static/css/2.d47d8948.chunk.css.map",
+    "static/css/main.5273d6f3.chunk.css.map": "/admin-module/static/css/main.5273d6f3.chunk.css.map",
+    "static/js/2.a105b31f.chunk.js.LICENSE.txt": "/admin-module/static/js/2.a105b31f.chunk.js.LICENSE.txt",
     "static/media/main.scss": "/admin-module/static/media/Rubik-Medium.4ddab52b.ttf"
   },
   "entrypoints": [
-    "static/js/runtime-main.1d7262a5.js",
-    "static/js/2.64519742.chunk.js",
-    "static/css/main.96c10b64.chunk.css",
-    "static/js/main.5fbe5b79.chunk.js"
+    "static/js/runtime-main.de772d3e.js",
+    "static/css/2.d47d8948.chunk.css",
+    "static/js/2.a105b31f.chunk.js",
+    "static/css/main.5273d6f3.chunk.css",
+    "static/js/main.50d1be23.chunk.js"
   ]
 }

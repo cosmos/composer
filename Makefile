@@ -36,6 +36,8 @@ local-clean:
 local-keys:
 	(sleep 1; echo "earn noble employ useful space craft staff blast exact pluck siren physical biology short suit oval open legend humble pill series devote wealth hungry") | bin/admin-moduled keys add alice --recover --home $(CHAIN_HOME)
 	(sleep 1; echo "lawn pigeon use festival elder trust wish rose law family about web fiber jealous daughter vote history grant quarter fetch soft poem aware truly") | bin/admin-moduled keys add bob --recover --home $(CHAIN_HOME)
+	(sleep 1; echo "hello turn increase august raw toss hurdle craft baby arrow aware shield maple net six math chase debris chase wet benefit rent segment beauty") | bin/admin-moduled keys add user1 --recover --home $(CHAIN_HOME)
+	(sleep 1; echo "high return silly coyote skin trumpet stock bicycle enjoy common exact sure") | bin/admin-moduled keys add user2 --recover --home $(CHAIN_HOME)
 
 .PHONY: local-init
 local-init: local-keys
@@ -53,3 +55,7 @@ local-init: local-keys
 .PHONY: local-start
 local-start:
 	bin/admin-moduled start --home $(CHAIN_HOME)
+
+.PHONY: starport-start
+starport-start: .get-starport
+	bin/starport chain serve

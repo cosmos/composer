@@ -5,6 +5,12 @@ accounts:
   - name: bob
     coins: ["10000token", "100000000stake"]
     address: cosmos1v0gfr46lp09e6m8m8qay04athst749sdf0jjpk
+  - name: user1
+    coins: ["10000token", "100000000stake"]
+    address: cosmos1qekr6vpjhyn67ekt8gxc0p56ezt0f4fzmhuk6h
+  - name: user2
+    coins: ["10000token", "100000000stake"]
+    address: cosmos106ljn6kds9vegaux0w4jnend97fdm50yec59vq
 validator:
   name: alice
   staked: "100000000stake"
@@ -22,4 +28,4 @@ genesis:
   chain_id: "adminmodule"
   app_state:
     adminmodule:
-      admins: ["cosmos1kdzkazludrnmnzchcxgs6znsjph5ugx4rhljrh"]
+      admins: ["cosmos1kdzkazludrnmnzchcxgs6znsjph5ugx4rhljrh", "cosmos1qekr6vpjhyn67ekt8gxc0p56ezt0f4fzmhuk6h", "cosmos106ljn6kds9vegaux0w4jnend97fdm50yec59vq"]

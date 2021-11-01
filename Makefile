@@ -2,14 +2,22 @@ MONIKER=adminmoduletest1
 CHAIN_ID=adminmodule
 CHAIN_HOME=$(HOME)/.admin-module
 STARPORT_VERSION=0.17.3
+COSMOS_SDK_VERSION=$(shell cat go.mod | grep cosmos-sdk | cut -d ' ' -f2 | sed 's/^v//')
 
-.PHONY: .get-starport
+ldflags = -X github.com/cosmos/cosmos-sdk/version.AppName=admin-moduled \
+		  -X github.com/cosmos/cosmos-sdk/version.Version=$(COSMOS_SDK_VERSION)
+
+.PHONY: version
+version:
+	echo $(COSMOS_SDK_VERSION)
+
+.PHONY: .get-starportg
 .get-starport:
 	[ -f bin/starport ] || $$(curl -LO https://github.com/tendermint/starport/releases/download/v$(STARPORT_VERSION)/starport_$(STARPORT_VERSION)_linux_amd64.tar.gz && tar -xzf starport_$(STARPORT_VERSION)_linux_amd64.tar.gz starport && mv starport bin/ && chmod +x bin/starport && rm starport_$(STARPORT_VERSION)_linux_amd64.tar.gz)
 
 .PHONY: build
 build:
-	go build -o bin/admin-moduled cmd/admin-moduled/main.go
+	go build -ldflags '$(ldflags)' -o bin/admin-moduled cmd/admin-moduled/main.go
 
 .PHONY: generate
 generate: .get-starport

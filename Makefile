@@ -20,6 +20,10 @@ version:
 build:
 	go build -ldflags '$(ldflags)' -o bin/admin-moduled cmd/admin-moduled/main.go
 
+.PHONY: maybebuild
+maybebuild:
+	[ -f bin/admin-moduled ] || make build
+
 .PHONY: generate
 generate: .get-starport
 	bin/starport generate proto-go && bin/starport generate openapi
@@ -33,11 +37,11 @@ local-clean:
 	rm -rf $(CHAIN_HOME) && rm -rf $(STARPORT_HOME)
 
 .PHONY: local-keys
-local-keys:
-	(sleep 1; echo "earn noble employ useful space craft staff blast exact pluck siren physical biology short suit oval open legend humble pill series devote wealth hungry") | bin/admin-moduled keys add alice --recover --home $(CHAIN_HOME)
-	(sleep 1; echo "lawn pigeon use festival elder trust wish rose law family about web fiber jealous daughter vote history grant quarter fetch soft poem aware truly") | bin/admin-moduled keys add bob --recover --home $(CHAIN_HOME)
-	(sleep 1; echo "hello turn increase august raw toss hurdle craft baby arrow aware shield maple net six math chase debris chase wet benefit rent segment beauty") | bin/admin-moduled keys add user1 --recover --home $(CHAIN_HOME)
-	(sleep 1; echo "high return silly coyote skin trumpet stock bicycle enjoy common exact sure") | bin/admin-moduled keys add user2 --recover --home $(CHAIN_HOME)
+local-keys: maybebuild
+	bin/admin-moduled keys show alice --home $(CHAIN_HOME) > /dev/null 2>&1 || (sleep 1; echo "earn noble employ useful space craft staff blast exact pluck siren physical biology short suit oval open legend humble pill series devote wealth hungry") | bin/admin-moduled keys add alice --recover --home $(CHAIN_HOME)
+	bin/admin-moduled keys show bob --home $(CHAIN_HOME) > /dev/null 2>&1 || (sleep 1; echo "lawn pigeon use festival elder trust wish rose law family about web fiber jealous daughter vote history grant quarter fetch soft poem aware truly") | bin/admin-moduled keys add bob --recover --home $(CHAIN_HOME)
+	bin/admin-moduled keys show user1 --home $(CHAIN_HOME) > /dev/null 2>&1 || (sleep 1; echo "hello turn increase august raw toss hurdle craft baby arrow aware shield maple net six math chase debris chase wet benefit rent segment beauty") | bin/admin-moduled keys add user1 --recover --home $(CHAIN_HOME)
+	bin/admin-moduled keys show user2 --home $(CHAIN_HOME) > /dev/null 2>&1 || (sleep 1; echo "high return silly coyote skin trumpet stock bicycle enjoy common exact sure") | bin/admin-moduled keys add user2 --recover --home $(CHAIN_HOME)
 
 .PHONY: local-init
 local-init: local-keys

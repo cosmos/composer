@@ -6,6 +6,7 @@ export interface ArchivedProposal {
     proposal_id: string;
     content: AContent;
     submit_time: string;
+    height?: string;
 }
 
 interface AContent {

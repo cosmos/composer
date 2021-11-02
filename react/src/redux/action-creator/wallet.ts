@@ -11,7 +11,6 @@ import {
 
 import { MsgSubmitProposal as MsgSubmitProposalGov } from "../../cosmos/codec/cosmos/gov/v1beta1/tx";
 
-
 import { ChainInfo } from "@keplr-wallet/types";
 import { chainInfo } from "../../config";
 import { MsgGrant, MsgRevoke } from "../../cosmos/codec/cosmos/authz/tx";

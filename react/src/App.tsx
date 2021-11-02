@@ -14,7 +14,6 @@ import AdminList from "./components/AdminModule/AdminList/AdminList";
 import SubmitProposal from "./components/AdminModule/SubmitProposal";
 import AuthzPage from "./components/Authz";
 
-
 const App: React.FC = () => {
     return (
         <BrowserRouter>

@@ -1,7 +1,10 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
 import { updateSettings } from "../../redux/action-creator/settings";
 import { connectWallet, disconnectWallet } from "../../redux/action-creator/wallet";
+import { remoteSettings } from "../../types/settings";
 import { initSettings } from "../../utills/initSettings";
 import { getLocalSettings, setLocalSettings } from "../../utills/localStorage";
 
@@ -13,11 +16,11 @@ const SettingsPage = () => {
 
     const dispatch = useDispatch();
 
-    function saveSettings() {
+    function saveSettings(rest: string, rpc: string, chainId: string, chainName: string) {
         setLocalSettings({ rest, rpc, chainId, chainName });
         dispatch(updateSettings({ rpc, rest, chainId, chainName }));
 
-        disconnectWallet();
+        dispatch(disconnectWallet());
         dispatch(connectWallet(rpc, rest, chainId, chainName));
     }
 
@@ -82,8 +85,30 @@ const SettingsPage = () => {
                         onChange={({ target }) => setChainName(target.value)}
                     />
                 </label>
+                <div className="settings-page__label" style={{ width: 350 }}>
+                    Select chain preset:
+                    <Select
+                        onChange={(s) => {
+                            if (s) {
+                                setRest(s.value.rest);
+                                setRpc(s.value.rpc);
+                                setChainId(s.value.chainId);
+                                setChainName(s.value.chainName);
+                                saveSettings(
+                                    s.value.rest,
+                                    s.value.rpc,
+                                    s.value.chainId,
+                                    s.value.chainName
+                                );
+                            }
+                        }}
+                        options={remoteSettings.map((s) => ({ value: s, label: s.chainName }))}
+                    />
+                </div>
 
-                <button className="settings-page__btn" onClick={saveSettings}>
+                <button
+                    className="settings-page__btn"
+                    onClick={() => saveSettings(rest, rpc, chainId, chainName)}>
                     Save
                 </button>
             </div>

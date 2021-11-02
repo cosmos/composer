@@ -3,7 +3,8 @@ import { AuthzAction, AuthzState, AuthzTypes } from "../../types/authz";
 const initialState: AuthzState = {
     error: null,
     broadcastResponse: null,
-    fetching: false
+    fetching: false,
+    grants: []
 };
 
 export const authzReducer = (state = initialState, action: AuthzAction): AuthzState => {
@@ -19,6 +20,8 @@ export const authzReducer = (state = initialState, action: AuthzAction): AuthzSt
 
         case AuthzTypes.AUTH_RESET:
             return { ...state, error: null, broadcastResponse: null, fetching: false };
+        case AuthzTypes.SET_GRANTS:
+            return { ...state, grants: action.payload };
 
         default:
             return state;

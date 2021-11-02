@@ -6,6 +6,7 @@ import { fetchProposals } from "../../redux/action-creator/proposal";
 import Spinner from "../Loader/Spinner";
 import { initSettings } from "../../utills/initSettings";
 import ModuleSwitch from "../ModuleSwitch/ModuleSwitch";
+import { ModuleNames } from "../../types/settings";
 
 const ProposalsPage: React.FC = () => {
     const { isFetchingProposals, proposals, error } = useTypedSelector((state) => state.proposal);
@@ -46,7 +47,11 @@ const ProposalsPage: React.FC = () => {
                                 <th>Proposal ID</th>
                                 <th>Title</th>
                                 <th>Proposal Type</th>
-                                <th>Submit Time</th>
+                                <th>
+                                    {settings.moduleName === ModuleNames.admin
+                                        ? "Submit Time"
+                                        : "Height"}
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

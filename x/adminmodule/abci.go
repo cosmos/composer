@@ -36,6 +36,8 @@ func EndBlocker(ctx sdk.Context, keeper keeper.Keeper) {
 			logMsg = fmt.Sprintf("passed, but failed on execution: %s", err)
 		}
 
+		proposal.Status = govtypes.StatusPassed
+
 		keeper.SetProposal(ctx, proposal)
 		keeper.RemoveFromActiveProposalQueue(ctx, proposal.ProposalId, proposal.SubmitTime.Add(2*time.Second)) // TODO hardcode
 

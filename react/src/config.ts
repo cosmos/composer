@@ -33,7 +33,7 @@ const chainInfo: ChainInfo = {
     features: ["stargate", "ibc-transfer"]
 };
 
-// mainnet
+// mainnet : )
 // const chainInfo: ChainInfo = {
 //     rpc: "https://rpc-cosmoshub.keplr.app",
 //     rest: "https://lcd-cosmoshub.keplr.app",

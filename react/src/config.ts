@@ -8,8 +8,8 @@ const chainInfo: ChainInfo = {
     chainId: "adminmodule",
     chainName: "TESTNET",
     stakeCurrency: {
-        coinDenom: "STAKE",
-        coinMinimalDenom: "stake",
+        coinDenom: "ATOM",
+        coinMinimalDenom: "uatom",
         coinDecimals: 6
     },
     bip44: {
@@ -18,15 +18,15 @@ const chainInfo: ChainInfo = {
     bech32Config: Bech32Address.defaultBech32Config("cosmos"),
     currencies: [
         {
-            coinDenom: "STAKE",
-            coinMinimalDenom: "stake",
+            coinDenom: "ATOM",
+            coinMinimalDenom: "uatom",
             coinDecimals: 6
         }
     ],
     feeCurrencies: [
         {
-            coinDenom: "STAKE",
-            coinMinimalDenom: "stake",
+            coinDenom: "ATOM",
+            coinMinimalDenom: "uatom",
             coinDecimals: 6
         }
     ],

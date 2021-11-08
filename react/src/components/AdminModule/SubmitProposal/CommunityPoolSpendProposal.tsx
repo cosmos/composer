@@ -20,7 +20,10 @@ const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, 
                     value: CPSProposalProc.encode({
                         title,
                         description,
-                        amount,
+                        amount: amount.map((c) => ({
+                            ...c,
+                            amount: (+c.amount * 1_000_000).toString()
+                        })),
                         recipient
                     }).finish()
                 },

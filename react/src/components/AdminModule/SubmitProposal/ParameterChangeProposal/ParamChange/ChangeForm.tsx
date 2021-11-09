@@ -64,7 +64,6 @@ const ChangeForm: React.FC<IChangeFormProps> = ({ changes, setChanges }) => {
         dispatch(fetchParamsList());
     }, []);
 
-    console.log("current inputs", changes);
     return (
         <div className="parameter-change-form">
             {changes.map((input, i) => (

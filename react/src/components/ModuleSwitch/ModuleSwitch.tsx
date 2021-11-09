@@ -20,13 +20,6 @@ const ModuleSwitch = () => {
     function switchModule(checked: boolean) {
         setChecked(checked);
         dispatch(setModule(checked ? ModuleNames.gov : ModuleNames.admin));
-        if (checked) {
-            console.log("set to gov module");
-            return;
-        }
-
-        console.log("set to admin module");
-        return;
     }
 
     if (!admConnected) {

@@ -20,10 +20,8 @@ const ProposalsPage: React.FC = () => {
 
     useEffect(() => {
         if (!stargateClient) {
-            // console.log("no client");
             return;
         }
-        // console.log("got client");
         dispatch(fetchProposals());
     }, [stargateClient, settings.moduleName]);
 

@@ -15,7 +15,7 @@ const SoftwareUpgradeProposal: React.FC<TBaseSPMsg> = ({
     deposit,
     validateDeposit
 }) => {
-    const [plan, setPlan] = useState({} as Plan);
+    const [plan, setPlan] = useState({ height: 0 } as Plan);
     const dispatch = useDispatch();
     const submitSoftwareUpgradeProposal = () => {
         const valid = validateDeposit(deposit);
@@ -68,6 +68,7 @@ const SoftwareUpgradeProposal: React.FC<TBaseSPMsg> = ({
                         onChange={({ target }) => setPlan({ ...plan, height: +target.value })}
                         type="text"
                         className="plan-form__input"
+                        disabled={!!plan.time}
                     />
                 </label>
                 <label className="plan-form__label" htmlFor="plan-info">
@@ -82,13 +83,15 @@ const SoftwareUpgradeProposal: React.FC<TBaseSPMsg> = ({
                         className="plan-form__input"
                     />
                 </label>
-                <label className="plan-form__label" htmlFor="plan-time">
-                    Time
-                    <DateTimePicker
-                        onChange={(val: Date) => setPlan({ ...plan, time: val })}
-                        value={plan.time}
-                    />
-                </label>
+                {!plan.height && (
+                    <label className="plan-form__label" htmlFor="plan-time">
+                        Time
+                        <DateTimePicker
+                            onChange={(val: Date) => setPlan({ ...plan, time: val })}
+                            value={plan.time}
+                        />
+                    </label>
+                )}
             </div>
             <button className={"btn-submit-proposal"} onClick={submitSoftwareUpgradeProposal}>
                 Submit

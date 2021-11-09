@@ -57,7 +57,7 @@ const ParameterChangeProposal: React.FC<TBaseSPMsg> = ({
             }
             shadowedChanges[i].value = modifiedValue;
         });
-        console.log("modified", shadowedChanges);
+
         return shadowedChanges;
     };
 

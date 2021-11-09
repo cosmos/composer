@@ -49,7 +49,6 @@ const SubmitProposal: React.FC = () => {
         };
     }, []);
 
-    console.log("deposit", deposit);
     return (
         <div className="submit-proposal">
             <div className="header">

@@ -19,7 +19,9 @@ const SidebarBottom = () => {
                     await getBalance(
                         keplr,
                         await getWalletAddress(keplr, settings.chainId),
-                        settings.lcdClient
+                        settings.lcdClient,
+                        settings.coinMinimalDenom,
+                        settings.coinDenom
                     )
                 );
             }

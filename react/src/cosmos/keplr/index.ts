@@ -20,11 +20,13 @@ export const getWalletAddress = async (keplr: Keplr, chainId: string): Promise<s
 export const getBalance = async (
     keplr: Keplr,
     walletAddress: string,
-    lcdClient: LcdClient & BankExtension
+    lcdClient: LcdClient & BankExtension,
+    coinMinimalDenom: string,
+    coinDenom: string
 ): Promise<string> => {
     const coins = await lcdClient.bank.balances(walletAddress).then((data) => data.result);
-    const res = coins.find((c) => c.denom === chainInfo.stakeCurrency.coinMinimalDenom);
-    return toPrettyCoin(res?.amount || "0")
+    const res = coins.find((c) => c.denom === coinMinimalDenom);
+    return toPrettyCoin(res?.amount || "0", coinDenom, coinMinimalDenom)
         .trim(true)
         .toString();
 };

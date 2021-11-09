@@ -18,9 +18,18 @@ export interface IUpdateSettings {
     rest: string;
     chainId: string;
     chainName: string;
+    coinDenom: string;
+    coinMinimalDenom: string;
 }
 
-export const updateSettings = ({ rpc, rest, chainId, chainName }: IUpdateSettings) => {
+export const updateSettings = ({
+    rpc,
+    rest,
+    chainId,
+    chainName,
+    coinDenom,
+    coinMinimalDenom
+}: IUpdateSettings) => {
     return async (dispatch: Dispatch<SettingsActions>): Promise<void> => {
         try {
             const lcdClient = LcdClient.withExtensions(
@@ -42,7 +51,9 @@ export const updateSettings = ({ rpc, rest, chainId, chainName }: IUpdateSetting
                     rest,
                     chainId,
                     chainName,
-                    lcdClient
+                    lcdClient,
+                    coinDenom,
+                    coinMinimalDenom
                 }
             });
         } catch (error) {

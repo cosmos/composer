@@ -8,7 +8,9 @@ const initialState: SettingsState = {
     chainId: getLocalSettings().chainId,
     chainName: getLocalSettings().chainName,
     lcdClient: lcdClient,
-    moduleName: getLocalSettings().moduleName
+    moduleName: getLocalSettings().moduleName,
+    coinDenom: getLocalSettings().coinDenom,
+    coinMinimalDenom: getLocalSettings().coinMinimalDenom
 };
 
 export const settingsReducer = (state = initialState, action: SettingsActions): SettingsState => {

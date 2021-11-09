@@ -19,14 +19,30 @@ export function useAccountConnection() {
 
     const connectAccount = useCallback(() => {
         localStorage?.setItem(KeyAccountAutoConnect, "true");
-        dispatch(connectWallet(settings.rpc, settings.rest, settings.chainId, settings.chainName));
+        dispatch(
+            connectWallet(
+                settings.rpc,
+                settings.rest,
+                settings.chainId,
+                settings.chainName,
+                settings.coinDenom,
+                settings.coinMinimalDenom
+            )
+        );
     }, [dispatch]);
 
     useEffect(() => {
         // Log in automatically if you have not logged out after logging in earlier.
         if (shouldAutoConnectAccount && !isConnected) {
             dispatch(
-                connectWallet(settings.rpc, settings.rest, settings.chainId, settings.chainName)
+                connectWallet(
+                    settings.rpc,
+                    settings.rest,
+                    settings.chainId,
+                    settings.chainName,
+                    settings.coinDenom,
+                    settings.coinMinimalDenom
+                )
             );
         }
     }, [dispatch, isConnected]);

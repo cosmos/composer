@@ -10,10 +10,21 @@ export const initSettings = (dispatch: Dispatch<any>) => {
             rpc: settings.rpc,
             rest: settings.rest,
             chainId: settings.chainId,
-            chainName: settings.chainName
+            chainName: settings.chainName,
+            coinDenom: settings.coinDenom,
+            coinMinimalDenom: settings.coinMinimalDenom
         })
     );
 
     disconnectWallet();
-    dispatch(connectWallet(settings.rpc, settings.rest, settings.chainId, settings.chainName));
+    dispatch(
+        connectWallet(
+            settings.rpc,
+            settings.rest,
+            settings.chainId,
+            settings.chainName,
+            settings.coinDenom,
+            settings.coinMinimalDenom
+        )
+    );
 };

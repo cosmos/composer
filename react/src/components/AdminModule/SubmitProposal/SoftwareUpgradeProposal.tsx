@@ -9,10 +9,18 @@ import {
 } from "../../../cosmos/codec/cosmos/upgrade/upgrade";
 import { TBaseSPMsg } from "../../../types/submitProposal";
 
-const SoftwareUpgradeProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => {
+const SoftwareUpgradeProposal: React.FC<TBaseSPMsg> = ({
+    title,
+    description,
+    deposit,
+    validateDeposit
+}) => {
     const [plan, setPlan] = useState({} as Plan);
     const dispatch = useDispatch();
     const submitSoftwareUpgradeProposal = () => {
+        const valid = validateDeposit(deposit);
+        if (!valid) return;
+
         dispatch(
             submitProposal(
                 {

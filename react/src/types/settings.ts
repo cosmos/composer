@@ -15,85 +15,113 @@ export const remoteSettings: RemoteNode[] = [
         rpc: "https://rpc-cosmoshub.keplr.app",
         rest: "https://lcd-cosmoshub.keplr.app",
         chainId: "cosmoshub-4",
-        chainName: "Cosmos"
+        chainName: "Cosmos",
+        coinDenom: "atom",
+        coinMinimalDenom: "uatom"
     },
     {
         rpc: "https://rpc-osmosis.keplr.app",
         rest: "https://lcd-osmosis.keplr.app",
         chainId: "osmosis-1",
-        chainName: "Osmosis"
+        chainName: "Osmosis",
+        coinDenom: "osmo",
+        coinMinimalDenom: "uosmo"
     },
     {
         rpc: "https://rpc-secret.keplr.app",
         rest: "https://lcd-secret.keplr.app",
         chainId: "secret-3",
-        chainName: "Secret Network"
+        chainName: "Secret Network",
+        coinDenom: "scrt",
+        coinMinimalDenom: "uscrt"
     },
     {
         rpc: "https://rpc-akash.keplr.app",
         rest: "https://lcd-akash.keplr.app",
         chainId: "akashnet-2",
-        chainName: "Akash"
+        chainName: "Akash",
+        coinDenom: "akash",
+        coinMinimalDenom: "uakash"
     },
     {
         rpc: "https://rpc-crypto-org.keplr.app",
         rest: "https://lcd-crypto-org.keplr.app",
         chainId: "crypto-org-chain-mainnet-1",
-        chainName: "Crypto.org"
+        chainName: "Crypto.org",
+        coinDenom: "cro",
+        coinMinimalDenom: "ucro"
     },
     {
         rpc: "https://rpc-iov.keplr.app",
         rest: "https://lcd-iov.keplr.app",
         chainId: "iov-mainnet-ibc",
-        chainName: "Starname"
+        chainName: "Starname",
+        coinDenom: "aiov",
+        coinMinimalDenom: "uiov"
     },
     {
         rpc: "https://rpc-sifchain.keplr.app",
         rest: "https://lcd-sifchain.keplr.app/",
         chainId: "sifchain-1",
-        chainName: "Sifchain"
+        chainName: "Sifchain",
+        coinDenom: "rowan",
+        coinMinimalDenom: "urowan"
     },
     {
         rpc: "https://rpc-certik.keplr.app",
         rest: "https://lcd-certik.keplr.app",
         chainId: "shentu-2.2",
-        chainName: "Certik"
+        chainName: "Certik",
+        coinDenom: "ctk",
+        coinMinimalDenom: "uctk"
     },
     {
         rpc: "https://rpc-iris.keplr.app",
         rest: "https://lcd-iris.keplr.app",
         chainId: "irishub-1",
-        chainName: "IRISnet"
+        chainName: "IRISnet",
+        coinDenom: "iris",
+        coinMinimalDenom: "uiris"
     },
     {
         rpc: "https://rpc-regen.keplr.app",
         rest: "https://lcd-regen.keplr.app",
         chainId: "regen-1",
-        chainName: "Regen"
+        chainName: "Regen",
+        coinDenom: "regen",
+        coinMinimalDenom: "uregen"
     },
     {
         rpc: "https://rpc-persistence.keplr.app",
         rest: "https://lcd-persistence.keplr.app",
         chainId: "core-1",
-        chainName: "Persistence"
+        chainName: "Persistence",
+        coinDenom: "xrpt",
+        coinMinimalDenom: "uxrpt"
     },
     {
         rpc: "https://rpc-sentinel.keplr.app",
         rest: "https://lcd-sentinel.keplr.app",
         chainId: "sentinelhub-2",
-        chainName: "Sentinel"
+        chainName: "Sentinel",
+        coinDenom: "dvpn",
+        coinMinimalDenom: "udvpn"
     },
     {
         rpc: "https://rpc-impacthub.keplr.app",
         rest: "https://lcd-impacthub.keplr.app",
         chainId: "impacthub-3",
-        chainName: "ixo"
+        chainName: "ixo",
+        coinDenom: "ixo",
+        coinMinimalDenom: "uixo"
     },
     {
         rpc: "https://rpc-emoney.keplr.app",
         rest: "https://lcd-emoney.keplr.app",
         chainId: "emoney-3",
-        chainName: "e-Money"
+        chainName: "e-Money",
+        coinDenom: "ngm",
+        coinMinimalDenom: "ungm"
     }
 ];
 
@@ -112,6 +140,8 @@ export interface RemoteNode {
     chainName: string;
     rpc: string;
     rest: string;
+    coinDenom: string;
+    coinMinimalDenom: string;
 }
 
 export interface FetchAction {
@@ -165,4 +195,6 @@ export interface SettingsState {
         StakingExtension &
         SupplyExtension;
     moduleName: ModuleNames;
+    coinDenom: string;
+    coinMinimalDenom: string;
 }

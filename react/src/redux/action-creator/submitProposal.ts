@@ -40,6 +40,10 @@ export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
             };
 
             const broadcastRes = await stargateClient.signAndBroadcast(address, [msgAny], fee);
+            console.log(
+                "broadcast res",
+                JSON.parse(broadcastRes.rawLog!)[0].events[2].attributes[0].value
+            );
             if (isBroadcastTxSuccess(broadcastRes)) {
                 dispatch({
                     type: SubmitProposalTypes.SUBMIT_PROPOSAL_SUCCESS,
@@ -56,7 +60,22 @@ export const submitProposal = (content: EncodeObject, deposit: Coin[]) => {
     };
 };
 
-const setSubmitProposalError = (error: string): SubmitProposalAction => {
+export const sendSubmitProposalError = (
+    errMessage: string,
+    dispatch: Dispatch<SubmitProposalAction>
+): void => {
+    dispatch({
+        type: SubmitProposalTypes.SUBMIT_PROPOSAL_ERROR,
+        payload: errMessage
+    });
+    setTimeout(() => {
+        dispatch({
+            type: SubmitProposalTypes.SUBMIT_PROPOSAL_RESET
+        });
+    }, 5000);
+};
+
+export const setSubmitProposalError = (error: string): SubmitProposalAction => {
     return {
         type: SubmitProposalTypes.SUBMIT_PROPOSAL_ERROR,
         payload: error

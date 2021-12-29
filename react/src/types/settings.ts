@@ -20,6 +20,14 @@ export const remoteSettings: RemoteNode[] = [
         coinMinimalDenom: "uatom"
     },
     {
+        rpc: "https://vega-rpc.interchain.io",
+        rest: "https://vega-rest.interchain.io",
+        chainId: "vega-testnet",
+        chainName: "vega-testnet",
+        coinDenom: "atom",
+        coinMinimalDenom: "uatom"
+    },
+    {
         rpc: "https://rpc-osmosis.keplr.app",
         rest: "https://lcd-osmosis.keplr.app",
         chainId: "osmosis-1",

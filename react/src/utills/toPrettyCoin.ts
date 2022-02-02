@@ -3,7 +3,11 @@ import { chainInfo } from "../config";
 
 export const toPrettyCoin = (
     amount: string | Dec,
-    denom: string = chainInfo.currencies[0].coinMinimalDenom
+    coinDenom: string,
+    coinMinimalDenom: string
 ): CoinPretty => {
-    return new CoinPretty(chainInfo.currencies[0], new Dec(amount.toString()));
+    return new CoinPretty(
+        { ...chainInfo.currencies[0], coinDenom, coinMinimalDenom },
+        new Dec(amount.toString())
+    );
 };

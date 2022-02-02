@@ -124,7 +124,11 @@ const ProposalDetail: React.FC = () => {
                                     <td>
                                         {proposal.content.amount.map((am, i) => (
                                             <li key={i}>
-                                                {toPrettyCoin(am.amount, am.denom).toString()}
+                                                {toPrettyCoin(
+                                                    am.amount,
+                                                    am.denom.slice(1),
+                                                    am.denom
+                                                ).toString()}
                                             </li>
                                         ))}
                                     </td>
@@ -177,6 +181,15 @@ const ProposalDetail: React.FC = () => {
                                     : proposal.height}
                             </td>
                         </tr>
+
+                        {settings.moduleName === ModuleNames.gov && (
+                            <tr>
+                                <td>
+                                    <span>Proposer</span>
+                                </td>
+                                <td>{proposal.proposer}</td>
+                            </tr>
+                        )}
 
                         {/*<tr>*/}
                         {/*    <td>*/}

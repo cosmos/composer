@@ -1,7 +1,12 @@
 import { BroadcastTxSuccess } from "@cosmjs/stargate/build/stargateclient";
 import { Coin } from "@cosmjs/stargate";
 
-export type TBaseSPMsg = { title: string; description: string; deposit: Coin[] };
+export type TBaseSPMsg = {
+    title: string;
+    description: string;
+    deposit: Coin[];
+    validateDeposit: (dep: Coin[]) => boolean;
+};
 
 export interface SubmitProposalState {
     broadcastResponse: BroadcastTxSuccess | null;

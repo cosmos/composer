@@ -6,6 +6,7 @@ export interface ArchivedProposal {
     proposal_id: string;
     content: AContent;
     submit_time: string;
+    proposer: string;
     height?: string;
 }
 
@@ -47,6 +48,7 @@ export function isAParameterChangeProposalContent(
 export function isACommunityPoolSpendProposalContent(
     proposal: AContent
 ): proposal is ACommunityPoolSpendProposalContent {
+    console.log(proposal);
     return proposal["@type"] === "/cosmos.distribution.v1beta1.CommunityPoolSpendProposal";
 }
 

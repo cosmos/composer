@@ -23,7 +23,8 @@ export const fetchProposals = () => {
                     proposal_id: (i + 1).toString(),
                     content: { "@type": p.content.typeUrl, ...p.content.value },
                     submit_time: "0",
-                    height: p.height
+                    height: p.height,
+                    proposer: p.proposer
                 }));
                 dispatch({
                     type: ProposalActionTypes.PROPOSAL_SUCCESS,

@@ -15,7 +15,9 @@ export const getLocalSettings = (): LocalSettings => {
             rpc: chainInfo.rpc,
             chainId: chainInfo.chainId,
             chainName: chainInfo.chainName,
-            moduleName: ModuleNames.gov
+            moduleName: ModuleNames.gov,
+            coinDenom: chainInfo.stakeCurrency.coinDenom,
+            coinMinimalDenom: chainInfo.stakeCurrency.coinMinimalDenom
         };
 
         window?.localStorage.setItem(SettingsLS.localSettings, JSON.stringify(newSettings));

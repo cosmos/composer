@@ -10,7 +10,10 @@ import { useTypedSelector } from "../../../redux/useTypedSelector";
 import { TBaseSPMsg } from "../../../types/submitProposal";
 import Spinner from "../../Loader/Spinner";
 import { useDispatch } from "react-redux";
-import { submitProposalReset } from "../../../redux/action-creator/submitProposal";
+import {
+    sendSubmitProposalError,
+    submitProposalReset
+} from "../../../redux/action-creator/submitProposal";
 import { initSettings } from "../../../utills/initSettings";
 import ModuleSwitch from "../../ModuleSwitch/ModuleSwitch";
 import { ModuleNames } from "../../../types/settings";
@@ -18,15 +21,26 @@ import SoftwareUpgradeProposal from "./SoftwareUpgradeProposal";
 
 const SubmitProposal: React.FC = () => {
     const { broadcastResponse, error, fetching } = useTypedSelector((s) => s.submitProposal);
-    const { moduleName } = useTypedSelector((s) => s.settings);
+    const { moduleName, chainName } = useTypedSelector((s) => s.settings);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [deposit, setDeposit] = useState<Coin[]>([]);
 
-    const params: TBaseSPMsg = { title, description, deposit };
-
     const dispatch = useDispatch();
+
+    const validateDeposit = (dep: Coin[]): boolean => {
+        for (const c of dep) {
+            if (c.amount === "" || c.denom === "") {
+                sendSubmitProposalError("No empty values allowed", dispatch);
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const params: TBaseSPMsg = { title, description, deposit, validateDeposit };
+
     useEffect(() => {
         initSettings(dispatch);
 
@@ -34,6 +48,7 @@ const SubmitProposal: React.FC = () => {
             dispatch(submitProposalReset());
         };
     }, []);
+
     return (
         <div className="submit-proposal">
             <div className="header">
@@ -46,7 +61,23 @@ const SubmitProposal: React.FC = () => {
             </div>
 
             {error && <div className={"error-label"}>Error: {error}</div>}
-            {broadcastResponse && <h1 className={"success-label"}>Success</h1>}
+            {broadcastResponse && (
+                <h1 className={"success-label"}>
+                    Success,{" "}
+                    {broadcastResponse.rawLog && moduleName === ModuleNames.gov && (
+                        <a
+                            href={
+                                "https://www.mintscan.io/" +
+                                chainName +
+                                "/proposals/" +
+                                JSON.parse(broadcastResponse.rawLog)[0].events[2].attributes[0]
+                                    .value
+                            }>
+                            View your proposal on mintscan!
+                        </a>
+                    )}
+                </h1>
+            )}
 
             <div className="container">
                 <div>
@@ -82,8 +113,8 @@ const SubmitProposal: React.FC = () => {
                             <label htmlFor={"deposit"}>Deposit</label>
                         </div>
                         <div id="deposit">
-                            <CoinsForm addCoin={(d) => setDeposit([...deposit, d])} />
-                            <div className={"coin-items"}>
+                            <CoinsForm deposit={deposit} setDeposit={setDeposit} />
+                            {/* <div className={"coin-items"}>
                                 {deposit.map((d, i) => (
                                     <CoinItem
                                         key={i}
@@ -96,7 +127,7 @@ const SubmitProposal: React.FC = () => {
                                         }
                                     />
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 ) : null}

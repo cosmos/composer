@@ -15,7 +15,14 @@ import { ChainInfo } from "@keplr-wallet/types";
 import { chainInfo } from "../../config";
 import { MsgGrant, MsgRevoke } from "../../cosmos/codec/cosmos/authz/tx";
 
-export const connectWallet = (rpc: string, rest: string, chainId: string, chainName: string) => {
+export const connectWallet = (
+    rpc: string,
+    rest: string,
+    chainId: string,
+    chainName: string,
+    coinDenom: string,
+    coinMinimalDenom: string
+) => {
     return async (dispatch: Dispatch<WalletAction>) => {
         try {
             dispatch({ type: WalletActionTypes.WALLET_CONNECT });
@@ -25,7 +32,10 @@ export const connectWallet = (rpc: string, rest: string, chainId: string, chainN
                 rpc,
                 rest,
                 chainId,
-                chainName
+                chainName,
+                stakeCurrency: { ...chainInfo.stakeCurrency, coinDenom, coinMinimalDenom },
+                currencies: [{ ...chainInfo.stakeCurrency, coinDenom, coinMinimalDenom }],
+                feeCurrencies: [{ ...chainInfo.stakeCurrency, coinDenom, coinMinimalDenom }]
             };
 
             const keplr = await getKeplr();

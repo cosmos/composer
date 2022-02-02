@@ -7,12 +7,23 @@ import { submitProposal } from "../../../redux/action-creator/submitProposal";
 import { useDispatch } from "react-redux";
 import { CommunityPoolSpendProposal as CPSProposalProc } from "@cosmjs/stargate/build/codec/cosmos/distribution/v1beta1/distribution";
 
-const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, deposit }) => {
+const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({
+    title,
+    description,
+    deposit,
+    validateDeposit
+}) => {
     const [amount, setAmount] = useState<Coin[]>([]);
     const [recipient, setRecipient] = useState("");
 
     const dispatch = useDispatch();
-    const submitCPSProposal = () =>
+    const submitCPSProposal = () => {
+        let valid = validateDeposit(deposit);
+        if (!valid) return;
+
+        valid = validateDeposit(amount);
+        if (!valid) return;
+
         dispatch(
             submitProposal(
                 {
@@ -27,6 +38,7 @@ const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, 
                 deposit
             )
         );
+    };
     return (
         <div className={"cps-proposal"}>
             <div>
@@ -48,8 +60,8 @@ const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, 
                     <label htmlFor={"amount"}>Amount</label>
                 </div>
                 <div id={"amount"}>
-                    <CoinsForm addCoin={(d) => setAmount([...amount, d])} />
-                    <div className={"coin-items"}>
+                    <CoinsForm deposit={amount} setDeposit={setAmount} />
+                    {/* <div className={"coin-items"}>
                         {amount.map((a, i) => (
                             <CoinItem
                                 key={i}
@@ -59,7 +71,7 @@ const CommunityPoolSpendProposal: React.FC<TBaseSPMsg> = ({ title, description, 
                                 }
                             />
                         ))}
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

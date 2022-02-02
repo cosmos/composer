@@ -84,5 +84,5 @@
         "prettier": "^2.3.2",
         "redux-devtools-extension": "^2.13.9"
     },
-    "homepage": "https://cosmos.github.io/admin-module"
+    "homepage": "https://cosmos.github.io/composer"
 }

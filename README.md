@@ -73,4 +73,4 @@ curl https://get.starport.network/cosmos/admin-module@latest! | sudo bash
 - [Starport Docs](https://docs.starport.network)
 - [Cosmos SDK documentation](https://docs.cosmos.network)
 - [Cosmos SDK Tutorials](https://tutorials.cosmos.network)
-- [Discord](https://discord.gg/W8trcGV)
+- [Discord](https://discord.gg/cosmosnetwork)
